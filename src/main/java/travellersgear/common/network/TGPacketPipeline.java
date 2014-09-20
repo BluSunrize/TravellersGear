@@ -118,6 +118,7 @@ public class TGPacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abst
         registerPacket(PacketNBTSync.class);
         registerPacket(PacketRequestNBTSync.class);
         registerPacket(PacketTileUpdate.class);
+        registerPacket(PacketItemShoutout.class);
     }
 
     // Method to call from FMLPostInitializationEvent

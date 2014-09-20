@@ -22,7 +22,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -36,6 +35,7 @@ import travellersgear.common.network.PacketRequestNBTSync;
 import travellersgear.common.util.ModCompatability;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -48,6 +48,7 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
 		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(new KeyHandler());
 		RenderingRegistry.registerBlockHandler(new BlockRenderArmorStand());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorStand.class, new TileRenderArmorStand());
 	}
@@ -139,20 +140,22 @@ public class ClientProxy extends CommonProxy
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void onTooltip(ItemTooltipEvent event)
 	{
-		if(event.itemStack.getItem().getClass().getName().endsWith("Knapsack") && Minecraft.getMinecraft().currentScreen!=null && Minecraft.getMinecraft().currentScreen.getClass().equals(GuiTravellersInv.class))
+		if(Minecraft.getMinecraft().currentScreen!=null && Minecraft.getMinecraft().currentScreen.getClass().equals(GuiTravellersInv.class))
 		{
-			final ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-			int mX = Mouse.getX() * scaledresolution.getScaledWidth() / Minecraft.getMinecraft().displayWidth;
-			int mY = scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / Minecraft.getMinecraft().displayHeight - 1;
-			int guiLeft = ((GuiTravellersInv)Minecraft.getMinecraft().currentScreen).getGuiPos()[0];
-			int guiTop = ((GuiTravellersInv)Minecraft.getMinecraft().currentScreen).getGuiPos()[1];
-			mX-=guiLeft;
-			mY-=guiTop;
-			if(mX>77&&mX<95 && mY>7&&mY<25)
-			event.toolTip.add(1,EnumChatFormatting.AQUA+StatCollector.translateToLocal("TG.guitext.rightclickToOpen"));
+			if(event.itemStack.getItem().getClass().getName().endsWith("Knapsack"))
+			{
+				final ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft(), Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
+				int mX = Mouse.getX() * scaledresolution.getScaledWidth() / Minecraft.getMinecraft().displayWidth;
+				int mY = scaledresolution.getScaledHeight() - Mouse.getY() * scaledresolution.getScaledHeight() / Minecraft.getMinecraft().displayHeight - 1;
+				int guiLeft = ((GuiTravellersInv)Minecraft.getMinecraft().currentScreen).getGuiPos()[0];
+				int guiTop = ((GuiTravellersInv)Minecraft.getMinecraft().currentScreen).getGuiPos()[1];
+				mX-=guiLeft;
+				mY-=guiTop;
+				if(mX>77&&mX<95 && mY>7&&mY<25)
+					event.toolTip.add(1,EnumChatFormatting.AQUA+StatCollector.translateToLocal("TG.guitext.rightclickToOpen"));
+			}
+			event.toolTip.add(EnumChatFormatting.LIGHT_PURPLE+StatCollector.translateToLocal("TG.guitext.linkInChat"));
 		}
-		for(int oid:OreDictionary.getOreIDs(event.itemStack))
-			event.toolTip.add(OreDictionary.getOreName(oid));
 	}
 
 	@SubscribeEvent

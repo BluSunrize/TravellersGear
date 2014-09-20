@@ -30,6 +30,7 @@ import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.common.inventory.ContainerTravellersInv;
 import travellersgear.common.inventory.SlotRestricted;
+import travellersgear.common.network.PacketItemShoutout;
 import travellersgear.common.util.ModCompatability;
 
 public class GuiTravellersInv extends GuiContainer
@@ -38,7 +39,7 @@ public class GuiTravellersInv extends GuiContainer
 	private float playerRotation = 0;
 	EntityPlayer player;
 	static List<int[]> slotOverlays = null;
-	
+
 	public GuiTravellersInv(EntityPlayer player)
 	{
 		super(new ContainerTravellersInv(player.inventory));
@@ -84,12 +85,12 @@ public class GuiTravellersInv extends GuiContainer
 	{
 		super.initGui();
 	}
-	
+
 	public int[] getGuiPos()
 	{
 		return new int[]{guiLeft,guiTop};
 	}
-	
+
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mX, int mZ)
 	{
@@ -284,26 +285,34 @@ public class GuiTravellersInv extends GuiContainer
 	}
 
 	Slot findSlotForPosition(int x, int y)
-    {
-        for (int k = 0; k < this.inventorySlots.inventorySlots.size(); ++k)
-        {
-            Slot slot = (Slot)this.inventorySlots.inventorySlots.get(k);
-            if (this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y))
-                return slot;
-        }
-        return null;
-    }
-	
+	{
+		for (int k = 0; k < this.inventorySlots.inventorySlots.size(); ++k)
+		{
+			Slot slot = (Slot)this.inventorySlots.inventorySlots.get(k);
+			if (this.func_146978_c(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y))
+				return slot;
+		}
+		return null;
+	}
+
 	@Override
 	protected void mouseClicked(int mX, int mY, int eventButton)
 	{
 		if(eventButton == 1)
 		{
 			Slot slot = this.findSlotForPosition(mX, mY);
-			if(slot instanceof SlotRestricted && SlotRestricted.SlotType.TINKERS_BAG==((SlotRestricted)slot).type && slot.getHasStack())
+			if(slot!=null && slot.getHasStack())
 			{
-				ModCompatability.openTConKnapsack();
-				return;
+				if(isCtrlKeyDown())
+				{
+					TravellersGear.instance.packetPipeline.sendToServer(new PacketItemShoutout(this.player,slot.getStack()));
+					return;
+				}
+				else if(slot instanceof SlotRestricted && SlotRestricted.SlotType.TINKERS_BAG==((SlotRestricted)slot).type)
+				{
+					ModCompatability.openTConKnapsack();
+					return;
+				}
 			}
 		}
 		super.mouseClicked(mX, mY, eventButton);
@@ -314,7 +323,7 @@ public class GuiTravellersInv extends GuiContainer
 		if( (mX>61&&mX<77) && (mY>88&&mY<97) )
 			this.playerRotation -= 22.5f;
 	}
-	
+
 	public static void renderLiving(int x, int y, float scale, float xRotation, EntityLivingBase living)
 	{
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
@@ -330,7 +339,6 @@ public class GuiTravellersInv extends GuiContainer
 		GL11.glRotatef(135.0F, 0.0F, 1.0F, 0.0F);
 		RenderHelper.enableStandardItemLighting();
 		GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-		//		GL11.glRotatef(-((float)Math.atan((double)(adjustedMouseY / 40.0F))) * 20.0F, 1.0F, 0.0F, 0.0F);
 		living.renderYawOffset = xRotation;//(float)Math.atan((double)(adjustedMouseX / 40.0F)) * 20.0F;
 		living.rotationYaw = xRotation;//(float)Math.atan((double)(adjustedMouseX / 40.0F)) * 40.0F;
 		living.rotationPitch = 0;//-((float)Math.atan((double)(adjustedMouseY / 40.0F))) * 20.0F;

@@ -15,6 +15,7 @@ TG.guitext.blocks=Blocks
 TG.guitext.visDiscount=Vis Discount
 
 TG.guitext.rightclickToOpen=Rightclick to Open
+TG.guitext.linkInChat=Ctrl+Rightclick to link this in chat
 
 TG.guitext.showHelmet=Show Helmet
 TG.guitext.showChest=Show Chestplate
@@ -27,7 +28,11 @@ TG.guitext.renderTG=Render Traveller's Gear
 TG.guitext.renderNoBaubTG=Don't render Baubles or Traveller's Gear
 TG.guitext.style=Style >
 
+TG.chattext.showItem=%1$s shows Item: %2$s
+
 itemGroup.travellersgear=Traveller's Gear
+
+TG.keybind.openInv=Traveller's Gear Inventory
 
 #-- Title --
 TG.personaltitle.treepuncher=Professional Treepuncher

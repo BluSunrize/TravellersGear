@@ -47,7 +47,7 @@ public class TravellersGear
 {
 	public static final String MODID = "TravellersGear";
 	public static final String MODNAME = "Traveller's Gear";
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.1";
 	public static final Logger logger = LogManager.getLogger(MODID);
 	public final TGPacketPipeline packetPipeline = new TGPacketPipeline();
 
@@ -60,6 +60,7 @@ public class TravellersGear
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		FMLForgePlugin.RUNTIME_DEOBF=true;
 		initItems();
 	}
 	@Mod.EventHandler
