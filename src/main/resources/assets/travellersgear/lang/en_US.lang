@@ -1,0 +1,41 @@
+# -- Items --
+item.TravellersGear.simpleGear.cloak.name=Cloak
+item.TravellersGear.simpleGear.belt.name=Belt
+item.TravellersGear.simpleGear.ringGold.name=Gold Ring
+item.TravellersGear.simpleGear.ringSilver.name=Silver Ring
+item.TravellersGear.simpleGear.pauldrons.name=Pauldrons
+item.TravellersGear.simpleGear.vambraces.name=Vambraces
+item.TravellersGear.simpleGear.title.name=Title Scroll
+# -- Blocks -- 
+tile.TravellersGear.armorstand.name=Armor Stand
+
+#-- GUI --
+TG.guitext.equipment=Equipment
+TG.guitext.blocks=Blocks
+TG.guitext.visDiscount=Vis Discount
+
+TG.guitext.rightclickToOpen=Rightclick to Open
+
+TG.guitext.showHelmet=Show Helmet
+TG.guitext.showChest=Show Chestplate
+TG.guitext.showLegs=Show Leggings
+TG.guitext.showBoots=Show Boots
+TG.guitext.showPlate=Show Floorplate
+TG.guitext.renderBaubTG=Render Baubles and Traveller's Gear
+TG.guitext.renderBaub=Render Baubles
+TG.guitext.renderTG=Render Traveller's Gear
+TG.guitext.renderNoBaubTG=Don't render Baubles or Traveller's Gear
+TG.guitext.style=Style >
+
+itemGroup.travellersgear=Traveller's Gear
+
+#-- Title --
+TG.personaltitle.treepuncher=Professional Treepuncher
+TG.personaltitle.titan=Prospector of Titan
+TG.personaltitle.librarian=The Librarian
+TG.personaltitle.bursar=The Bursar
+TG.personaltitle.archchancellor=The Archchancellor
+TG.personaltitle.justicar=Justicar
+TG.personaltitle.explorer=Striding Explorer
+TG.personaltitle.defender=Righteous Defender
+TG.personaltitle.seeker=Seeker of Treassure

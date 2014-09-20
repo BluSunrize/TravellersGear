@@ -1,0 +1,16 @@
+[
+{
+  "modid": "TravellersGear",
+  "name": "Traveller's Gear",
+  "description": "RPG Inventories! Armorstands! Cross-Mod Interaction! Woohoo!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["BluSunrize"],
+  "credits": "Azanor for Baubles, SlimeKnights for parts of the networking code",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

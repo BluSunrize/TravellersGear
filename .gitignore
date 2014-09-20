@@ -1,0 +1,22 @@
+##gradle
+/.gradle
+/build
+/eclipse
+##ForgeGradle
+/run
+/out
+/asm
+/config
+/crash-reports
+/logs
+/mods
+/resourcepacks
+/saves
+/screenshots
+## eclipse
+/.settings
+/.metadata
+/.classpath
+/.project
+/bin
+/options
