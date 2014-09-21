@@ -1,6 +1,10 @@
 package travellersgear.client;
 
+import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ScreenShotHelper;
 import travellersgear.TravellersGear;
 import travellersgear.common.network.PacketOpenGearGui;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -22,6 +26,10 @@ public class KeyHandler
 	@SubscribeEvent
 	public void playerTick(TickEvent.PlayerTickEvent event)
 	{
+		if(Minecraft.getMinecraft().currentScreen!=null && Keyboard.isKeyDown(Keyboard.KEY_F2))
+			/*Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(*/ScreenShotHelper.saveScreenshot(Minecraft.getMinecraft().mcDataDir, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer());/*);*/
+        
+		
 		if(event.side!=Side.SERVER && event.phase==TickEvent.Phase.START && FMLClientHandler.instance().getClient().inGameHasFocus)
 		{
 			if(openInventory.getIsKeyPressed() && !keyDown[0])

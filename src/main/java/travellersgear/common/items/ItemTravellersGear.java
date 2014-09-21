@@ -131,8 +131,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public void onUnequipped(ItemStack stack, EntityLivingBase living)
 	{
-		System.out.println("Bauble Unequipped ("+stack+") on "+(living.worldObj.isRemote?"Client":"Server")+"World");
-		// TODO Auto-generated method stub
+		//System.out.println("Bauble Unequipped ("+stack+") on "+(living.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
 	@Override

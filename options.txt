@@ -15,7 +15,7 @@ difficulty:0
 fancyGraphics:true
 ao:2
 clouds:true
-resourcePacks:["Sphax PureBDcraft  64x MC17.zip","Sphax Yogscast Complete 64x 1.1.zip"]
+resourcePacks:[]
 lastServer:
 lang:en_US
 chatVisibility:0
