@@ -1,0 +1,46 @@
+# -- Items --
+item.TravellersGear.simpleGear.cloak.name=披风
+item.TravellersGear.simpleGear.belt.name=腰带
+item.TravellersGear.simpleGear.ringGold.name=金指环
+item.TravellersGear.simpleGear.ringSilver.name=银指环
+item.TravellersGear.simpleGear.pauldrons.name=肩铠
+item.TravellersGear.simpleGear.vambraces.name=臂铠
+item.TravellersGear.simpleGear.title.name=头衔卷轴
+# -- Blocks -- 
+tile.TravellersGear.armorstand.name=衣架
+
+#-- GUI --
+TG.guitext.equipment=装备
+TG.guitext.blocks=方块
+TG.guitext.visDiscount=灵气减免
+
+TG.guitext.rightclickToOpen=右击打开
+TG.guitext.linkInChat=Ctrl+右击将此物品复制到聊天窗口
+
+TG.guitext.showHelmet=显示头盔
+TG.guitext.showChest=显示胸甲
+TG.guitext.showLegs=显示护腿
+TG.guitext.showBoots=显示靴子
+TG.guitext.showPlate=显示底板
+TG.guitext.renderBaubTG=显示饰品&装备界面
+TG.guitext.renderBaub=仅显示饰品界面
+TG.guitext.renderTG=仅显示装备界面
+TG.guitext.renderNoBaubTG=不显示饰品&装备界面
+TG.guitext.style=界面样式 >
+
+TG.chattext.showItem=%1$s 显示物品: %2$s
+
+itemGroup.travellersgear=旅行者的装备栏
+
+TG.keybind.openInv=打开旅行者的装备栏
+
+#-- Title --
+TG.personaltitle.treepuncher=职业伐木工
+TG.personaltitle.titan=非凡矿工
+TG.personaltitle.librarian=图书管理员
+TG.personaltitle.bursar=财务主管
+TG.personaltitle.archchancellor=魔法师
+TG.personaltitle.justicar=仲裁者
+TG.personaltitle.explorer=勇往直前的探险家
+TG.personaltitle.defender=正义的伙伴
+TG.personaltitle.seeker=寻宝人
