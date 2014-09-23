@@ -28,11 +28,16 @@ public class SlotRestricted extends Slot
 			return false;
 		switch(this.type)
 		{
+		case VANILLA_HELM:
+		case VANILLA_CHEST:
+		case VANILLA_LEGS:
+		case VANILLA_BOOTS:
+			return stack.getItem().isValidArmor(stack, this.type.ordinal(), player);
 		case TRAVEL_CLOAK:
 		case TRAVEL_SHOULDER:
 		case TRAVEL_VAMBRACE:
 		case TRAVEL_TITLE:
-			return ModCompatability.getTravellersGearSlot(stack) == this.type.ordinal();
+			return ModCompatability.getTravellersGearSlot(stack) == this.type.ordinal()-4;
 		case BAUBLE_BELT:
 			return stack.getItem() instanceof IBauble && ((IBauble)stack.getItem()).getBaubleType(stack) == BaubleType.BELT && ((IBauble)stack.getItem()).canEquip(stack, this.player);
 		case BAUBLE_NECK:
@@ -84,6 +89,10 @@ public class SlotRestricted extends Slot
 
 	public enum SlotType
 	{
+		VANILLA_HELM,
+		VANILLA_CHEST,
+		VANILLA_LEGS,
+		VANILLA_BOOTS,
 		TRAVEL_CLOAK,
 		TRAVEL_SHOULDER,
 		TRAVEL_VAMBRACE,

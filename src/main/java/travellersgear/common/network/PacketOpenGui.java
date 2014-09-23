@@ -4,22 +4,25 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import travellersgear.TravellersGear;
 
-public class PacketOpenGearGui extends AbstractPacket
+public class PacketOpenGui extends AbstractPacket
 {
 	int dim;
 	int playerid;
+	int guiid;
 
-	public PacketOpenGearGui(){}
+	public PacketOpenGui(){}
 
-	public PacketOpenGearGui(EntityPlayer player)
+	public PacketOpenGui(EntityPlayer player, int guiid)
 	{
 		this.dim = player.worldObj.provider.dimensionId;
 		this.playerid = player.getEntityId();
+		this.guiid = guiid;
 	}
 
 	@Override
@@ -27,6 +30,7 @@ public class PacketOpenGearGui extends AbstractPacket
 	{
 		this.dim = buffer.readInt();
 		this.playerid = buffer.readInt();
+		this.guiid = buffer.readInt();
 	}
 
 	@Override
@@ -34,11 +38,13 @@ public class PacketOpenGearGui extends AbstractPacket
 	{
 		buffer.writeInt(this.dim);
 		buffer.writeInt(this.playerid);
+		buffer.writeInt(this.guiid);
 	}
 
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
+		player.openGui(TravellersGear.instance, guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
 	}
 
 	@Override
@@ -52,7 +58,8 @@ public class PacketOpenGearGui extends AbstractPacket
 			return;
 		EntityPlayer player = (EntityPlayer) ent;
 		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
-		player.openGui(TravellersGear.instance, 0, world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
+		TravellersGear.instance.packetPipeline.sendTo(new PacketOpenGui(player,guiid), (EntityPlayerMP) player);
+		player.openGui(TravellersGear.instance, guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
 	}
 
 }

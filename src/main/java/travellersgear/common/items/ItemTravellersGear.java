@@ -3,6 +3,8 @@ package travellersgear.common.items;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,7 +34,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	public ItemTravellersGear()
 	{
 		this.setHasSubtypes(true);
-		this.setCreativeTab(CreativeTabs.tabCombat);
+		this.setCreativeTab(TravellersGear.creativeTab);
 		this.setMaxStackSize(1);
 	}
 
@@ -49,6 +51,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 		return this.icons[meta];
 	}
 	@Override
+    @SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list)
 	{
 		for(int i=0;i<subNames.length;i++)
@@ -67,6 +70,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
 		if( !subNames[stack.getItemDamage()].startsWith("cloak") )
@@ -74,6 +78,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 		return "travellersgear:textures/models/cloak.png";
 	}
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack stack, int armorSlot)
 	{
 		if( !subNames[stack.getItemDamage()].startsWith("cloak") )

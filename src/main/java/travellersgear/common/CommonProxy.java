@@ -5,10 +5,16 @@ import net.minecraft.world.World;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.inventory.ContainerArmorStand;
 import travellersgear.common.inventory.ContainerTravellersInv;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler
 {
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		
+	}
+	
 	public void init()
 	{
 

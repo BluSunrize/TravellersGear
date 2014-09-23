@@ -2,12 +2,14 @@ package travellersgear.common.util;
 
 import java.lang.reflect.Method;
 
-import travellersgear.api.ITravellersGear;
-import travellersgear.client.ClientProxy;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+import travellersgear.api.ITravellersGear;
+import travellersgear.client.ClientProxy;
 
 public class Utils
 {
@@ -64,6 +66,17 @@ public class Utils
 			}
 	}
 
+	public static Slot getSlotAtPosition(GuiContainer gui, int x, int y)
+	{
+		for (int k = 0; k < gui.inventorySlots.inventorySlots.size(); ++k)
+		{
+			Slot slot = (Slot)gui.inventorySlots.inventorySlots.get(k);
+			if(x >= slot.xDisplayPosition - 1 && x < slot.xDisplayPosition+16 + 1 && y >= slot.yDisplayPosition - 1 && y < slot.yDisplayPosition+16 + 1)
+				return slot;
+		}
+		return null;
+	}
+	
 	public static boolean compareToOreName(ItemStack item, String oreName)
 	{
 		for(int oid : OreDictionary.getOreIDs(item))

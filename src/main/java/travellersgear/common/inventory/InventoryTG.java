@@ -97,7 +97,6 @@ public class InventoryTG implements IInventory
 			Utils.equipTravGear(player, stack);
 
 		this.container.onCraftMatrixChanged(this);
-		//this.onInventoryChanged();
 	}
 
 	@Override

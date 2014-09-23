@@ -11,8 +11,11 @@ tile.TravellersGear.armorstand.name=Armor Stand
 
 #-- GUI --
 TG.guitext.equipment=Equipment
-TG.guitext.blocks=Blocks
+TG.guitext.lvl=Lvl
 TG.guitext.visDiscount=Vis Discount
+
+TG.guitext.preset=Presets
+TG.guitext.texture=Texture
 
 TG.guitext.rightclickToOpen=Rightclick to Open
 TG.guitext.linkInChat=Ctrl+Rightclick to link this in chat

@@ -32,7 +32,7 @@ public class GuiButtonGear extends GuiButton
 			this.drawTexturedModelRectFromIcon(xPosition,yPosition, Items.book.getIconFromDamage(0), this.width,this.height);
 			this.mouseDragged(mc, mX, mY);
 			if (this.field_146123_n)
-				this.drawCenteredString(fontrenderer, StatCollector.translateToLocal("TG.guitext.equipment"), this.xPosition + this.width / 2, this.yPosition + this.height/2 - 20, 16777120);
+				this.drawCenteredString(fontrenderer, StatCollector.translateToLocal("TG.guitext.equipment"), this.xPosition+25, this.yPosition - 8, 16777120);
 		}
 	}
 }

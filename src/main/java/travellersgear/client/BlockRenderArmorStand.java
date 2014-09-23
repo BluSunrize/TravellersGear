@@ -26,8 +26,6 @@ public class BlockRenderArmorStand implements ISimpleBlockRenderingHandler
 			TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEntityArmorStand(), 0.0D, 0.0D, 0.0D, 0.0F);
 		}catch(Exception e)
 		{
-			//						e.printStackTrace();
-			//			System.out.println("Yay for critical errors >_>");
 			GL11.glPopMatrix();
 		}
 		GL11.glEnable(32826);

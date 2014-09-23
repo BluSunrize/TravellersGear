@@ -196,7 +196,6 @@ public class ContainerArmorStand extends Container
 			if(iSlot<playerSlots || (iSlot>=playerSlots&&iSlot<playerSlots*2))
 			{
 				int armSlot = iSlot<playerSlots?iSlot : iSlot-playerSlots;
-				//System.out.println("Equip Change: "+armSlot);
 				ItemStack tempAS = ((Slot)this.inventorySlots.get(playerSlots+armSlot)).getStack();
 				ItemStack tempP = ((Slot)this.inventorySlots.get(0+armSlot)).getStack();
 				((Slot)this.inventorySlots.get(playerSlots+armSlot)).putStack(tempP);
@@ -285,73 +284,6 @@ public class ContainerArmorStand extends Container
 				}
 
 			}
-			//			else if(TravellersGear.BAUBLES && slotObject instanceof SlotRestricted && ((SlotRestricted)slotObject).isBaubleSlot())
-			//			{
-			//				int baubSlot = iSlot<playerSlots?iSlot : iSlot-playerSlots;
-			//				ItemStack tempBS = ((Slot)this.inventorySlots.get(playerSlots+baubSlot)).getStack();
-			//				ItemStack tempP = ((Slot)this.inventorySlots.get(0+baubSlot)).getStack();
-			//				((Slot)this.inventorySlots.get(playerSlots+baubSlot)).putStack(tempP);
-			//				((Slot)this.inventorySlots.get(0+baubSlot)).putStack(tempBS);
-			//			}
-			//			else
-			//				if(stackItem instanceof ItemArmor)
-			//				{
-			//					ItemArmor armorItem = (ItemArmor)stackItem;
-			//					int armorType = armorItem.armorType;
-			//
-			//					if(player.getCurrentArmor(3-armorType)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, 0+armorType, 0+armorType+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(armorType)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, 8+armorType, 8+armorType+1, true))
-			//							return null;
-			//					}
-			//					else if(!mergeItemStack(stackInSlot, 16, 52, true))
-			//						return null;
-			//				}
-			//				else if(TravellersGear.BAUBLES && stackItem instanceof IBauble)
-			//				{
-			//					IBauble baubleItem = (IBauble)stackItem;
-			//					BaubleType baubleType = baubleItem.getBaubleType(stack);
-			//					int min= baubleType==BaubleType.AMULET?0 :baubleType==BaubleType.RING?1 :3;
-			//					int max= baubleType==BaubleType.AMULET?1 :baubleType==BaubleType.RING?3 :4;
-			//					if(iSlot>7 && (invBaubles.getStackInSlot(min)==null||invBaubles.getStackInSlot(max-1)==null))
-			//					{
-			//						if(!mergeItemStack(stackInSlot, 4+min, 4+max, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(4+min)==null||tileEntity.getStackInSlot(4+max-1)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, 12+min, 12+max, true))
-			//							return null;
-			//					}
-			//					else if(!mergeItemStack(stackInSlot, 16, 52, true))
-			//						return null;
-			//				}
-			//				else
-			//				{
-			//					for(int arm=0;arm<4;arm++)
-			//					{
-			//						if(stackItem.isValidArmor(stack, arm, player))
-			//						{
-			//							if(player.getCurrentArmor(3-arm)==null)
-			//							{
-			//								if(!mergeItemStack(stackInSlot, 0+arm, 0+arm+1, true))
-			//									return null;
-			//							}
-			//							else if(tileEntity.getStackInSlot(arm)==null)
-			//							{
-			//								if(!mergeItemStack(stackInSlot, 8+arm, 8+arm+1, true))
-			//									return null;
-			//							}
-			//							else if(!mergeItemStack(stackInSlot, 16, 52, true))
-			//								return null;
-			//						}
-			//					}
-			//				}
 			if (stackInSlot.stackSize == 0) {
 				slotObject.putStack(null);
 			} else {

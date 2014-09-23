@@ -23,18 +23,10 @@ public class ModCompatability
 		IInventory armorInv = null;
 		if(TravellersGear.TCON)
 			try{
-				//				if(!player.worldObj.isRemote)
-				//				{
 				if(clazz_TPlayerStats==null)
 					clazz_TPlayerStats = Class.forName("tconstruct.armor.player.TPlayerStats");
 				Object tPStatsInstance = clazz_TPlayerStats.getMethod("get", EntityPlayer.class).invoke(null, player);
 				armorInv = (IInventory) clazz_TPlayerStats.getField("armor").get(tPStatsInstance);
-				//				}
-				//				else
-				//				{
-				//					armorInv = (IInventory) Class.forName("tconstruct.client.TProxyClient").getField("armorExtended").get(null);
-				//
-				//				}
 			}catch(Exception e)
 			{
 				e.printStackTrace();

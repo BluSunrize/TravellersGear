@@ -28,7 +28,9 @@ public class TGEventHandler
 	public void onLogin(PlayerLoggedInEvent event)
 	{
 		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(event.player));
+		TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv(event.player)!=null;
+		TravellersGear.MARI &= ModCompatability.getMariInventory(event.player)!=null;
+		TravellersGear.TCON &= ModCompatability.getTConArmorInv(event.player)!=null;
 	}
-
 
 }

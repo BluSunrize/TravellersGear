@@ -8,7 +8,7 @@
   "url": "http://minecraft.curseforge.com/mc-mods/224440-travellers-gear",
   "updateUrl": "",
   "authorList": ["BluSunrize"],
-  "credits": "Azanor for Baubles, SlimeKnights for parts of the networking code, joshie for Mariculture",
+  "credits": "Azanor for Baubles, SlimeKnights for parts of the networking code, joshie for Mariculture, #kihira on Esper.net for coding advise and general shenanigans",
   "logoFile": "assets/travellersgear/logo.png",
   "screenshots": [],
   "dependencies": []

@@ -114,7 +114,7 @@ public class TGPacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abst
     
     public void registerPackets()
     {
-        registerPacket(PacketOpenGearGui.class);
+        registerPacket(PacketOpenGui.class);
         registerPacket(PacketNBTSync.class);
         registerPacket(PacketRequestNBTSync.class);
         registerPacket(PacketTileUpdate.class);

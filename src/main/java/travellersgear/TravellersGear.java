@@ -9,7 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -25,6 +24,7 @@ import travellersgear.common.items.ItemTravellersGear;
 import travellersgear.common.network.TGPacketPipeline;
 import travellersgear.common.util.CloakColourizationRecipe;
 import travellersgear.common.util.ComparableItemStack;
+import travellersgear.common.util.TGCreativeTab;
 import travellersgear.common.util.TGEventHandler;
 import travellersgear.common.util.Utils;
 
@@ -47,7 +47,7 @@ public class TravellersGear
 {
 	public static final String MODID = "TravellersGear";
 	public static final String MODNAME = "Traveller's Gear";
-	public static final String VERSION = "1.1";
+	public static final String VERSION = "1.4";
 	public static final Logger logger = LogManager.getLogger(MODID);
 	public final TGPacketPipeline packetPipeline = new TGPacketPipeline();
 
@@ -60,8 +60,8 @@ public class TravellersGear
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		FMLForgePlugin.RUNTIME_DEOBF=true;
 		initItems();
+		proxy.preInit(event);
 	}
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
@@ -129,8 +129,9 @@ public class TravellersGear
 			}
 		}
 	}
+	
 	public static HashMap<ComparableItemStack, Object[]> additionalTravelersGear = new HashMap();
-
+	
 	public static boolean BAUBLES;
 	public static boolean MARI;
 	public static boolean TCON;
@@ -159,16 +160,5 @@ public class TravellersGear
 		additionalTravelersGear.put(new ComparableItemStack(stack), data);
 	}
 
-	public static CreativeTabs creativeTab = new CreativeTabs("travellersgear")
-	{
-		@Override
-		public Item getTabIconItem()
-		{return null;}
-
-		@Override
-		public ItemStack getIconItemStack()
-		{
-			return new ItemStack(simpleGear,1,6);
-		}
-	};
+	public static CreativeTabs creativeTab = new TGCreativeTab();
 }

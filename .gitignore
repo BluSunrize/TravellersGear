@@ -16,4 +16,11 @@
 /.project
 /copy
 /git
-/options.txt
+options.txt
+eula.txt
+server.properties
+usercache.json
+whitelist.json
+ops.json
+banned-ips.json
+banned-players.json
