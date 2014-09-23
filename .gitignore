@@ -16,6 +16,7 @@
 /.project
 /copy
 /git
+/world
 options.txt
 eula.txt
 server.properties
