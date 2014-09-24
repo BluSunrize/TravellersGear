@@ -11,6 +11,7 @@ import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.client.GuiButtonMoveableElement;
+import travellersgear.common.CommonProxy;
 import travellersgear.common.network.PacketNBTSync;
 import travellersgear.common.util.ModCompatability;
 import baubles.api.BaubleType;
@@ -32,7 +33,7 @@ public class ContainerTravellersInv extends Container
 	int[] baubles={-1,-1,-1,-1};
 	int[] travGear={-1,-1,-1,-1};
 	int[] mari={-1,-1,-1};
-	int[] tcon={-1,-1};
+	int[] tcon={-1,-1, -1,-1,-1};
 
 	public ContainerTravellersInv(InventoryPlayer invPlayer)
 	{
@@ -50,7 +51,7 @@ public class ContainerTravellersInv extends Container
 		vanillaArmor[2] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-2,  6, 62, player, SlotRestricted.SlotType.VANILLA_LEGS));
 		vanillaArmor[3] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-3,  6, 80, player, SlotRestricted.SlotType.VANILLA_BOOTS));
 		nonInventorySlots=0+(vanillaArmor[0]>=0?1:0)+(vanillaArmor[1]>=0?1:0)+(vanillaArmor[2]>=0?1:0)+(vanillaArmor[3]>=0?1:0);
-		
+
 		travGear[0]=addSlot(new SlotRestricted(this.invTG, 0, 42,  8, player, SlotRestricted.SlotType.TRAVEL_CLOAK));
 		travGear[1]=addSlot(new SlotRestricted(this.invTG, 1, 78, 26, player, SlotRestricted.SlotType.TRAVEL_SHOULDER));
 		travGear[2]=addSlot(new SlotRestricted(this.invTG, 2, 78, 62, player, SlotRestricted.SlotType.TRAVEL_VAMBRACE));
@@ -80,9 +81,12 @@ public class ContainerTravellersInv extends Container
 			this.invTConArmor = ModCompatability.getTConArmorInv(player);
 			tcon[0]=addSlot(new SlotRestricted(this.invTConArmor, 1, 78, 98, player, SlotRestricted.SlotType.TINKERS_GLOVE));
 			tcon[1]=addSlot(new SlotRestricted(this.invTConArmor, 2, 78, 8, player, SlotRestricted.SlotType.TINKERS_BAG));
-			nonInventorySlots+=(tcon[0]>=0?1:0)+(tcon[1]>=0?1:0);
+			tcon[2]=addSlot(new SlotRestricted(this.invTConArmor, 4, 191, 31, player, SlotRestricted.SlotType.TINKERS_HEART_R));
+			tcon[3]=addSlot(new SlotRestricted(this.invTConArmor, 5, 191, 49, player, SlotRestricted.SlotType.TINKERS_HEART_Y));
+			tcon[4]=addSlot(new SlotRestricted(this.invTConArmor, 6, 191, 67, player, SlotRestricted.SlotType.TINKERS_HEART_G));
+			nonInventorySlots+=(tcon[0]>=0?1:0)+(tcon[1]>=0?1:0)+(tcon[2]>=0?1:0)+(tcon[3]>=0?1:0)+(tcon[4]>=0?1:0);
 		}
-
+		System.out.println(nonInventorySlots);
 		//PLAYER INVENTORY
 		int i;
 		int j;
@@ -122,8 +126,12 @@ public class ContainerTravellersInv extends Container
 		{
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
-			if (par2 <= nonInventorySlots)
+			if (par2 < nonInventorySlots)
 			{
+				System.out.println("Merge from "+par2);
+				System.out.println(nonInventorySlots);
+				System.out.println(nonInventorySlots+"+"+playerInventorySlots+"+"+playerHotbarSlots+"="+(nonInventorySlots+playerInventorySlots+playerHotbarSlots));
+
 				if (!mergeItemStack(itemstack1, nonInventorySlots, nonInventorySlots+playerInventorySlots+playerHotbarSlots, false))
 					return null;
 				slot.onSlotChange(itemstack1, itemstack);
@@ -183,6 +191,21 @@ public class ContainerTravellersInv extends Container
 				if (!mergeItemStack(itemstack1, tcon[1], tcon[1]+1, false))
 					return null;
 			}
+			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 4))
+			{
+				if (!mergeItemStack(itemstack1, tcon[2], tcon[2]+1, false))
+					return null;
+			}
+			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 5))
+			{
+				if (!mergeItemStack(itemstack1, tcon[3], tcon[3]+1, false))
+					return null;
+			}
+			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 6))
+			{
+				if (!mergeItemStack(itemstack1, tcon[4], tcon[4]+1, false))
+					return null;
+			}
 			else if((par2 >= nonInventorySlots) && (par2 < nonInventorySlots+playerInventorySlots))
 			{
 				if (!mergeItemStack(itemstack1, nonInventorySlots+playerInventorySlots, nonInventorySlots+playerInventorySlots+playerHotbarSlots, false))
@@ -217,6 +240,103 @@ public class ContainerTravellersInv extends Container
 		ModCompatability.baubleInvBlockEvents(invBaubles, true);
 		this.invTG.allowEvents = false;
 		super.putStacksInSlots(stacks);
+	}
+
+	@Override
+	protected boolean mergeItemStack(ItemStack stack, int start, int end, boolean inverse)
+	{
+		boolean flag1 = false;
+		int k = start;
+
+		if (inverse)
+		{
+			k = end - 1;
+		}
+
+		Slot slot;
+		ItemStack itemstack1;
+
+		if (stack.isStackable())
+		{
+			while (stack.stackSize > 0 && (!inverse && k < end || inverse && k >= start))
+			{
+				slot = (Slot)this.inventorySlots.get(k);
+				if(slot.isItemValid(stack))
+				{
+					itemstack1 = slot.getStack();
+
+					if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+					{
+						int l = itemstack1.stackSize + stack.stackSize;
+
+						if (l <= stack.getMaxStackSize())
+						{
+							stack.stackSize = 0;
+							itemstack1.stackSize = l;
+							slot.onSlotChanged();
+							flag1 = true;
+						}
+						else if (itemstack1.stackSize < stack.getMaxStackSize())
+						{
+							stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
+							itemstack1.stackSize = stack.getMaxStackSize();
+							slot.onSlotChanged();
+							flag1 = true;
+						}
+					}
+				}
+
+				if (inverse)
+				{
+					--k;
+				}
+				else
+				{
+					++k;
+				}
+			}
+		}
+
+		if (stack.stackSize > 0)
+		{
+			if (inverse)
+			{
+				k = end - 1;
+			}
+			else
+			{
+				k = start;
+			}
+
+			while (!inverse && k < end || inverse && k >= start)
+			{
+				slot = (Slot)this.inventorySlots.get(k);
+				if(slot.isItemValid(stack))
+				{
+
+					itemstack1 = slot.getStack();
+
+					if (itemstack1 == null)
+					{
+						slot.putStack(stack.copy());
+						slot.onSlotChanged();
+						stack.stackSize = 0;
+						flag1 = true;
+						break;
+					}
+				}
+				if (inverse)
+				{
+					--k;
+				}
+				else
+				{
+					++k;
+				}
+			}
+		}
+
+		return flag1;
 	}
 
 	protected boolean mergeItemStack(ItemStack par1ItemStack, int par2, int par3, boolean par4, Slot ss)
@@ -297,12 +417,12 @@ public class ContainerTravellersInv extends Container
 
 	int addSlot(Slot slot)
 	{
-		return addSlotToContainer(slot) instanceof SlotNull?-1:slot.slotNumber;
+		return addSlotToContainer(slot)/* instanceof SlotNull?-1:slot*/.slotNumber;
 	}
 	@Override
 	protected Slot addSlotToContainer(Slot slot)
 	{
-		if(ClientProxy.moveableInvElements!=null && ClientProxy.moveableInvElements.size()>this.inventorySlots.size())
+		if(player.worldObj.isRemote && ClientProxy.moveableInvElements!=null && ClientProxy.moveableInvElements.size()>this.inventorySlots.size())
 		{
 			GuiButtonMoveableElement bme = ClientProxy.moveableInvElements.get(this.inventorySlots.size());
 			if(bme!=null)
@@ -317,7 +437,18 @@ public class ContainerTravellersInv extends Container
 				slot.xDisplayPosition = bme.elementX+1;
 				slot.yDisplayPosition = bme.elementY+1;
 			}
+		}else if(CommonProxy.hiddenSlots.containsKey(player.getCommandSenderName()))
+		{
+			boolean[] hidden = CommonProxy.hiddenSlots.get(player.getCommandSenderName());
+			if(hidden!=null && hidden.length>this.inventorySlots.size() && hidden[this.inventorySlots.size()])
+			{
+				int indx = slot.getSlotIndex();
+				int x = slot.xDisplayPosition;
+				int y = slot.yDisplayPosition;
+				slot = new SlotNull(indx,x,y);
+			}
 		}
+		//System.out.print(this.inventorySlots.size()+":"+(slot instanceof SlotNull)+", ");
 		slot.slotNumber = this.inventorySlots.size();
 		this.inventorySlots.add(slot);
 		this.inventoryItemStacks.add((Object)null);

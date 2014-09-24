@@ -38,6 +38,7 @@ import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.inventory.SlotRestricted;
 import travellersgear.common.network.PacketOpenGui;
 import travellersgear.common.network.PacketRequestNBTSync;
+import travellersgear.common.network.PacketSlotSync;
 import travellersgear.common.util.ModCompatability;
 import travellersgear.common.util.TGClientCommand;
 import travellersgear.common.util.Utils;
@@ -58,11 +59,16 @@ public class ClientProxy extends CommonProxy
 	public Configuration invConfig;
 	public static ResourceLocation[] invTextures = {new ResourceLocation("travellersgear","textures/gui/inventory_book.png"),new ResourceLocation("travellersgear","textures/gui/inventory_digital.png"),new ResourceLocation("travellersgear","textures/gui/inventory_epic.png")};
 	public static ResourceLocation invTexture = invTextures[0];
+	public static int[] equipmentButtonPos;
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		configDir = event.getModConfigurationDirectory();
-		invConfig = new Configuration(new File(configDir,"travellersgear_inv.cfg"));
+		invConfig = new Configuration(new File(configDir,"TravellersGear_inv.cfg"));
+		Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
+		cfg.load();
+		equipmentButtonPos = cfg.get("Options", "Button Position", new int[]{27,9}, "The position of the Equipment Button in the Inventory").getIntList();
+		cfg.save();
 	}
 
 	@SubscribeEvent
@@ -121,7 +127,7 @@ public class ClientProxy extends CommonProxy
 			int guiTop = (event.gui.height - ySize) / 2;
 			if( !event.gui.mc.thePlayer.getActivePotionEffects().isEmpty() && ModCompatability.isNeiHidden())
 				guiLeft = 160 + (event.gui.width - xSize - 200) / 2;
-			event.buttonList.add(new GuiButtonGear(106, guiLeft + 27, guiTop + 9));
+			event.buttonList.add(new GuiButtonGear(106, guiLeft + equipmentButtonPos[0], guiTop + equipmentButtonPos[1]));
 		}
 	}
 
@@ -146,7 +152,7 @@ public class ClientProxy extends CommonProxy
 				int guiTop = (event.gui.height - ySize) / 2;
 				if( !event.gui.mc.thePlayer.getActivePotionEffects().isEmpty() && ModCompatability.isNeiHidden())
 					guiLeft = 160 + (event.gui.width - xSize - 200) / 2;
-				bList.add(new GuiButtonGear(106, guiLeft + 27, guiTop + 9));
+				bList.add(new GuiButtonGear(106, guiLeft + equipmentButtonPos[0], guiTop + equipmentButtonPos[1]));
 			}
 	}
 
@@ -154,8 +160,13 @@ public class ClientProxy extends CommonProxy
 	public void guiPostAction(GuiScreenEvent.ActionPerformedEvent.Post event)
 	{
 		if(event.gui instanceof GuiInventory && event.button.getClass().equals(GuiButtonGear.class))
-			//			event.gui.mc.thePlayer.openGui(TravellersGear.instance, 2, event.gui.mc.theWorld, (int)event.gui.mc.thePlayer.posX, (int)event.gui.mc.thePlayer.posY, (int)event.gui.mc.thePlayer.posZ);
+		{
+			boolean[] hidden = new boolean[ClientProxy.moveableInvElements.size()];
+			for(int bme=0;bme<hidden.length;bme++)
+				hidden[bme] = ClientProxy.moveableInvElements.get(bme).hideElement;
+			TravellersGear.instance.packetPipeline.sendToServer(new PacketSlotSync(event.gui.mc.thePlayer,hidden));
 			TravellersGear.instance.packetPipeline.sendToServer(new PacketOpenGui(event.gui.mc.thePlayer, 0));
+		}
 	}
 
 	@SubscribeEvent
@@ -298,7 +309,10 @@ public class ClientProxy extends CommonProxy
 		{
 			addElementWithConfig(moveableInvElements, invConfig, slots+0, 18,18, "Tinkers Glove", false, 97,102);
 			addElementWithConfig(moveableInvElements, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 97,12);
-			slots+=2;
+			addElementWithConfig(moveableInvElements, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 190,30).hideElement=true;
+			addElementWithConfig(moveableInvElements, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 190,48).hideElement=true;
+			addElementWithConfig(moveableInvElements, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 190,66).hideElement=true;
+			slots+=5;
 		}
 
 		for (int i = 0; i < 3; ++i)
@@ -343,7 +357,6 @@ public class ClientProxy extends CommonProxy
 			addToList.add(bme);
 		return bme;
 	}
-
 
 	public void writeElementsToConfig(Configuration invConfig)
 	{
@@ -391,7 +404,10 @@ public class ClientProxy extends CommonProxy
 		{
 			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 97,102);
 			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 97,12);
-			slots+=2;
+			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 190,30).hideElement=true;
+			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 190,48).hideElement=true;
+			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 190,66).hideElement=true;
+			slots+=5;
 		}
 
 		for (int i = 0; i < 3; ++i)
@@ -446,9 +462,12 @@ public class ClientProxy extends CommonProxy
 		}
 		if(TravellersGear.TCON)
 		{
-			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 156,82);
+			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 136,82);
 			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 176,22).hideElement=true;
-			slots+=2;
+			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 176,42).hideElement=true;
+			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 176,62).hideElement=true;
+			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 176,82).hideElement=true;
+			slots+=5;
 		}
 
 		for (int i = 0; i < 3; ++i)
@@ -505,7 +524,10 @@ public class ClientProxy extends CommonProxy
 		{
 			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 80,121);
 			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 80,31);
-			slots+=2;
+			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 23,180).hideElement=true;
+			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 44,180).hideElement=true;
+			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 65,180).hideElement=true;
+			slots+=5;
 		}
 
 		for (int i = 0; i < 3; ++i)

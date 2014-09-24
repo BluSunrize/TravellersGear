@@ -53,6 +53,12 @@ public class SlotRestricted extends Slot
 			return ModCompatability.canEquipTConAccessory(stack, 1);
 		case TINKERS_BAG:
 			return ModCompatability.canEquipTConAccessory(stack, 2);
+		case TINKERS_HEART_R:
+			return ModCompatability.canEquipTConAccessory(stack, 4);
+		case TINKERS_HEART_Y:
+			return ModCompatability.canEquipTConAccessory(stack, 5);
+		case TINKERS_HEART_G:
+			return ModCompatability.canEquipTConAccessory(stack, 6);
 		default:
 			return false;
 		}
@@ -104,6 +110,9 @@ public class SlotRestricted extends Slot
 		MARI_BRACELET,
 		MARI_RING,
 		TINKERS_GLOVE,
-		TINKERS_BAG;
+		TINKERS_BAG,
+		TINKERS_HEART_R,
+		TINKERS_HEART_Y,
+		TINKERS_HEART_G;
 	}
 }

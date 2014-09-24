@@ -3,6 +3,7 @@ package travellersgear.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
@@ -12,9 +13,11 @@ public class GuiButtonMoveableElement extends GuiButton
 {
 	public int elementX;
 	public int elementY;
-	boolean dragging = false;
+	static GuiButtonMoveableElement currentDrag;
+	GuiTravellersInvCustomization implementedGui;
 	final boolean hideable;
 	public boolean hideElement = false;
+	int[] moveOffset={0,0};
 
 	public GuiButtonMoveableElement(int id, int x, int y, int w, int h, String name)
 	{
@@ -41,14 +44,17 @@ public class GuiButtonMoveableElement extends GuiButton
 			GL11.glEnable(GL11.GL_BLEND);
 			this.mouseDragged(mc, mX, mY);
 
+			int priCol = (this.implementedGui!=null&&this.implementedGui.multiSelect.contains(this))?0x00ffcc:0xffcc00;
+			int secCol = (this.implementedGui!=null&&this.implementedGui.multiSelect.contains(this))?0x00cc88:0xcc8800;
+
 			FontRenderer fontrenderer = mc.fontRenderer;
 			GL11.glLineWidth(2);
 			Tessellator tes = Tessellator.instance;
 			tes.startDrawing(2);
-			tes.setColorOpaque_I(this.hideElement?0x664400:0xffcc00);
+			tes.setColorOpaque_I(this.hideElement?0x664400:priCol);
 			tes.addVertex(xPosition+.5, yPosition+.5, 0);
 			tes.addVertex(xPosition+width-.5, yPosition+.5, 0);
-			tes.setColorOpaque_I(this.hideElement?0x664400:0xcc8800);
+			tes.setColorOpaque_I(this.hideElement?0x664400:secCol);
 			tes.addVertex(xPosition+width-.5, yPosition+height-.5, 0);
 			tes.addVertex(xPosition+.5, yPosition+height-.5, 0);
 			tes.draw();
@@ -90,31 +96,63 @@ public class GuiButtonMoveableElement extends GuiButton
 		{
 			if(this.hideable && mX>=xPosition+width-6 && mX<=xPosition+width-1 && mY>=yPosition+1 && mY<=yPosition+6)
 				this.hideElement = !this.hideElement;
-			else
-				this.dragging = true;
+			else if(currentDrag==null)
+			{
+				currentDrag = this;
+				moveOffset = new int[]{mX-xPosition , mY-yPosition};
+				if(implementedGui!=null && !implementedGui.multiSelect.isEmpty())
+					for(GuiButtonMoveableElement bme : implementedGui.multiSelect)
+						bme.moveOffset = new int[]{mX-bme.xPosition , mY-bme.yPosition};
+			}
 		}
 		return f;
 	}
 	@Override
 	protected void mouseDragged(Minecraft mc, int mX, int mY)
 	{
-		if(dragging)
+		if(currentDrag==this)
 		{
-			this.xPosition = mX-(width/2);
-			this.yPosition = mY-(height/2);
-			if(mc.currentScreen instanceof GuiTravellersInvCustomization)
+			if(!GuiScreen.isCtrlKeyDown())
+				this.xPosition = mX-this.moveOffset[0];
+			if(!GuiScreen.isShiftKeyDown())
+				this.yPosition = mY-this.moveOffset[1];
+			if(implementedGui!=null)
 			{
-				this.elementX = xPosition-((GuiTravellersInvCustomization)mc.currentScreen).guiLeft;
-				this.elementY = yPosition-((GuiTravellersInvCustomization)mc.currentScreen).guiTop;
+				if(!GuiScreen.isCtrlKeyDown())
+					this.elementX = this.xPosition-this.implementedGui.guiLeft;
+				if(!GuiScreen.isShiftKeyDown())
+					this.elementY = this.yPosition-this.implementedGui.guiTop;
+				if(!implementedGui.multiSelect.isEmpty())
+					for(GuiButtonMoveableElement bme : implementedGui.multiSelect)
+					{
+						if(!GuiScreen.isCtrlKeyDown())
+							bme.xPosition = mX-bme.moveOffset[0];
+						if(!GuiScreen.isShiftKeyDown())
+							bme.yPosition = mY-bme.moveOffset[1];
+						if(bme.implementedGui!=null)
+						{
+							if(!GuiScreen.isCtrlKeyDown())
+								bme.elementX = bme.xPosition-bme.implementedGui.guiLeft;
+							if(!GuiScreen.isShiftKeyDown())
+								bme.elementY = bme.yPosition-bme.implementedGui.guiTop;
+						}
+					}
 			}
 		}
+	}
+
+	public GuiButtonMoveableElement copy()
+	{
+		GuiButtonMoveableElement bme = new GuiButtonMoveableElement(this.id, this.xPosition, this.yPosition, this.width, this.height, this.displayString, this.hideable);
+		bme.elementX = this.elementX;
+		bme.elementY = this.elementY;
+		bme.hideElement = this.hideElement;
+		return bme;
 	}
 
 	@Override
 	public void mouseReleased(int mX, int mY)
 	{
-		dragging = false;
+		currentDrag=null;
 	}
-
-
 }

@@ -1,5 +1,7 @@
 package travellersgear.common;
 
+import java.util.HashMap;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import travellersgear.common.blocks.TileEntityArmorStand;
@@ -10,6 +12,8 @@ import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler
 {
+	public static HashMap<String, boolean[]> hiddenSlots = new HashMap(); 
+	
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		
