@@ -10,9 +10,12 @@ item.TravellersGear.simpleGear.title.name=头衔卷轴
 tile.TravellersGear.armorstand.name=衣架
 
 #-- GUI --
-TG.guitext.equipment=装备
-TG.guitext.blocks=方块
+TG.guitext.equipment=装备界面
+TG.guitext.blocks=方块材质
 TG.guitext.visDiscount=灵气减免
+
+TG.guitext.preset=预置调置
+TG.guitext.texture=材质
 
 TG.guitext.rightclickToOpen=右击打开
 TG.guitext.linkInChat=Ctrl+右击将此物品复制到聊天窗口
@@ -22,11 +25,11 @@ TG.guitext.showChest=显示胸甲
 TG.guitext.showLegs=显示护腿
 TG.guitext.showBoots=显示靴子
 TG.guitext.showPlate=显示底板
-TG.guitext.renderBaubTG=显示饰品&装备界面
-TG.guitext.renderBaub=仅显示饰品界面
-TG.guitext.renderTG=仅显示装备界面
-TG.guitext.renderNoBaubTG=不显示饰品&装备界面
-TG.guitext.style=界面样式 >
+TG.guitext.renderBaubTG=饰品&旅行者的装备
+TG.guitext.renderBaub=仅饰品
+TG.guitext.renderTG=仅旅行者的装备
+TG.guitext.renderNoBaubTG=仅装备
+TG.guitext.style=衣架样式 >
 
 TG.chattext.showItem=%1$s 展示物品: %2$s
 
