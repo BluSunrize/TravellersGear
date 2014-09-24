@@ -1,6 +1,4 @@
 ![Logo](https://raw.githubusercontent.com/BluSunrize/TravellersGear/master/src/main/resources/assets/travellersgear/logo.png)
-
-TravellersGear
 ==============
 
 RPG Inventories! Armorstands! Cross-Mod Interaction!
