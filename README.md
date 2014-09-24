@@ -1,3 +1,5 @@
+![Alt text](/src/main/ resources/assets/travellersgear/logo.png?raw=true)
+
 TravellersGear
 ==============
 
@@ -8,3 +10,5 @@ It's designed to interact with mods that give a similar feel, namely Baubles, Ti
 This mod adds 4 new slots, for cloak, pauldron, vambraces and a title scroll which displays certain honorary titles above the player's head.
 
 The API is designed to allow other modders to acces the extended inventory and add their own custom items. This can also be done in a more "hacky" way via IMC messages. Take a good look at the main TravellersGear class to see how it's done.
+
+http://www.curse.com/mc-mods/minecraft/224440-travellers-gear
