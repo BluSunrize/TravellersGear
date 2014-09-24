@@ -1,4 +1,4 @@
-![Logo](/src/main/ resources/assets/travellersgear/logo.png?raw=true)
+![Logo](https://raw.githubusercontent.com/BluSunrize/TravellersGear/master/src/main/resources/assets/travellersgear/logo.png)
 
 TravellersGear
 ==============
