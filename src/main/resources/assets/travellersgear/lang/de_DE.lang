@@ -1,0 +1,49 @@
+# -- Items --
+item.TravellersGear.simpleGear.cloak.name=Umhang
+item.TravellersGear.simpleGear.belt.name=Gürtel
+item.TravellersGear.simpleGear.ringGold.name=Goldener Ring
+item.TravellersGear.simpleGear.ringSilver.name=Silberner Ring
+item.TravellersGear.simpleGear.pauldrons.name=Schulterpanzer
+item.TravellersGear.simpleGear.vambraces.name=Armschienen
+item.TravellersGear.simpleGear.title.name=Titel Schriftrolle
+# -- Blocks -- 
+tile.TravellersGear.armorstand.name=Rüstungsständer
+
+#-- GUI --
+TG.guitext.equipment=Ausrüstung
+TG.guitext.lvl=Lvl
+TG.guitext.visDiscount=Visreduktion
+
+TG.guitext.preset=Vorlagen
+TG.guitext.texture=Texturen
+
+TG.guitext.rightclickToOpen=Öffnen mit Rechtsklick
+TG.guitext.linkInChat=Strg+Rechtsklick um dies im Chat zu verlinken
+
+TG.guitext.showHelmet=Helm anzeigen
+TG.guitext.showChest=Brustpanzer anzeigen
+TG.guitext.showLegs=Beinpanzer anzeigen
+TG.guitext.showBoots=Stiefel anzeigen
+TG.guitext.showPlate=Bodenplatte anzeigen
+TG.guitext.renderBaubTG=Baubles und Traveller's Gear rendern
+TG.guitext.renderBaub=Baubles rendern
+TG.guitext.renderTG=Traveller's Gear rendern
+TG.guitext.renderNoBaubTG=Weder Baubles noch Traveller's Gear rendern
+TG.guitext.style=Stil >
+
+TG.chattext.showItem=%1$s zeigt Item: %2$s
+
+itemGroup.travellersgear=Traveller's Gear
+
+TG.keybind.openInv=Traveller's Gear Inventar
+
+#-- Title --
+TG.personaltitle.treepuncher=Professioneller Baumprügler
+TG.personaltitle.titan=Titan-Schürfer
+TG.personaltitle.librarian=Der Bibliothekar
+TG.personaltitle.bursar=Der Quästor
+TG.personaltitle.archchancellor=Der Erzkanzler
+TG.personaltitle.justicar=Justikar
+TG.personaltitle.explorer=Schreitender Entdecker
+TG.personaltitle.defender=Rechtschaffender Verteidiger
+TG.personaltitle.seeker=Schatzsucher
