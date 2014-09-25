@@ -17,6 +17,8 @@
 /copy
 /git
 /world
+/armourersWorkshop
+/equipmen-database
 options.txt
 eula.txt
 server.properties
