@@ -30,7 +30,8 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 {
 	public static String[] subNames = {"cloak","belt","ringGold","ringSilver","pauldrons","vambraces", "title"};
 	IIcon[] icons = new IIcon[subNames.length];
-
+	static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker"};
+	
 	public ItemTravellersGear()
 	{
 		this.setHasSubtypes(true);
@@ -47,15 +48,23 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public IIcon getIconFromDamage(int meta)
 	{
-		//		System.out.println("Getting Icon for Damage: "+stack.getItemDamage());
 		return this.icons[meta];
 	}
+	
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list)
 	{
 		for(int i=0;i<subNames.length;i++)
 			list.add(new ItemStack(this,1,i));
+
+		for(String tit : titles)
+		{
+			ItemStack scr = new ItemStack(this,1,6);
+			scr.setTagCompound(new NBTTagCompound());
+			scr.getTagCompound().setString("title", "TG.personaltitle."+tit);
+			list.add(scr);
+		}
 	}
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
@@ -186,11 +195,6 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 		//System.out.println("TrvlGear Unequipped ("+stack+") on "+(player.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
-	//	@Override
-	//	public boolean requiresMultipleRenderPasses()
-	//	{
-	//		return true;
-	//	}
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int pass)
 	{
@@ -201,7 +205,6 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("display");
 			if(tag == null)
 				return 0xffffff;
-			//			System.out.println("gettign colour for cloak");
 			return tag.hasKey("colour")?tag.getInteger("colour") : 0xffffff;
 		}
 	}
@@ -234,6 +237,5 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 			s.getTagCompound().setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
 			return new ItemStack[]{s};
 		}
-		static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker"};
 	}
 }

@@ -90,6 +90,8 @@ public class TravellersGear
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(simpleGear,1,4), "ll ","ill"," i ", 'i',(!OreDictionary.getOres("nuggetIron").isEmpty()?"nuggetIron":"ingotIron"), 'l',Items.leather));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(simpleGear,1,5), " l ","lil"," l ", 'i',(!OreDictionary.getOres("nuggetIron").isEmpty()?"nuggetIron":"ingotIron"), 'l',Items.leather));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(simpleGear,1,6), " l ","pbp"," l ", 'b',Items.enchanted_book, 'p',Items.paper, 'l',"gemLapis"));
+		
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(armorStand), "sfs"," f ","ppp", 'p',"slabWood", 'f',Blocks.fence, 's',"stickWood"));
 
 		OreDictionary.registerOre("baubleRingGold",new ItemStack(simpleGear,1,2));
 		OreDictionary.registerOre("baubleRingSilver",new ItemStack(simpleGear,1,3));

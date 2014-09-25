@@ -1,10 +1,6 @@
 package travellersgear.client;
 
-import org.lwjgl.input.Keyboard;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.ScreenShotHelper;
 import travellersgear.TravellersGear;
 import travellersgear.common.network.PacketOpenGui;
 import travellersgear.common.network.PacketSlotSync;
@@ -18,7 +14,7 @@ public class KeyHandler
 {
 	public static KeyBinding openInventory = new KeyBinding("TG.keybind.openInv", 71, "key.categories.inventory");
 	public boolean[] keyDown = {false};
-	
+
 	public KeyHandler()
 	{
 		ClientRegistry.registerKeyBinding(openInventory);
