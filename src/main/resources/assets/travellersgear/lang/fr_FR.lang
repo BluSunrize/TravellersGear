@@ -1,0 +1,41 @@
+# -- Items --
+item.TravellersGear.simpleGear.cloak.name=Cape
+item.TravellersGear.simpleGear.belt.name=Ceinture
+item.TravellersGear.simpleGear.ringGold.name=Anneau d'Or
+item.TravellersGear.simpleGear.ringSilver.name=Anneau d'Argent
+item.TravellersGear.simpleGear.pauldrons.name=Epaulette
+item.TravellersGear.simpleGear.vambraces.name=Avant-Bras
+item.TravellersGear.simpleGear.title.name=Parchemin à Titre
+# -- Blocks --
+tile.TravellersGear.armorstand.name=Porte-Armure
+#-- GUI --
+TG.guitext.equipment=Equipement
+TG.guitext.lvl=Lvl
+TG.guitext.visDiscount=Réduction de Vis
+TG.guitext.preset=Préréglages
+TG.guitext.texture=Texture
+TG.guitext.rightclickToOpen=Cliquer-droit pour ouvrir
+TG.guitext.linkInChat=Ctrl+Cliquer-droit pour lier dans la discussion
+TG.guitext.showHelmet=Montrer le Casque
+TG.guitext.showChest=Montrer le Plastron
+TG.guitext.showLegs=Montrer les Jambières
+TG.guitext.showBoots=Montrer les Bottes
+TG.guitext.showPlate=Montrer le Plateau
+TG.guitext.renderBaubTG=Montrer Babioles and Equipement du Voyageur
+TG.guitext.renderBaub=Montrer Babioles
+TG.guitext.renderTG=Montrer Equipement du Voyageur
+TG.guitext.renderNoBaubTG=Ne pas montrer Babioles and Equipement du Voyageur
+TG.guitext.style=Style >
+TG.chattext.showItem=%1$s montre l'Objet: %2$s
+itemGroup.travellersgear=Traveller's Gear
+TG.keybind.openInv=Inventaire Traveller's Gear
+#-- Title --
+TG.personaltitle.treepuncher=Bucheron Professionnel
+TG.personaltitle.titan=Prospecteur de Titan
+TG.personaltitle.librarian=Le Bibliothécaire
+TG.personaltitle.bursar=Trésorier
+TG.personaltitle.archchancellor=L'Archancelier
+TG.personaltitle.justicar=Justicard
+TG.personaltitle.explorer=Explorateur Motivé
+TG.personaltitle.defender=Défenseur Vertueux
+TG.personaltitle.seeker=Chercheur de Trésor
