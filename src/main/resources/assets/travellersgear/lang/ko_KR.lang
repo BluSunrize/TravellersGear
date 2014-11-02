@@ -1,0 +1,49 @@
+# -- Items --
+item.TravellersGear.simpleGear.cloak.name=망토
+item.TravellersGear.simpleGear.belt.name=허리띠
+item.TravellersGear.simpleGear.ringGold.name=금반지
+item.TravellersGear.simpleGear.ringSilver.name=은반지
+item.TravellersGear.simpleGear.pauldrons.name=견갑
+item.TravellersGear.simpleGear.vambraces.name=완갑
+item.TravellersGear.simpleGear.title.name=칭호 양피지
+# -- Blocks -- 
+tile.TravellersGear.armorstand.name=갑옷 거치대
+
+#-- GUI --
+TG.guitext.equipment=장비
+TG.guitext.lvl=레벨
+TG.guitext.visDiscount=비스 할인
+
+TG.guitext.preset=결정
+TG.guitext.texture=택스쳐
+
+TG.guitext.rightclickToOpen=우클릭시 열림
+TG.guitext.linkInChat=Ctrl+우클릭시 채팅에 링크
+
+TG.guitext.showHelmet=눈 핼맷
+TG.guitext.showChest=눈 갑옷
+TG.guitext.showLegs=눈 레깅스
+TG.guitext.showBoots=눈 부츠
+TG.guitext.showPlate=눈 바닥
+TG.guitext.renderBaubTG=Traveller's Gear에 버블즈를 렌더링
+TG.guitext.renderBaub=버블즈 렌더링
+TG.guitext.renderTG=Traveller's Gear 렌더링
+TG.guitext.renderNoBaubTG=버블즈나 Traveller's Gear를 렌더링 하지않음
+TG.guitext.style=스타일 >
+
+TG.chattext.showItem=%1$s 아이템보기: %2$s
+
+itemGroup.travellersgear=트레블러즈 기어[Traveller's Gear]
+
+TG.keybind.openInv=트레블러즈 인벤토리
+
+#-- Title --
+TG.personaltitle.treepuncher=손으로 나무를 캐는
+TG.personaltitle.titan=지혜로운 탐사자
+TG.personaltitle.librarian=사서
+TG.personaltitle.bursar=회계담당
+TG.personaltitle.archchancellor=아치챈설러
+TG.personaltitle.justicar=판결
+TG.personaltitle.explorer=달리는 모험가
+TG.personaltitle.defender=수호자
+TG.personaltitle.seeker=추구하는자
