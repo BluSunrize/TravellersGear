@@ -195,20 +195,15 @@ public class GuiTravellersInv extends GuiContainer
 		{
 			mX -= guiLeft;
 			mY -= guiTop;
-			this.mc.getTextureManager().bindTexture(ClientProxy.invTexture);
 			Collection col = this.player.getActivePotionEffects();
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			int k = 18;
 
-			int j=-16;
-			int i=-18;
-			this.drawTexturedModalRect(i, j, 0,197, 100,19);
+			int j=drawPotionEffects.elementY;
+			int i=drawPotionEffects.elementX;
 			j=0;
-			for(int rep=0;rep<col.size();rep++)
-				this.drawTexturedModalRect(i, j+rep*k, 0,216, 18,18);
-			this.drawTexturedModalRect(i, j+col.size()*k, 0,234, 18,9);
 			Iterator iterator = col.iterator();
 			List<String> textList = new ArrayList();
 			while(iterator.hasNext())
@@ -246,6 +241,7 @@ public class GuiTravellersInv extends GuiContainer
 					String s = Potion.getDurationString(potioneffect);
 					textList.add(s);
 					this.drawHoveringText(textList, mX, mY, this.fontRendererObj);
+					GL11.glColor3f(1, 1, 1);
 				}
 				j+=k;
 			}
@@ -266,6 +262,7 @@ public class GuiTravellersInv extends GuiContainer
 
 
 		/**TEXT */
+        RenderHelper.disableStandardItemLighting();
 		//NAME
 		if(!drawName.hideElement)
 			fontRendererObj.drawString(this.player.getCommandSenderName(), drawName.elementX+(drawName.width/2)-fontRendererObj.getStringWidth(this.player.getCommandSenderName())/2, drawName.elementY, 0x777777);

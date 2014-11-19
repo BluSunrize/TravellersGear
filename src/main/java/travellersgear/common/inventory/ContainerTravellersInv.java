@@ -128,10 +128,6 @@ public class ContainerTravellersInv extends Container
 			itemstack = itemstack1.copy();
 			if (par2 < nonInventorySlots)
 			{
-				System.out.println("Merge from "+par2);
-				System.out.println(nonInventorySlots);
-				System.out.println(nonInventorySlots+"+"+playerInventorySlots+"+"+playerHotbarSlots+"="+(nonInventorySlots+playerInventorySlots+playerHotbarSlots));
-
 				if (!mergeItemStack(itemstack1, nonInventorySlots, nonInventorySlots+playerInventorySlots+playerHotbarSlots, false))
 					return null;
 				slot.onSlotChange(itemstack1, itemstack);

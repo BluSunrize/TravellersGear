@@ -1,5 +1,7 @@
 package travellersgear.api;
 
+import java.lang.reflect.Method;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +17,32 @@ public class TravellersGearAPI
 		if(!player.getEntityData().hasKey("TravellersRPG"))
 			player.getEntityData().setTag("TravellersRPG", new NBTTagCompound());
 		return player.getEntityData().getCompoundTag("TravellersRPG");
+	}
+
+	static Method m_isStackPseudoTravellersGear=null;
+	/**This method returns whether the given stack is an item valid for Traveller's Gear slots.
+	 * It will prioritize the ITravellersGear API, but will fall back to reflection,
+	 * using the method isStackPseudoTravellersGear in ModCompatability.class, to check whether the item was registered via IMC
+	 */
+	public static boolean isTravellersGear(ItemStack stack)
+	{
+		if(stack==null)
+			return false;
+		if(stack.getItem() instanceof ITravellersGear)
+			return true;
+		try
+		{
+			if(m_isStackPseudoTravellersGear==null)
+			{
+				Class c_ModCompatability = Class.forName("travellersgear.common.util.ModCompatability") ;
+				m_isStackPseudoTravellersGear = c_ModCompatability.getMethod("isStackPseudoTravellersGear", ItemStack.class);
+			}
+			return (Boolean) m_isStackPseudoTravellersGear.invoke(null, stack);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	/*

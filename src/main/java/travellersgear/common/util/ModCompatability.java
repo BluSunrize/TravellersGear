@@ -211,7 +211,13 @@ public class ModCompatability
 		return true;
 	}
 
-
+	public static boolean isStackPseudoTravellersGear(ItemStack stack)
+	{
+		for(ComparableItemStack cis : TravellersGear.additionalTravelersGear.keySet())
+			if(cis.equals(new ComparableItemStack(stack)))
+				return true;
+		return false;
+	}
 	public static Object[] getPseudoTravellersGearData(ItemStack stack)
 	{
 		for(ComparableItemStack cis : TravellersGear.additionalTravelersGear.keySet())

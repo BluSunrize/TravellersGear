@@ -44,7 +44,6 @@ public class GuiDropdownMenu extends GuiButton
 				fontrenderer.drawString(s, xPosition+2, yPosition+12+i*9, 0xffffff);
 			}
 		}
-
 		fontrenderer.drawString( isDropped?"\u25B2":"\u25BC", xPosition+width-7, yPosition+1, 0xffffff);
 
 		if(selectedOption>=0&&selectedOption<options.length)
