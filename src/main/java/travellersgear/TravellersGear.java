@@ -97,6 +97,8 @@ public class TravellersGear
 		OreDictionary.registerOre("baubleRingSilver",new ItemStack(simpleGear,1,3));
 		OreDictionary.registerOre("baubleBeltIron",new ItemStack(simpleGear,1,1));
 		OreDictionary.registerOre("travelgearCloakBase",new ItemStack(simpleGear,1,0));
+		OreDictionary.registerOre("travelgearVambraceBase",new ItemStack(simpleGear,1,5));
+		OreDictionary.registerOre("travelgearShoulderBase",new ItemStack(simpleGear,1,4));
 
 		if(THAUM)
 		{
