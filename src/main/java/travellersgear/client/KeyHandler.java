@@ -1,5 +1,7 @@
 package travellersgear.client;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.client.settings.KeyBinding;
 import travellersgear.TravellersGear;
 import travellersgear.common.network.PacketOpenGui;
@@ -23,7 +25,7 @@ public class KeyHandler
 	@SubscribeEvent
 	public void playerTick(TickEvent.PlayerTickEvent event)
 	{
-		if(event.side!=Side.SERVER && event.phase==TickEvent.Phase.START && FMLClientHandler.instance().getClient().inGameHasFocus)
+		if(Keyboard.isCreated() && event.side!=Side.SERVER && event.phase==TickEvent.Phase.START && FMLClientHandler.instance().getClient().inGameHasFocus)
 		{
 			if(openInventory.getIsKeyPressed() && !keyDown[0])
 			{

@@ -31,7 +31,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	public static String[] subNames = {"cloak","belt","ringGold","ringSilver","pauldrons","vambraces", "title"};
 	IIcon[] icons = new IIcon[subNames.length];
 	static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker"};
-	
+
 	public ItemTravellersGear()
 	{
 		this.setHasSubtypes(true);
@@ -48,9 +48,11 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public IIcon getIconFromDamage(int meta)
 	{
-		return this.icons[meta];
+		if(meta>=0 && meta<icons.length)
+			return this.icons[meta];
+		return icons[0];
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item item, CreativeTabs tab, List list)

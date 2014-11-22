@@ -17,12 +17,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.9"
+version = "1.9.3"
 group= "blusunrize"
 archivesBaseName = "TravellersGear-1.7.10"
 
 minecraft {
     version = "1.7.10-10.13.0.1208"
+	replace '${version}', project.version
     assetDir = "eclipse/assets"
 }
 

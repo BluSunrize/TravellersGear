@@ -1,11 +1,11 @@
 package travellersgear.common.util;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import scala.actors.threadpool.Arrays;
 import travellersgear.TravellersGear;
 import travellersgear.common.network.PacketOpenGui;
 

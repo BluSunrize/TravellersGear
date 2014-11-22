@@ -116,12 +116,13 @@ public class GuiArmorStand extends GuiContainer
 		GL11.glEnable(3042);
 		if(!slotOverlays.isEmpty())
 			for(int slot=0;slot<slotOverlays.size();slot++)
-			{
-				int[] xyuv = slotOverlays.get(slot);
-				this.drawTexturedModalRect(guiLeft+xyuv[0]-1, guiTop+xyuv[1]-1, 184,115, 18,18);
-				if( !((Slot)this.inventorySlots.inventorySlots.get(slot)).getHasStack() )
-					this.drawTexturedModalRect(guiLeft+xyuv[0], guiTop+xyuv[1], xyuv[2],xyuv[3], 16,16);
-			}
+				if(this.inventorySlots.inventorySlots.get(slot) != null)
+				{
+					int[] xyuv = slotOverlays.get(slot);
+					this.drawTexturedModalRect(guiLeft+xyuv[0]-1, guiTop+xyuv[1]-1, 184,115, 18,18);
+					if( !((Slot)this.inventorySlots.inventorySlots.get(slot)).getHasStack() )
+						this.drawTexturedModalRect(guiLeft+xyuv[0], guiTop+xyuv[1], xyuv[2],xyuv[3], 16,16);
+				}
 
 		GuiInventory.func_147046_a(x + 48, y + 85, 30, (float)(x + 51) - mouseX, (float)(y + 75 - 50) - mouseY, this.mc.thePlayer);
 
@@ -220,8 +221,8 @@ public class GuiArmorStand extends GuiContainer
 			}
 		}
 		this.drawCenteredString(fontRendererObj, StatCollector.translateToLocal("TG.guitext.style"), 147, 98, 0xffffff);
-		
-		
+
+
 		if(!l.isEmpty())
 		{
 			this.drawHoveringText(l, mouseX-x, mouseY-y, this.fontRendererObj);
