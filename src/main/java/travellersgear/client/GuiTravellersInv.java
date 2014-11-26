@@ -131,14 +131,6 @@ public class GuiTravellersInv extends GuiContainer
 
 			}
 
-		//		if(!slotOverlays.isEmpty())
-		//			for(int slot=0;slot<slotOverlays.size();slot++)
-		//			{
-		//				int[] xyuv = slotOverlays.get(slot);
-		//				this.drawTexturedModalRect(guiLeft+xyuv[0]-1, guiTop+xyuv[1]-1, 202,13, 18,18);
-		//				if( !((Slot)this.inventorySlots.inventorySlots.get(slot)).getHasStack() )
-		//					this.drawTexturedModalRect(guiLeft+xyuv[0], guiTop+xyuv[1], xyuv[2],xyuv[3], 16,16);
-		//			}
 		if(!drawPlayer.hideElement)
 		{
 			this.drawTexturedModalRect(drawPlayer.xPosition, drawPlayer.yPosition+drawPlayer.height-9, 202,247, 54,9);
@@ -321,6 +313,7 @@ public class GuiTravellersInv extends GuiContainer
 			fontRendererObj.drawString((int)(ModCompatability.getTCVisDiscount(this.player, "perditio")*100)+"%", (int)Math.floor((drawVisDiscounts.elementX+50)/scale), (int)Math.floor((drawVisDiscounts.elementY+22)/scale), 0x777777);
 			GL11.glScalef(1/scale,1/scale,1/scale);
 		}
+		RenderHelper.enableGUIStandardItemLighting();
 	}
 
 	Slot findSlotForPosition(int x, int y)

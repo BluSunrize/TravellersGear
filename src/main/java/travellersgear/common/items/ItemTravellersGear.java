@@ -3,8 +3,6 @@ package travellersgear.common.items;
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,6 +23,8 @@ import travellersgear.client.ModelCloak;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 {
@@ -71,7 +71,8 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public String getUnlocalizedName(ItemStack stack)
 	{
-		return this.getUnlocalizedName()+"."+subNames[stack.getItemDamage()];
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
+		return this.getUnlocalizedName()+"."+subName;
 	}
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
@@ -84,7 +85,8 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@SideOnly(Side.CLIENT)
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
-		if( !subNames[stack.getItemDamage()].startsWith("cloak") )
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
+		if( !subName.startsWith("cloak") )
 			return null;
 		return "travellersgear:textures/models/cloak.png";
 	}
@@ -92,7 +94,8 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack stack, int armorSlot)
 	{
-		if( !subNames[stack.getItemDamage()].startsWith("cloak") )
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
+		if( !subName.startsWith("cloak") )
 			return null;
 		return new ModelCloak(getColorFromItemStack(stack, 0));
 	}
@@ -100,7 +103,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public int getSlot(ItemStack stack)
 	{
-		String subName = subNames[stack.getItemDamage()];
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
 		if(subName.startsWith("cloak"))
 			return 0;
 		else if(subName.startsWith("pauldrons"))
@@ -127,7 +130,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public BaubleType getBaubleType(ItemStack stack)
 	{
-		String subName = subNames[stack.getItemDamage()];
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
 		if(subName.startsWith("ring"))
 			return BaubleType.RING;
 		else if(subName.startsWith("belt"))
@@ -200,7 +203,8 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int pass)
 	{
-		if( !subNames[stack.getItemDamage()].startsWith("cloak") || !stack.hasTagCompound())
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
+		if( !subName.startsWith("cloak") || !stack.hasTagCompound())
 			return 0xffffff;
 		else
 		{
@@ -212,7 +216,8 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	}
 	public void setColorForItemStack(ItemStack stack, int colour)
 	{
-		if( !subNames[stack.getItemDamage()].startsWith("cloak") )
+		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
+		if( !subName.startsWith("cloak") )
 			return;
 		else
 		{

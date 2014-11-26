@@ -86,7 +86,6 @@ public class ContainerTravellersInv extends Container
 			tcon[4]=addSlot(new SlotRestricted(this.invTConArmor, 6, 191, 67, player, SlotRestricted.SlotType.TINKERS_HEART_G));
 			nonInventorySlots+=(tcon[0]>=0?1:0)+(tcon[1]>=0?1:0)+(tcon[2]>=0?1:0)+(tcon[3]>=0?1:0)+(tcon[4]>=0?1:0);
 		}
-		System.out.println(nonInventorySlots);
 		//PLAYER INVENTORY
 		int i;
 		int j;
@@ -237,7 +236,16 @@ public class ContainerTravellersInv extends Container
 		this.invTG.allowEvents = false;
 		super.putStacksInSlots(stacks);
 	}
-
+	
+	@Override
+	public ItemStack slotClick(int slotNumber, int p_75144_2_, int p_75144_3_, EntityPlayer player)
+	{
+		ItemStack stack =  super.slotClick(slotNumber, p_75144_2_, p_75144_3_, player);
+		if(player.worldObj.isRemote && slotNumber < nonInventorySlots && stack!=null)
+			ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
+		return stack;
+	}
+	
 	@Override
 	protected boolean mergeItemStack(ItemStack stack, int start, int end, boolean inverse)
 	{
@@ -245,34 +253,32 @@ public class ContainerTravellersInv extends Container
 		int k = start;
 
 		if (inverse)
-		{
 			k = end - 1;
-		}
 
 		Slot slot;
 		ItemStack itemstack1;
 
-		if (stack.isStackable())
+		if(stack.isStackable())
 		{
-			while (stack.stackSize > 0 && (!inverse && k < end || inverse && k >= start))
+			while(stack.stackSize > 0 && (!inverse && k < end || inverse && k >= start))
 			{
 				slot = (Slot)this.inventorySlots.get(k);
 				if(slot.isItemValid(stack))
 				{
 					itemstack1 = slot.getStack();
 
-					if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
+					if(itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1))
 					{
 						int l = itemstack1.stackSize + stack.stackSize;
 
-						if (l <= stack.getMaxStackSize())
+						if(l <= stack.getMaxStackSize())
 						{
 							stack.stackSize = 0;
 							itemstack1.stackSize = l;
 							slot.onSlotChanged();
 							flag1 = true;
 						}
-						else if (itemstack1.stackSize < stack.getMaxStackSize())
+						else if(itemstack1.stackSize < stack.getMaxStackSize())
 						{
 							stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
 							itemstack1.stackSize = stack.getMaxStackSize();
@@ -282,37 +288,27 @@ public class ContainerTravellersInv extends Container
 					}
 				}
 
-				if (inverse)
-				{
+				if(inverse)
 					--k;
-				}
 				else
-				{
 					++k;
-				}
 			}
 		}
 
-		if (stack.stackSize > 0)
+		if(stack.stackSize > 0)
 		{
-			if (inverse)
-			{
+			if(inverse)
 				k = end - 1;
-			}
 			else
-			{
 				k = start;
-			}
 
-			while (!inverse && k < end || inverse && k >= start)
+			while(!inverse && k < end || inverse && k >= start)
 			{
 				slot = (Slot)this.inventorySlots.get(k);
 				if(slot.isItemValid(stack))
 				{
-
 					itemstack1 = slot.getStack();
-
-					if (itemstack1 == null)
+					if(itemstack1 == null)
 					{
 						slot.putStack(stack.copy());
 						slot.onSlotChanged();
@@ -321,14 +317,10 @@ public class ContainerTravellersInv extends Container
 						break;
 					}
 				}
-				if (inverse)
-				{
+				if(inverse)
 					--k;
-				}
 				else
-				{
 					++k;
-				}
 			}
 		}
 

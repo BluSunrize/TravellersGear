@@ -14,11 +14,14 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.IResource;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraft.util.Timer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -32,6 +35,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import travellersgear.TravellersGear;
+import travellersgear.api.RenderTravellersGearEvent;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.common.CommonProxy;
 import travellersgear.common.blocks.TileEntityArmorStand;
@@ -49,6 +53,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class ClientProxy extends CommonProxy
 {
@@ -181,16 +186,74 @@ public class ClientProxy extends CommonProxy
 				{
 					if(i==0)
 						event.renderCape = false;
+					RenderTravellersGearEvent renderEvent = new RenderTravellersGearEvent(event.entityPlayer, event.renderer, eq, event.partialRenderTick);
+					MinecraftForge.EVENT_BUS.post(renderEvent);
+					if(!renderEvent.shouldRender)
+						continue;
+
 					ModelBiped m = eq.getItem().getArmorModel(event.entityPlayer, eq, 4+i);
-					if(eq.getItem().getArmorTexture(eq, event.entityPlayer, 4+i, null)!=null)
+					String tex = eq.getItem().getArmorTexture(eq, event.entityPlayer, 4+i, null);
+					if(tex!=null && !tex.isEmpty())
 						Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(eq.getItem().getArmorTexture(eq, event.entityPlayer, 4+i, null)));
-					m.render(event.entityPlayer, 0, 0, 0, 0, 0, .0625f);
+
+					m.aimedBow = event.renderer.modelBipedMain.aimedBow;
+					m.heldItemRight = event.renderer.modelBipedMain.heldItemRight;
+					m.heldItemLeft = event.renderer.modelBipedMain.heldItemLeft;
+					m.onGround = event.renderer.modelBipedMain.onGround;
+					m.isRiding = event.renderer.modelBipedMain.isRiding;
+					m.isChild = event.renderer.modelBipedMain.isChild;
+					m.isSneak = event.renderer.modelBipedMain.isSneak;
+					float f2 = interpolateRotation(event.entityPlayer.prevRenderYawOffset, event.entityPlayer.renderYawOffset, event.partialRenderTick);
+					float f3 = interpolateRotation(event.entityPlayer.prevRotationYawHead, event.entityPlayer.rotationYawHead, event.partialRenderTick);
+					float f4;
+					if (event.entityPlayer.isRiding() && event.entityPlayer.ridingEntity instanceof EntityLivingBase)
+					{
+						EntityLivingBase entitylivingbase1 = (EntityLivingBase)event.entityPlayer.ridingEntity;
+						f2 = interpolateRotation(entitylivingbase1.prevRenderYawOffset, entitylivingbase1.renderYawOffset, event.partialRenderTick);
+						f4 = Math.min(85.0F, Math.max(-85.0F, MathHelper.wrapAngleTo180_float(f3 - f2)));
+						f2 = f3 - f4;
+						if (f4 * f4 > 2500.0F)
+							f2 += f4 * 0.2F;
+					}
+					float f13 = event.entityPlayer.prevRotationPitch + (event.entityPlayer.rotationPitch - event.entityPlayer.prevRotationPitch) * event.partialRenderTick;
+					f4 = event.entityPlayer.ticksExisted+event.partialRenderTick;
+					float f5 = 0.0625F;
+					float f6 = Math.min(1, event.entityPlayer.prevLimbSwingAmount + (event.entityPlayer.limbSwingAmount - event.entityPlayer.prevLimbSwingAmount) * event.partialRenderTick);
+					float f7 = (event.entityPlayer.isChild()?3:1) *(event.entityPlayer.limbSwing - event.entityPlayer.limbSwingAmount * (1.0F - event.partialRenderTick));
+					m.setLivingAnimations(event.entityPlayer, f7, f6, event.partialRenderTick);
+					m.render(event.entityPlayer, f7, f6, f4, f3 - f2, f13, f5);
 				}
 			}
 		}
 		else if(event.entityPlayer.getPlayerCoordinates()!=null)
 			TravellersGear.instance.packetPipeline.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
 	}
+
+	static Timer timer;
+	static Timer getTimer()
+	{
+		if(timer==null)
+		{
+			try
+			{
+				timer = (Timer)ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), new String[] { "timer", "Q", "field_71428_T" });
+			}
+			catch (Exception e) {}
+		}
+		if(timer != null)
+			return timer;
+		return new Timer(20.0F);
+	}
+	private float interpolateRotation(float par1, float par2, float par3)
+	{
+		float f3;
+		for (f3 = par2 - par1; f3 < -180.0F; f3 += 360.0F)
+			;
+		while (f3 >= 180.0F)
+			f3 -= 360.0F;
+		return par1 + par3 * f3;
+	}
+
 
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void onTooltip(ItemTooltipEvent event)
