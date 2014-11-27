@@ -109,7 +109,7 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 						this.fakepl.inventory.armorInventory[3-armor] = null;
 
 			GL11.glDisable(GL11.GL_CULL_FACE);
-			boolean render = false;
+			boolean[] renderPlayer = {false,false,false,false};
 			for(int armor=0;armor<4;armor++)
 				if( (armor==0&&tile.renderHelmet)||(armor==1&&tile.renderChest)||(armor==2&&tile.renderLegs)||(armor==3&&tile.renderBoots) )
 					if(tile.getStackInSlot(armor)!=null)
@@ -128,7 +128,7 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 							if(customModel!=null)
 							{
-								render=true;
+								renderPlayer[armor]=true;
 							}
 							else
 								for(int pass=0;pass<armorItem.getRenderPasses(armorStack.getItemDamage()); pass++)
@@ -246,17 +246,25 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 			if(tile.renderTravellersGear)
 			{
+				GL11.glTranslatef(0,-.1f,0);
 				GL11.glRotatef(180, 1, 0, 0);
 				for(int ieq=0;ieq<=1;ieq++)
 					if(tile.getStackInSlot(8+ieq)!=null)
 						ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, this.renderPlayer, f);
 				GL11.glRotatef(180, 1, 0, 0);
+				GL11.glTranslatef(0,.1f,0);
 			}
 
 			GL11.glScalef(1.0625f,1.0625f,1.0625f);
 			GL11.glTranslatef(0,.1f,0);
-			if(render)
+			
+			if(renderPlayer[0]||renderPlayer[1]||renderPlayer[2]||renderPlayer[3])
+			{
+				for(int its=0;its<4;its++)
+					if(!renderPlayer[its])
+						fakepl.inventory.armorInventory[3-its]=null;
 				RenderManager.instance.renderEntitySimple(fakepl, 0);
+			}
 
 			this.bindTexture(TextureMap.locationItemsTexture);
 			GL11.glRotatef(180, 1, 0, 0);

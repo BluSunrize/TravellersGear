@@ -87,9 +87,7 @@ public class ModelCloak extends ModelBiped
 			return;
 
 		this.setRotationAngles(f1, f2, f3, f4, f5, f6, ent);
-		//int colour = 0xffffff;
 		GL11.glPushMatrix();
-		GL11.glDisable(GL11.GL_LIGHTING);
 		GL11.glEnable(3042);
 		GL11.glBlendFunc(770, 771);
 		boolean drawHood = living.getEquipmentInSlot(4)==null;
