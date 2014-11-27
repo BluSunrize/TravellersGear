@@ -52,12 +52,11 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 	ModelBiped modelArmor = new ModelBiped();
 	FakeClientPlayer fakepl;
 	RenderPlayer renderPlayer;
-	
+
 	static ResourceLocation texture = new ResourceLocation("travellersgear:textures/models/armorstand.png");
-	
+
 	public TileRenderArmorStand()
 	{
-		modelArmor.isChild = false;
 		this.modelStand = new ModelArmorStand();
 	}
 
@@ -69,14 +68,26 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 			{
 				this.fakepl = new FakeClientPlayer(Minecraft.getMinecraft().theWorld);
 				this.fakepl.ticksExisted=0;
+				
+				float partialRenderTick = 1;
+				float f2 = ClientProxy.interpolateRotation(this.fakepl.prevRenderYawOffset, this.fakepl.renderYawOffset, partialRenderTick);
+				float f3 = ClientProxy.interpolateRotation(this.fakepl.prevRotationYawHead, this.fakepl.rotationYawHead, partialRenderTick);
+				float f13 = this.fakepl.prevRotationPitch + (this.fakepl.rotationPitch - this.fakepl.prevRotationPitch) * partialRenderTick;
+				float f4 = this.fakepl.ticksExisted+partialRenderTick;
+				float f5 = 0.0625F;
+				float f6 = Math.min(1, this.fakepl.prevLimbSwingAmount + (this.fakepl.limbSwingAmount - this.fakepl.prevLimbSwingAmount) * partialRenderTick);
+				float f7 = this.fakepl.limbSwing - this.fakepl.limbSwingAmount * (1.0F - partialRenderTick);
+				this.modelArmor.isChild = false;
+				this.modelArmor.setLivingAnimations(this.fakepl, f7, f6, partialRenderTick);
+				this.modelArmor.setRotationAngles(f7, f6, f4, f3-f2, f13, f5, fakepl);
 			}
 			if(this.renderPlayer == null)
 				this.renderPlayer = (RenderPlayer) RenderManager.instance.getEntityRenderObject(this.fakepl);
-			
+
 			RenderManager.renderPosX = fakepl.posX;
 			RenderManager.renderPosY = fakepl.posY;
 			RenderManager.renderPosZ = fakepl.posZ;
-			
+
 			GL11.glPushMatrix();
 			TileEntityArmorStand tile = (TileEntityArmorStand) tileentity;
 
@@ -119,10 +130,10 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 						if(armorStack.getItem() instanceof ItemArmor)
 						{
 							RenderPlayerEvent.SetArmorModel setArmorEvent = new RenderPlayerEvent.SetArmorModel(this.fakepl, this.renderPlayer, 3-armor, f, armorStack);
-					        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(setArmorEvent);
-					        if (setArmorEvent.result != -1)
-					        	continue;
-							
+							net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(setArmorEvent);
+							if (setArmorEvent.result != -1)
+								continue;
+
 							ItemArmor armorItem = (ItemArmor)armorStack.getItem();
 							ModelBiped customModel = armorItem.getArmorModel(this.fakepl, armorStack, armor);
 
@@ -246,18 +257,18 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 			if(tile.renderTravellersGear)
 			{
-				GL11.glTranslatef(0,-.1f,0);
+				GL11.glTranslatef(0,-.05f,0);
 				GL11.glRotatef(180, 1, 0, 0);
 				for(int ieq=0;ieq<=1;ieq++)
 					if(tile.getStackInSlot(8+ieq)!=null)
 						ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, this.renderPlayer, f);
 				GL11.glRotatef(180, 1, 0, 0);
-				GL11.glTranslatef(0,.1f,0);
+				GL11.glTranslatef(0,.05f,0);
 			}
 
 			GL11.glScalef(1.0625f,1.0625f,1.0625f);
 			GL11.glTranslatef(0,.1f,0);
-			
+
 			if(renderPlayer[0]||renderPlayer[1]||renderPlayer[2]||renderPlayer[3])
 			{
 				for(int its=0;its<4;its++)
@@ -359,7 +370,8 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 	void renderDefaultArmor(int slot)
 	{
-		switch(slot){
+		switch(slot)
+		{
 		case 0:
 			this.modelArmor.bipedHead.render(.0625f);
 			this.modelArmor.bipedHeadwear.render(.0625f);
