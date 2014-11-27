@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
@@ -232,22 +233,13 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 					}
 
-			boolean[] travellersItems = {true,true,true};
 			if(tile.renderTravellersGear)
 			{
+				RenderPlayer rp = (RenderPlayer) RenderManager.instance.getEntityRenderObject(this.fakepl);
 				GL11.glRotatef(180, 1, 0, 0);
-				for(int ieq=8;ieq<11;ieq++)
-				{
-					ItemStack eq = tile.getStackInSlot(ieq);
-					if(eq!=null && eq.getItem().getArmorModel(this.fakepl, eq, 4+ieq)!=null)
-					{
-						ModelBiped m = eq.getItem().getArmorModel(this.fakepl, eq, 4+ieq);
-						if(eq.getItem().getArmorTexture(eq, this.fakepl, 4+ieq, null)!=null)
-							Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(eq.getItem().getArmorTexture(eq, this.fakepl, 4+ieq, null)));
-						m.render(this.fakepl, 0, 0, 0, 0, 0, .0625f);
-						travellersItems[ieq-8] = false;
-					}
-				}
+				for(int ieq=0;ieq<=1;ieq++)
+					if(tile.getStackInSlot(8+ieq)!=null)
+						ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, rp, f);
 				GL11.glRotatef(180, 1, 0, 0);
 			}
 
