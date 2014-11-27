@@ -34,6 +34,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -50,8 +51,10 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 	ModelArmorStand modelStand = new ModelArmorStand();
 	ModelBiped modelArmor = new ModelBiped();
 	FakeClientPlayer fakepl;
+	RenderPlayer renderPlayer;
+	
 	static ResourceLocation texture = new ResourceLocation("travellersgear:textures/models/armorstand.png");
-
+	
 	public TileRenderArmorStand()
 	{
 		modelArmor.isChild = false;
@@ -67,10 +70,13 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 				this.fakepl = new FakeClientPlayer(Minecraft.getMinecraft().theWorld);
 				this.fakepl.ticksExisted=0;
 			}
+			if(this.renderPlayer == null)
+				this.renderPlayer = (RenderPlayer) RenderManager.instance.getEntityRenderObject(this.fakepl);
+			
 			RenderManager.renderPosX = fakepl.posX;
 			RenderManager.renderPosY = fakepl.posY;
 			RenderManager.renderPosZ = fakepl.posZ;
-
+			
 			GL11.glPushMatrix();
 			TileEntityArmorStand tile = (TileEntityArmorStand) tileentity;
 
@@ -112,6 +118,11 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 						if(armorStack.getItem() instanceof ItemArmor)
 						{
+							RenderPlayerEvent.SetArmorModel setArmorEvent = new RenderPlayerEvent.SetArmorModel(this.fakepl, this.renderPlayer, 3-armor, f, armorStack);
+					        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(setArmorEvent);
+					        if (setArmorEvent.result != -1)
+					        	continue;
+							
 							ItemArmor armorItem = (ItemArmor)armorStack.getItem();
 							ModelBiped customModel = armorItem.getArmorModel(this.fakepl, armorStack, armor);
 
@@ -235,11 +246,10 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 			if(tile.renderTravellersGear)
 			{
-				RenderPlayer rp = (RenderPlayer) RenderManager.instance.getEntityRenderObject(this.fakepl);
 				GL11.glRotatef(180, 1, 0, 0);
 				for(int ieq=0;ieq<=1;ieq++)
 					if(tile.getStackInSlot(8+ieq)!=null)
-						ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, rp, f);
+						ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, this.renderPlayer, f);
 				GL11.glRotatef(180, 1, 0, 0);
 			}
 
