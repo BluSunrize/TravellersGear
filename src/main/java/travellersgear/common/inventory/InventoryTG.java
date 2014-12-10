@@ -74,6 +74,7 @@ public class InventoryTG implements IInventory
 			if(itemstack != null && ModCompatability.getTravellersGearSlot(itemstack)>=0)
 				Utils.unequipTravGear(player, itemstack);
 
+			System.out.println("Apparently it breaks right here...");
 			this.container.onCraftMatrixChanged(this);
 			//this.onInventoryChanged();
 			return itemstack;

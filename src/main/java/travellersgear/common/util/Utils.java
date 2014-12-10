@@ -111,4 +111,11 @@ public class Utils
 		item.getTagCompound().setTag("display",tag);
 		return item;
 	}
+	
+	public static boolean itemsMatch(ItemStack s0, ItemStack s1, boolean strict, boolean nbt)
+	{
+		boolean b0 = OreDictionary.itemMatches(s0, s1, strict);
+		boolean b1 = nbt? ( (s0.hasTagCompound()&&s1.hasTagCompound())?s0.getTagCompound().equals(s1.getTagCompound()) : s0.hasTagCompound()==s1.hasTagCompound() ) : true;
+		return b0&&b1;
+	}
 }

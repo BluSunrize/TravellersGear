@@ -30,7 +30,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 {
 	public static String[] subNames = {"cloak","belt","ringGold","ringSilver","pauldrons","vambraces", "title"};
 	IIcon[] icons = new IIcon[subNames.length];
-	static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker"};
+	static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker","boxFox"};
 
 	public ItemTravellersGear()
 	{
@@ -168,17 +168,18 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
 		IInventory baubles = BaublesApi.getBaubles(player);
-		for(int i = 0; i < baubles.getSizeInventory(); i++)
-			if(baubles.getStackInSlot(i) == null && baubles.isItemValidForSlot(i, stack)) {
-				if(!world.isRemote)
-				{
-					baubles.setInventorySlotContents(i, stack.copy());
-					if(!player.capabilities.isCreativeMode)
-						player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+		if(baubles!=null)
+			for(int i = 0; i < baubles.getSizeInventory(); i++)
+				if(baubles.getStackInSlot(i) == null && baubles.isItemValidForSlot(i, stack)) {
+					if(!world.isRemote)
+					{
+						baubles.setInventorySlotContents(i, stack.copy());
+						if(!player.capabilities.isCreativeMode)
+							player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+					}
+					onEquipped(stack, player);
+					break;
 				}
-				onEquipped(stack, player);
-				break;
-			}
 
 		return stack;
 	}

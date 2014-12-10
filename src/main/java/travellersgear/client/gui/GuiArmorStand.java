@@ -1,4 +1,4 @@
-package travellersgear.client;
+package travellersgear.client.gui;
 
 import java.util.ArrayList;
 import java.util.List;

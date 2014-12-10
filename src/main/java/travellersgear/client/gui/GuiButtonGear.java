@@ -1,4 +1,4 @@
-package travellersgear.client;
+package travellersgear.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

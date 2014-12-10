@@ -1,4 +1,4 @@
-package travellersgear.client;
+package travellersgear.client.gui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import travellersgear.TravellersGear;
+import travellersgear.client.handlers.CustomizeableGuiHandler;
 
 public class GuiTravellersInvCustomization extends GuiScreen
 {
@@ -42,7 +42,7 @@ public class GuiTravellersInvCustomization extends GuiScreen
 		this.guiLeft = (this.width-this.xSize)/2;
 		this.guiTop = (this.height-this.ySize)/2;
 		this.buttonList.clear();
-		for(GuiButtonMoveableElement but : ClientProxy.moveableInvElements)
+		for(GuiButtonMoveableElement but : CustomizeableGuiHandler.moveableInvElements)
 		{
 			but.xPosition = guiLeft+but.elementX;
 			but.yPosition = guiTop+but.elementY;
@@ -50,14 +50,14 @@ public class GuiTravellersInvCustomization extends GuiScreen
 			this.buttonList.add(but);
 		}
 		int start= presetMenu!=null?presetMenu.selectedOption:0;
-		presetMenu = new GuiDropdownMenu(this.buttonList.size(), guiLeft+218,guiTop+20, 64,10, 100, ClientProxy.presets.keySet().toArray(new String[0]));
+		presetMenu = new GuiDropdownMenu(this.buttonList.size(), guiLeft+218,guiTop+20, 64,10, 100, CustomizeableGuiHandler.presets.keySet().toArray(new String[0]));
 		presetMenu.selectedOption = start;
 		this.buttonList.add(presetMenu);
 
 		start= textureMenu!=null?textureMenu.selectedOption:0;
-		String[] txts = new String[ClientProxy.invTextures.length];
+		String[] txts = new String[CustomizeableGuiHandler.invTextures.length];
 		for(int t=0;t<txts.length;t++)
-			txts[t] = ClientProxy.invTextures[t].getResourcePath().substring(ClientProxy.invTextures[t].getResourcePath().lastIndexOf("/")).replace("/inventory_", "");
+			txts[t] = CustomizeableGuiHandler.invTextures[t].getResourcePath().substring(CustomizeableGuiHandler.invTextures[t].getResourcePath().lastIndexOf("/")).replace("/inventory_", "");
 		textureMenu = new GuiDropdownMenu(this.buttonList.size(), guiLeft+218,guiTop+120, 64,10, 100, txts);
 		textureMenu.selectedOption = start;
 		this.buttonList.add(textureMenu);
@@ -68,19 +68,19 @@ public class GuiTravellersInvCustomization extends GuiScreen
 	{
 		if(button.equals(presetMenu))
 		{
-			ClientProxy.InvPreset ps = ClientProxy.presets.values().toArray(new ClientProxy.InvPreset[0])[presetMenu.selectedOption];
-			ClientProxy.moveableInvElements = new ArrayList();
+			CustomizeableGuiHandler.InvPreset ps = CustomizeableGuiHandler.presets.values().toArray(new CustomizeableGuiHandler.InvPreset[0])[presetMenu.selectedOption];
+			CustomizeableGuiHandler.moveableInvElements = new ArrayList();
 			for(GuiButtonMoveableElement bme : ps.elements)
-				ClientProxy.moveableInvElements.add(bme.copy());
-			ClientProxy.invTexture = ps.texture;
-			for(int irl=0;irl<ClientProxy.invTextures.length;irl++)
-				if(ClientProxy.invTextures[irl].equals(ps.texture))
+				CustomizeableGuiHandler.moveableInvElements.add(bme.copy());
+			CustomizeableGuiHandler.invTexture = ps.texture;
+			for(int irl=0;irl<CustomizeableGuiHandler.invTextures.length;irl++)
+				if(CustomizeableGuiHandler.invTextures[irl].equals(ps.texture))
 					textureMenu.selectedOption = irl;
 			this.initGui();
 		}
 		if(button.equals(textureMenu))
 		{
-			ClientProxy.invTexture = ClientProxy.invTextures[textureMenu.selectedOption];
+			CustomizeableGuiHandler.invTexture = CustomizeableGuiHandler.invTextures[textureMenu.selectedOption];
 			this.initGui();
 		}
 	}
@@ -89,7 +89,7 @@ public class GuiTravellersInvCustomization extends GuiScreen
 	public void drawScreen(int mX, int mY, float f)
 	{
 		this.drawWorldBackground(0);
-		this.mc.getTextureManager().bindTexture(ClientProxy.invTexture);
+		this.mc.getTextureManager().bindTexture(CustomizeableGuiHandler.invTexture);
 		this.drawTexturedModalRect(guiLeft,guiTop, 0,0, xSize,ySize);
 		GL11.glEnable(3042);
 		super.drawScreen(mX, mY, f);
@@ -152,8 +152,8 @@ public class GuiTravellersInvCustomization extends GuiScreen
 	{
 		if(player.worldObj.isRemote)
 		{
-			((ClientProxy)TravellersGear.proxy).writeElementsToConfig(((ClientProxy)TravellersGear.proxy).invConfig);
-			for(GuiButtonMoveableElement but : ClientProxy.moveableInvElements)
+			CustomizeableGuiHandler.instance.writeElementsToConfig(CustomizeableGuiHandler.instance.invConfig);
+			for(GuiButtonMoveableElement but : CustomizeableGuiHandler.moveableInvElements)
 			{
 				but.implementedGui = null;
 			}

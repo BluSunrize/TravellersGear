@@ -1,4 +1,4 @@
-package travellersgear.client;
+package travellersgear.client.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +25,7 @@ import org.lwjgl.opengl.GL12;
 
 import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
+import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.inventory.ContainerTravellersInv;
 import travellersgear.common.inventory.SlotNull;
 import travellersgear.common.inventory.SlotRestricted;
@@ -86,24 +87,24 @@ public class GuiTravellersInv extends GuiContainer
 		super.initGui();
 		this.buttonList.clear();
 
-		for(GuiButtonMoveableElement but : ClientProxy.moveableInvElements)
+		for(GuiButtonMoveableElement but : CustomizeableGuiHandler.moveableInvElements)
 		{
 			but.xPosition = guiLeft+but.elementX;
 			but.yPosition = guiTop+but.elementY;
 		}
 
-		int start = ClientProxy.elementsNonSlotStart;
-		drawPlayer = ClientProxy.moveableInvElements.get(start+0);
-		drawName = ClientProxy.moveableInvElements.get(start+1);
-		drawTitle = ClientProxy.moveableInvElements.get(start+2);
-		drawXP = ClientProxy.moveableInvElements.get(start+3);
-		drawHealth = ClientProxy.moveableInvElements.get(start+4);
-		drawArmor = ClientProxy.moveableInvElements.get(start+5);
-		drawSpeed = ClientProxy.moveableInvElements.get(start+6);
-		drawDamage = ClientProxy.moveableInvElements.get(start+7);
-		drawPotionEffects = ClientProxy.moveableInvElements.get(start+8);
+		int start = CustomizeableGuiHandler.elementsNonSlotStart;
+		drawPlayer = CustomizeableGuiHandler.moveableInvElements.get(start+0);
+		drawName = CustomizeableGuiHandler.moveableInvElements.get(start+1);
+		drawTitle = CustomizeableGuiHandler.moveableInvElements.get(start+2);
+		drawXP = CustomizeableGuiHandler.moveableInvElements.get(start+3);
+		drawHealth = CustomizeableGuiHandler.moveableInvElements.get(start+4);
+		drawArmor = CustomizeableGuiHandler.moveableInvElements.get(start+5);
+		drawSpeed = CustomizeableGuiHandler.moveableInvElements.get(start+6);
+		drawDamage = CustomizeableGuiHandler.moveableInvElements.get(start+7);
+		drawPotionEffects = CustomizeableGuiHandler.moveableInvElements.get(start+8);
 		if(TravellersGear.THAUM)
-			drawVisDiscounts = ClientProxy.moveableInvElements.get(start+9);
+			drawVisDiscounts = CustomizeableGuiHandler.moveableInvElements.get(start+9);
 	}
 
 	public int[] getGuiPos()
@@ -114,14 +115,14 @@ public class GuiTravellersInv extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mX, int mZ)
 	{
-		this.mc.getTextureManager().bindTexture(ClientProxy.invTexture);
+		this.mc.getTextureManager().bindTexture(CustomizeableGuiHandler.invTexture);
 		this.drawTexturedModalRect(guiLeft,guiTop, 0,0, xSize,ySize);
 		GL11.glEnable(3042);
 		//this.drawTexturedModalRect(guiLeft+23,guiTop+25, 202,175, 54,72);
-		for(int slot=0; slot<ClientProxy.elementsNonSlotStart; slot++)
+		for(int slot=0; slot<CustomizeableGuiHandler.elementsNonSlotStart; slot++)
 			if(slot<this.inventorySlots.inventorySlots.size() && !(this.inventorySlots.inventorySlots.get(slot) instanceof SlotNull))
 			{
-				GuiButtonMoveableElement bme = ClientProxy.moveableInvElements.get(slot);
+				GuiButtonMoveableElement bme = CustomizeableGuiHandler.moveableInvElements.get(slot);
 				this.drawTexturedModalRect(bme.xPosition, bme.yPosition, 220,0, 18,18);
 				if(slot<playerSlotStart && !((Slot)this.inventorySlots.inventorySlots.get(slot)).getHasStack())
 				{
@@ -157,7 +158,7 @@ public class GuiTravellersInv extends GuiContainer
 		GL11.glBlendFunc(770, 771);
 		GL11.glColor3f(1, 1, 1);
 		/**DRAW ICONS*/
-		this.mc.getTextureManager().bindTexture(ClientProxy.invTexture);
+		this.mc.getTextureManager().bindTexture(CustomizeableGuiHandler.invTexture);
 		//HEALTH
 		if(!drawHealth.hideElement)
 		{

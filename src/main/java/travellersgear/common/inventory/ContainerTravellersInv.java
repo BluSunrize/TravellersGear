@@ -10,7 +10,8 @@ import net.minecraft.item.ItemStack;
 import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
-import travellersgear.client.GuiButtonMoveableElement;
+import travellersgear.client.gui.GuiButtonMoveableElement;
+import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.CommonProxy;
 import travellersgear.common.network.PacketNBTSync;
 import travellersgear.common.util.ModCompatability;
@@ -410,9 +411,9 @@ public class ContainerTravellersInv extends Container
 	@Override
 	protected Slot addSlotToContainer(Slot slot)
 	{
-		if(player.worldObj.isRemote && ClientProxy.moveableInvElements!=null && ClientProxy.moveableInvElements.size()>this.inventorySlots.size())
+		if(player.worldObj.isRemote && CustomizeableGuiHandler.moveableInvElements!=null && CustomizeableGuiHandler.moveableInvElements.size()>this.inventorySlots.size())
 		{
-			GuiButtonMoveableElement bme = ClientProxy.moveableInvElements.get(this.inventorySlots.size());
+			GuiButtonMoveableElement bme = CustomizeableGuiHandler.moveableInvElements.get(this.inventorySlots.size());
 			if(bme!=null)
 			{
 				if(bme.hideElement)

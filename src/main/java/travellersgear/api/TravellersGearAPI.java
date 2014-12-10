@@ -99,6 +99,12 @@ public class TravellersGearAPI
 		{
 			if(scroll.hasTagCompound() && scroll.getTagCompound().hasKey("title"))
 				return scroll.getTagCompound().getString("title");
+			if(scroll.hasTagCompound() && scroll.getTagCompound().hasKey("display") && scroll.getTagCompound().getCompoundTag("display").hasKey("Lore"))
+            {
+                NBTTagList loreList = scroll.getTagCompound().getCompoundTag("display").getTagList("Lore", 8);
+                if(loreList.tagCount()>0)
+    				return loreList.getStringTagAt(0);
+            }
 			if(scroll.hasDisplayName())
 				return scroll.getDisplayName();
 		}
