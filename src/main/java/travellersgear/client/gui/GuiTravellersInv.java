@@ -115,6 +115,7 @@ public class GuiTravellersInv extends GuiContainer
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mX, int mZ)
 	{
+		GL11.glColor3f(1, 1, 1);
 		this.mc.getTextureManager().bindTexture(CustomizeableGuiHandler.invTexture);
 		this.drawTexturedModalRect(guiLeft,guiTop, 0,0, xSize,ySize);
 		GL11.glEnable(3042);

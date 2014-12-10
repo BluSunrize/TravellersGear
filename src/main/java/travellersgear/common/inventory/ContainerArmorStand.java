@@ -10,6 +10,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
+import travellersgear.client.ClientProxy;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.network.PacketNBTSync;
 import travellersgear.common.util.ModCompatability;
@@ -172,6 +173,14 @@ public class ContainerArmorStand extends Container
 		this.invTG.allowEvents = false;
 		super.putStacksInSlots(stacks);
 	}
+	@Override
+	public ItemStack slotClick(int slotNumber, int p_75144_2_, int p_75144_3_, EntityPlayer player)
+	{
+		ItemStack stack =  super.slotClick(slotNumber, p_75144_2_, p_75144_3_, player);
+		if(player.worldObj.isRemote && slotNumber<playerSlots)
+			ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
+		return stack;
+	}
 
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer)
 	{
@@ -202,6 +211,9 @@ public class ContainerArmorStand extends Container
 				((Slot)this.inventorySlots.get(playerSlots+armSlot)).onSlotChanged();
 				((Slot)this.inventorySlots.get(0+armSlot)).putStack(tempAS);
 				((Slot)this.inventorySlots.get(0+armSlot)).onSlotChanged();
+
+				if(armSlot>=tgSlotStart && armSlot<mariSlotStart)
+					ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
 				return null;
 			}
 			else
@@ -258,6 +270,7 @@ public class ContainerArmorStand extends Container
 					else if(tileEntity.getStackInSlot(8+type)==null)
 						if(!mergeItemStack(stackInSlot, playerSlots+8+type, playerSlots+8+type+1, true))
 							return null;
+					ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
 				}
 				else if(TravellersGear.MARI && ModCompatability.isMariJewelry(stackInSlot))
 				{
