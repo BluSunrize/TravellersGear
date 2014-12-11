@@ -41,34 +41,34 @@ public class ActiveAbilityHandler
 
 		ItemStack[] is = player.inventory.armorInventory;
 		for(int armor=0; armor<is.length; armor++)
-			if(is[armor]!=null )//&& is[armor].getItem() instanceof IActiveAbility && ((IActiveAbility)is[armor].getItem()).canActivate(player, is[armor]) )
+			if(is[armor]!=null && is[armor].getItem() instanceof IActiveAbility && ((IActiveAbility)is[armor].getItem()).canActivate(player, is[armor]) )
 				list.add( new Object[]{is[armor],armor});
 
 		if(TravellersGear.BAUBLES)
 		{
 			IInventory inv = BaublesApi.getBaubles(player);
 			for(int i=0; i<inv.getSizeInventory(); i++)
-				if(inv.getStackInSlot(i)!=null )//&& inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
 					list.add(new Object[]{inv.getStackInSlot(i),4+i});
 		}
 
 		is = TravellersGearAPI.getExtendedInventory(player);
 		for(int tg=0; tg<is.length; tg++)
-			if(is[tg]!=null )//&& is[tg].getItem() instanceof IActiveAbility && ((IActiveAbility)is[tg].getItem()).canActivate(player, is[tg]) )
+			if(is[tg]!=null && is[tg].getItem() instanceof IActiveAbility && ((IActiveAbility)is[tg].getItem()).canActivate(player, is[tg]) )
 				list.add( new Object[]{is[tg],8+tg});
 
 		if(TravellersGear.MARI)
 		{
 			IInventory inv = ModCompatability.getMariInventory(player);
 			for(int i=0; i<inv.getSizeInventory(); i++)
-				if(inv.getStackInSlot(i)!=null )//&& inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
 					list.add(new Object[]{inv.getStackInSlot(i),12+i});
 		}
 		if(TravellersGear.TCON)
 		{
 			IInventory inv = ModCompatability.getTConArmorInv(player);
 			for(int i=1; i<3; i++)
-				if(inv.getStackInSlot(i)!=null )//&& inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
 					list.add(new Object[]{inv.getStackInSlot(i),15+i});
 		}
 		return list.toArray(new Object[0][]);
