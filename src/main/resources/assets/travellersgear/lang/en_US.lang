@@ -36,6 +36,7 @@ TG.chattext.showItem=%1$s shows Item: %2$s
 itemGroup.travellersgear=Traveller's Gear
 
 TG.keybind.openInv=Traveller's Gear Inventory
+TG.keybind.activeaAbilities=Traveller's Gear Active Abilities
 
 #-- Title --
 TG.personaltitle.treepuncher=Professional Treepuncher

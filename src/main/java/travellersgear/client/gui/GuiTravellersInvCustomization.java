@@ -88,6 +88,7 @@ public class GuiTravellersInvCustomization extends GuiScreen
 	@Override
 	public void drawScreen(int mX, int mY, float f)
 	{
+		GL11.glColor3f(1, 1, 1);
 		this.drawWorldBackground(0);
 		this.mc.getTextureManager().bindTexture(CustomizeableGuiHandler.invTexture);
 		this.drawTexturedModalRect(guiLeft,guiTop, 0,0, xSize,ySize);
