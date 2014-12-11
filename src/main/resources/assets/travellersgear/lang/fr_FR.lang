@@ -29,6 +29,8 @@ TG.guitext.style=Style >
 TG.chattext.showItem=%1$s montre l'Objet: %2$s
 itemGroup.travellersgear=Traveller's Gear
 TG.keybind.openInv=Inventaire Traveller's Gear
+TG.keybind.activeaAbilities=Traveller's Gear Capacités
+
 #-- Title --
 TG.personaltitle.treepuncher=Bucheron Professionnel
 TG.personaltitle.titan=Prospecteur de Titan
