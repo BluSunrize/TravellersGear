@@ -15,18 +15,25 @@ import travellersgear.common.network.PacketNBTSync;
 
 public class Utils
 {
-
 	public static void tickTravGear(EntityPlayer player, ItemStack stack)
 	{
 		if(stack.getItem() instanceof ITravellersGear)
+		{
+			ItemStack stack2 = stack;
 			((ITravellersGear)stack.getItem()).onTravelGearTick(player, stack);
+			if(!Utils.itemsMatch(stack2, stack, true, true))
+				TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+		}
 		else if(ModCompatability.getPseudoTravellersGearData(stack)!=null && ModCompatability.getPseudoTravellersGearData(stack).length>=4)
 			if(ModCompatability.getPseudoTravellersGearData(stack)[1]!=null)
 				try{
+					ItemStack stack2 = stack;
 					((Method)ModCompatability.getPseudoTravellersGearData(stack)[1]).invoke(stack.getItem(), player,stack);
+					if(!Utils.itemsMatch(stack2, stack, true, true))
+						TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
 				}catch(Exception e)
 				{}
-		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+
 	}
 	public static void equipTravGear(EntityPlayer player, ItemStack stack)
 	{
@@ -79,7 +86,7 @@ public class Utils
 		}
 		return null;
 	}
-	
+
 	public static boolean compareToOreName(ItemStack item, String oreName)
 	{
 		for(int oid : OreDictionary.getOreIDs(item))
@@ -114,7 +121,7 @@ public class Utils
 		item.getTagCompound().setTag("display",tag);
 		return item;
 	}
-	
+
 	public static boolean itemsMatch(ItemStack s0, ItemStack s1, boolean strict, boolean nbt)
 	{
 		boolean b0 = OreDictionary.itemMatches(s0, s1, strict);
