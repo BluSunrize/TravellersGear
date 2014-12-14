@@ -63,12 +63,14 @@ public class ClientProxy extends CommonProxy
 {
 	public static HashMap<String, ItemStack[]> equipmentMap = new HashMap();
 	public static int[] equipmentButtonPos;
+	public static float activeAbilityGuiSpeed;
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration cfg = new Configuration(event.getSuggestedConfigurationFile());
 		cfg.load();
 		equipmentButtonPos = cfg.get("Options", "Button Position", new int[]{27,9}, "The position of the Equipment Button in the Inventory").getIntList();
+		activeAbilityGuiSpeed = cfg.getFloat("Radial Speed", "Options", .15f, .05f, 1f, "The speed at which the radial for active abilities opens. Default is 15% per tick, minimum is 5%, maximum is 100%");
 		cfg.save();
 		
 		CustomizeableGuiHandler.instance.preInit(event);

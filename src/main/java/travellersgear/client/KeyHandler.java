@@ -51,7 +51,6 @@ public class KeyHandler
 			else if(keyDown[0])
 				keyDown[0] = false;
 
-			float step = .15f;
 			if(activeAbilitiesWheel!=null && activeAbilitiesWheel.getIsKeyPressed() && !keyDown[1] && ActiveAbilityHandler.instance.buildActiveAbilityList(player).length>0)
 			{
 				if(abilityLock)
@@ -62,7 +61,7 @@ public class KeyHandler
 				else if(FMLClientHandler.instance().getClient().inGameHasFocus)
 				{
 					if(abilityRadial<1)
-						abilityRadial += step;
+						abilityRadial += ClientProxy.activeAbilityGuiSpeed;
 					if(abilityRadial>1)
 						abilityRadial=1f;
 					if(abilityRadial>=1)	
@@ -76,7 +75,7 @@ public class KeyHandler
 				if(!abilityLock)
 				{
 					if(abilityRadial>0)
-						abilityRadial -= step;
+						abilityRadial -= ClientProxy.activeAbilityGuiSpeed;
 					if(abilityRadial<0)
 						abilityRadial=0f;
 				}

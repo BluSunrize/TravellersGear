@@ -8,8 +8,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+import travellersgear.TravellersGear;
 import travellersgear.api.ITravellersGear;
 import travellersgear.client.ClientProxy;
+import travellersgear.common.network.PacketNBTSync;
 
 public class Utils
 {
@@ -24,6 +26,7 @@ public class Utils
 					((Method)ModCompatability.getPseudoTravellersGearData(stack)[1]).invoke(stack.getItem(), player,stack);
 				}catch(Exception e)
 				{}
+		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
 	}
 	public static void equipTravGear(EntityPlayer player, ItemStack stack)
 	{
