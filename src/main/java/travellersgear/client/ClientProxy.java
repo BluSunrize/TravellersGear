@@ -188,6 +188,37 @@ public class ClientProxy extends CommonProxy
 	@SubscribeEvent
 	public void renderPlayerSpecialPre(RenderPlayerEvent.Specials.Pre event)
 	{
+		if(BaublesApi.getBaubles(event.entityPlayer)!=null)
+			for(int i=0;i<BaublesApi.getBaubles(event.entityPlayer).getSizeInventory();i++)
+			{
+				ItemStack bb = BaublesApi.getBaubles(event.entityPlayer).getStackInSlot(i);
+				if(bb!=null && bb.getItem().getArmorModel(event.entityPlayer, bb, 0)!=null)
+				{
+					GL11.glPushMatrix();
+					GL11.glColor4f(1, 1, 1, 1);
+					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+					GL11.glPopMatrix();
+				}
+			}
+		if(equipmentMap.containsKey(event.entityPlayer.getCommandSenderName()))
+		{
+			for(int i=0;i<equipmentMap.get(event.entityPlayer.getCommandSenderName()).length;i++)
+			{
+				ItemStack eq = equipmentMap.get(event.entityPlayer.getCommandSenderName())[i];
+				if(eq!=null && eq.getItem().getArmorModel(event.entityPlayer, eq, 0)!=null)
+				{
+					if(i==0)
+						event.renderCape = false;
+					GL11.glPushMatrix();
+					GL11.glColor4f(1, 1, 1, 1);
+					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+					GL11.glPopMatrix();
+				}
+			}
+		}
+		else if(event.entityPlayer.getPlayerCoordinates()!=null)
+			TravellersGear.instance.packetPipeline.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
+	
 		if(toolDisplayMap.containsKey(event.entityPlayer.getCommandSenderName()))
 			for(ToolDisplayInfo tdi : toolDisplayMap.get(event.entityPlayer.getCommandSenderName()))
 				if(tdi!=null)
@@ -261,37 +292,6 @@ public class ClientProxy extends CommonProxy
 						GL11.glPopMatrix();
 					}
 				}
-
-		if(BaublesApi.getBaubles(event.entityPlayer)!=null)
-			for(int i=0;i<BaublesApi.getBaubles(event.entityPlayer).getSizeInventory();i++)
-			{
-				ItemStack bb = BaublesApi.getBaubles(event.entityPlayer).getStackInSlot(i);
-				if(bb!=null && bb.getItem().getArmorModel(event.entityPlayer, bb, 0)!=null)
-				{
-					GL11.glPushMatrix();
-					GL11.glColor4f(1, 1, 1, 1);
-					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
-					GL11.glPopMatrix();
-				}
-			}
-		if(equipmentMap.containsKey(event.entityPlayer.getCommandSenderName()))
-		{
-			for(int i=0;i<equipmentMap.get(event.entityPlayer.getCommandSenderName()).length;i++)
-			{
-				ItemStack eq = equipmentMap.get(event.entityPlayer.getCommandSenderName())[i];
-				if(eq!=null && eq.getItem().getArmorModel(event.entityPlayer, eq, 0)!=null)
-				{
-					if(i==0)
-						event.renderCape = false;
-					GL11.glPushMatrix();
-					GL11.glColor4f(1, 1, 1, 1);
-					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
-					GL11.glPopMatrix();
-				}
-			}
-		}
-		else if(event.entityPlayer.getPlayerCoordinates()!=null)
-			TravellersGear.instance.packetPipeline.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
 	}
 	public static float interpolateRotation(float par1, float par2, float par3)
 	{
