@@ -144,13 +144,11 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	public void onEquipped(ItemStack stack, EntityLivingBase living)
 	{
 		onEquippedOrLoaded(stack,living);
-		//System.out.println("Bauble Equipped ("+stack+") on "+(living.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
 	@Override
 	public void onUnequipped(ItemStack stack, EntityLivingBase living)
 	{
-		//System.out.println("Bauble Unequipped ("+stack+") on "+(living.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
 	@Override
@@ -192,13 +190,12 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public void onTravelGearEquip(EntityPlayer player, ItemStack stack)
 	{
-		//System.out.println("TrvlGear Equipped ("+stack+") on "+(player.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
 	@Override
 	public void onTravelGearUnequip(EntityPlayer player, ItemStack stack)
 	{
-		//System.out.println("TrvlGear Unequipped ("+stack+") on "+(player.worldObj.isRemote?"Client":"Server")+"World");
+		System.out.println("TrvlGear Unequipped ("+stack+") on "+(player.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
 	@Override

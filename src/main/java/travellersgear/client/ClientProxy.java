@@ -4,25 +4,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -37,6 +47,7 @@ import travellersgear.TravellersGear;
 import travellersgear.api.RenderTravellersGearEvent;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.gui.GuiArmorStand;
+import travellersgear.client.gui.GuiBacktool;
 import travellersgear.client.gui.GuiButtonGear;
 import travellersgear.client.gui.GuiTravellersInv;
 import travellersgear.client.gui.GuiTravellersInvCustomization;
@@ -51,6 +62,7 @@ import travellersgear.common.network.PacketSlotSync;
 import travellersgear.common.util.ModCompatability;
 import travellersgear.common.util.TGClientCommand;
 import travellersgear.common.util.Utils;
+import baubles.api.BaublesApi;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -62,6 +74,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class ClientProxy extends CommonProxy
 {
 	public static HashMap<String, ItemStack[]> equipmentMap = new HashMap();
+	public static HashMap<String, ToolDisplayInfo[]> toolDisplayMap = new HashMap();
 	public static int[] equipmentButtonPos;
 	public static float activeAbilityGuiSpeed;
 	@Override
@@ -72,7 +85,7 @@ public class ClientProxy extends CommonProxy
 		equipmentButtonPos = cfg.get("Options", "Button Position", new int[]{27,9}, "The position of the Equipment Button in the Inventory").getIntList();
 		activeAbilityGuiSpeed = cfg.getFloat("Radial Speed", "Options", .15f, .05f, 1f, "The speed at which the radial for active abilities opens. Default is 15% per tick, minimum is 5%, maximum is 100%");
 		cfg.save();
-		
+
 		CustomizeableGuiHandler.instance.preInit(event);
 	}
 	@SubscribeEvent
@@ -114,6 +127,8 @@ public class ClientProxy extends CommonProxy
 			return new GuiArmorStand(player.inventory, (TileEntityArmorStand) world.getTileEntity(x, y, z));
 		case 2:
 			return new GuiTravellersInvCustomization(player);
+		case 3:
+			return new GuiBacktool(player);
 		}
 		return null;
 	}
@@ -173,16 +188,105 @@ public class ClientProxy extends CommonProxy
 	@SubscribeEvent
 	public void renderPlayerSpecialPre(RenderPlayerEvent.Specials.Pre event)
 	{
+		if(toolDisplayMap.containsKey(event.entityPlayer.getCommandSenderName()))
+			for(ToolDisplayInfo tdi : toolDisplayMap.get(event.entityPlayer.getCommandSenderName()))
+				if(tdi!=null)
+				{
+					if(tdi.hideWhenEquipped&&tdi.slot==event.entityPlayer.inventory.currentItem)
+						continue;
+					ItemStack stack = event.entityPlayer.inventory.getStackInSlot(tdi.slot);
+					if(stack!=null)
+					{
+						GL11.glPushMatrix();
+						boolean isBlock = MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED)==null && stack.getItemSpriteNumber()==0 && stack.getItem() instanceof ItemBlock;
+						if(tdi.rotateWithHead)
+						{
+							GL11.glRotatef(event.entityPlayer.rotationYawHead-event.entityPlayer.renderYawOffset, 0, 1, 0);
+								GL11.glRotatef(event.entityPlayer.rotationPitch, 1, 0, 0);
+						}
+						GL11.glTranslated(.5,.5,0);
+						GL11.glScalef(tdi.scale[0],tdi.scale[1],tdi.scale[2]);
+						GL11.glTranslated(-.5,-.5,0);
+
+						GL11.glTranslated(-.5/tdi.scale[0],-.25/tdi.scale[1], 0);
+
+						if(tdi.translation!=null && tdi.translation.length>2)
+							GL11.glTranslatef(tdi.translation[0]/tdi.scale[0],tdi.translation[1]/tdi.scale[1],tdi.translation[2]/tdi.scale[2]);
+
+						GL11.glTranslated(.5,.5,0);
+						if(tdi.rotation!=null && tdi.rotation.length>2)
+						{
+							GL11.glRotatef(tdi.rotation[1], 0,1,0);
+							GL11.glRotatef(tdi.rotation[2], 0,0,1);
+							GL11.glRotatef(tdi.rotation[0], 1,0,0);
+						}
+						if(!isBlock)
+						GL11.glTranslated(-.5,-.5,0);
+
+						if(MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED)==null)
+						{
+							RenderHelper.enableStandardItemLighting();
+							Minecraft.getMinecraft().getTextureManager().bindTexture(Minecraft.getMinecraft().getTextureManager().getResourceLocation(stack.getItemSpriteNumber()));
+							if(stack.getItemSpriteNumber()==0 && stack.getItem() instanceof ItemBlock)
+							{
+								Block b = Block.getBlockFromItem(stack.getItem());
+								if(b.getRenderBlockPass()!=0)
+								{
+									GL11.glDepthMask(false);
+									RenderBlocks.getInstance().renderBlockAsItem(b, stack.getItemDamage(), 1.0F);
+									GL11.glDepthMask(true);
+								}
+								else
+									RenderBlocks.getInstance().renderBlockAsItem(b, stack.getItemDamage(), 1.0F);
+								}
+							else
+							{
+								for(int pass=0; pass<stack.getItem().getRenderPasses(stack.getItemDamage()); pass++)
+								{
+									IIcon icon = event.entityPlayer.getItemIcon(stack, pass);
+									ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMinU(),icon.getMinV(),icon.getMaxU(),icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625F);
+								}
+							}
+						}
+						else
+						{
+							IItemRenderer customRender = MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED);
+							if(customRender.shouldUseRenderHelper(ItemRenderType.EQUIPPED, stack, ItemRendererHelper.EQUIPPED_BLOCK))
+								customRender.renderItem(ItemRenderType.EQUIPPED, stack, RenderBlocks.getInstance(),event.entityPlayer);
+							else
+								customRender.renderItem(ItemRenderType.EQUIPPED, stack, event.entityPlayer);
+						}
+						GL11.glScalef(1/tdi.scale[0],1/tdi.scale[1],1/tdi.scale[2]);
+
+						GL11.glPopMatrix();
+					}
+				}
+
+		if(BaublesApi.getBaubles(event.entityPlayer)!=null)
+			for(int i=0;i<BaublesApi.getBaubles(event.entityPlayer).getSizeInventory();i++)
+			{
+				ItemStack bb = BaublesApi.getBaubles(event.entityPlayer).getStackInSlot(i);
+				if(bb!=null && bb.getItem().getArmorModel(event.entityPlayer, bb, 0)!=null)
+				{
+					GL11.glPushMatrix();
+					GL11.glColor4f(1, 1, 1, 1);
+					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+					GL11.glPopMatrix();
+				}
+			}
 		if(equipmentMap.containsKey(event.entityPlayer.getCommandSenderName()))
 		{
 			for(int i=0;i<equipmentMap.get(event.entityPlayer.getCommandSenderName()).length;i++)
 			{
 				ItemStack eq = equipmentMap.get(event.entityPlayer.getCommandSenderName())[i];
-				if(eq!=null && eq.getItem().getArmorModel(event.entityPlayer, eq, 4+i)!=null)
+				if(eq!=null && eq.getItem().getArmorModel(event.entityPlayer, eq, 0)!=null)
 				{
 					if(i==0)
 						event.renderCape = false;
+					GL11.glPushMatrix();
+					GL11.glColor4f(1, 1, 1, 1);
 					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+					GL11.glPopMatrix();
 				}
 			}
 		}
@@ -211,7 +315,7 @@ public class ClientProxy extends CommonProxy
 			return;
 		String tex = stack.getItem().getArmorTexture(stack, player, 4+slot, null);
 		if(tex!=null && !tex.isEmpty())
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(stack.getItem().getArmorTexture(stack, player, 4+slot, null)));
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(stack.getItem().getArmorTexture(stack, player, 0, null)));
 
 		m.aimedBow = renderer.modelBipedMain.aimedBow;
 		m.heldItemRight = renderer.modelBipedMain.heldItemRight;
@@ -323,7 +427,7 @@ public class ClientProxy extends CommonProxy
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(ActiveAbilityHandler.instance);
 		CustomizeableGuiHandler.instance.init();
-		
+
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
 		RenderingRegistry.registerBlockHandler(new BlockRenderArmorStand());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorStand.class, new TileRenderArmorStand());

@@ -41,36 +41,39 @@ public class ActiveAbilityHandler
 
 		ItemStack[] is = player.inventory.armorInventory;
 		for(int armor=0; armor<is.length; armor++)
-			if(is[armor]!=null && is[armor].getItem() instanceof IActiveAbility && ((IActiveAbility)is[armor].getItem()).canActivate(player, is[armor]) )
-				list.add( new Object[]{is[armor],armor});
+			if(is[armor]!=null && is[armor].getItem() instanceof IActiveAbility && ((IActiveAbility)is[armor].getItem()).canActivate(player, is[armor], false) )
+				list.add( new Object[]{is[armor],9+armor});
 
 		if(TravellersGear.BAUBLES)
 		{
 			IInventory inv = BaublesApi.getBaubles(player);
 			for(int i=0; i<inv.getSizeInventory(); i++)
-				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
-					list.add(new Object[]{inv.getStackInSlot(i),4+i});
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
+					list.add(new Object[]{inv.getStackInSlot(i),9+4+i});
 		}
 
 		is = TravellersGearAPI.getExtendedInventory(player);
 		for(int tg=0; tg<is.length; tg++)
-			if(is[tg]!=null && is[tg].getItem() instanceof IActiveAbility && ((IActiveAbility)is[tg].getItem()).canActivate(player, is[tg]) )
-				list.add( new Object[]{is[tg],8+tg});
+			if(is[tg]!=null && is[tg].getItem() instanceof IActiveAbility && ((IActiveAbility)is[tg].getItem()).canActivate(player, is[tg], false) )
+				list.add( new Object[]{is[tg],9+8+tg});
 
 		if(TravellersGear.MARI)
 		{
 			IInventory inv = ModCompatability.getMariInventory(player);
 			for(int i=0; i<inv.getSizeInventory(); i++)
-				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
-					list.add(new Object[]{inv.getStackInSlot(i),12+i});
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
+					list.add(new Object[]{inv.getStackInSlot(i),9+12+i});
 		}
 		if(TravellersGear.TCON)
 		{
 			IInventory inv = ModCompatability.getTConArmorInv(player);
 			for(int i=1; i<3; i++)
-				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i)) )
-					list.add(new Object[]{inv.getStackInSlot(i),15+i});
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
+					list.add(new Object[]{inv.getStackInSlot(i),9+15+i});
 		}
+		if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof IActiveAbility&& ((IActiveAbility)player.getCurrentEquippedItem().getItem()).canActivate(player, player.getCurrentEquippedItem(), true) )
+			list.add(list.size()/2, new Object[]{player.getCurrentEquippedItem(),player.inventory.currentItem});
+
 		return list.toArray(new Object[0][]);
 	}
 
@@ -113,7 +116,7 @@ public class ActiveAbilityHandler
 			if(sel>=0 && sel<gear.length && gear[sel][0]!=null)
 			{
 				ItemStack stack = (ItemStack) gear[sel][0];
-				if(stack.getItem() instanceof IActiveAbility && ((IActiveAbility)stack.getItem()).canActivate((EntityPlayer) player, stack))
+				if(stack.getItem() instanceof IActiveAbility && ((IActiveAbility)stack.getItem()).canActivate((EntityPlayer) player, stack, stack.equals( ((EntityPlayer)player).getCurrentEquippedItem() )))
 					((IActiveAbility)stack.getItem()).activate((EntityPlayer) player, stack);
 				TravellersGear.instance.packetPipeline.sendToServer(new PacketActiveAbility(player,stack, (Integer) gear[sel][1]));
 			}

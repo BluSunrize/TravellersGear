@@ -36,15 +36,16 @@ public class TGClientCommand extends CommandBase
 		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("gui"))
 		{
 			TravellersGear.instance.packetPipeline.sendToServer(new PacketOpenGui((EntityPlayer) sender,2));
-			//			System.out.println(sender.getEntityWorld().isRemote);
-//			Minecraft.getMinecraft().displayGuiScreen(new GuiTravellersInvCustomization((EntityPlayer) sender));
-//			((EntityPlayer)sender).openGui(TravellersGear.instance, 2, sender.getEntityWorld(), sender.getPlayerCoordinates().posX, sender.getPlayerCoordinates().posY, sender.getPlayerCoordinates().posZ);
+		}
+		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("toolDisplay"))
+		{
+			TravellersGear.instance.packetPipeline.sendToServer(new PacketOpenGui((EntityPlayer) sender,3));
 		}
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(ICommandSender sender) {
-		// TODO Auto-generated method stub
+	public boolean canCommandSenderUseCommand(ICommandSender sender)
+	{
 		return true;
 	}
 
@@ -52,7 +53,7 @@ public class TGClientCommand extends CommandBase
 	public List addTabCompletionOptions(ICommandSender sender, String[] args)
 	{
 		if(args==null || (args.length==1&&args[0].isEmpty()))
-			return Arrays.asList(new String[]{"gui"});
+			return Arrays.asList(new String[]{"gui","toolDisplay"});
 		return null;
 	}
 
