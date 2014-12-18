@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -24,7 +25,7 @@ import travellersgear.client.ClientProxy;
 import travellersgear.client.ToolDisplayInfo;
 import travellersgear.common.network.PacketNBTSync;
 
-public class GuiBacktool extends GuiScreen
+public class GuiConfigDisplayItems extends GuiScreen
 {
 	float playerRotationH;
 	float playerRotationV;
@@ -32,7 +33,7 @@ public class GuiBacktool extends GuiScreen
 	ToolDisplayInfo[] tools;
 	int sel=-1;
 
-	public GuiBacktool(EntityPlayer player)
+	public GuiConfigDisplayItems(EntityPlayer player)
 	{
 		this.player = player;
 
@@ -52,11 +53,11 @@ public class GuiBacktool extends GuiScreen
 	{
 		this.buttonList.clear();
 		if(tools.length<6)
-			this.buttonList.add(new GuiButton(0, 20,10, 40,20, "Add"));
+			this.buttonList.add(new GuiButton(0, 20,10, 40,20, StatCollector.translateToLocal("TG.guitext.add")));
 
 		if(sel>=0 && tools.length>sel && tools[sel]!=null)
 		{
-			this.buttonList.add(new GuiButton(1, 60,10, 40,20, "Remove"));
+			this.buttonList.add(new GuiButton(1, 60,10, 40,20, StatCollector.translateToLocal("TG.guitext.rem")));
 
 			float[] trn = tools[sel].translation;
 			this.buttonList.add( new GuiButtonSlider(this, 2, width-100,height-170, 80,10, (trn[0]+1)/2f, -1) );
@@ -199,27 +200,29 @@ public class GuiBacktool extends GuiScreen
 		if(sel>=0 && tools.length>sel && tools[sel]!=null)
 		{
 			DecimalFormat df = new DecimalFormat("0.000");
-			this.drawString(fontRendererObj, "Translation", width-90,height-180, 0xffffff);
+
+
+			this.drawString(fontRendererObj, StatCollector.translateToLocal("TG.guitext.translation"), width-90,height-180, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].translation[0]), width-120,height-168, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].translation[1]), width-120,height-158, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].translation[2]), width-120,height-148, 0xffffff);
 
-			this.drawString(fontRendererObj, "Rotation", width-90,height-130, 0xffffff);
+			this.drawString(fontRendererObj, StatCollector.translateToLocal("TG.guitext.rotation"), width-90,height-130, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].rotation[0]), width-120,height-118, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].rotation[1]), width-120,height-108, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].rotation[2]), width-120,height- 98, 0xffffff);
 
-			this.drawString(fontRendererObj, "Scale", width-90,height- 80, 0xffffff);
+			this.drawString(fontRendererObj, StatCollector.translateToLocal("TG.guitext.scale"), width-90,height- 80, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].scale[0]), width-120,height- 68, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].scale[1]), width-120,height- 58, 0xffffff);
 			this.drawCenteredString(fontRendererObj, df.format(tools[sel].scale[2]), width-120,height- 48, 0xffffff);
 
 			GuiButton but = (GuiButton)this.buttonList.get(11);
 			if(mX>=but.xPosition && mY>=but.yPosition && mX<but.xPosition+but.width && mY<but.yPosition+but.height)
-				this.drawHoveringText(Arrays.asList("Hide when equipped"), mX,mY, this.fontRendererObj);
+				this.drawHoveringText(Arrays.asList(StatCollector.translateToLocal("TG.guitext.hideWhenEquipped")), mX,mY, this.fontRendererObj);
 			but = (GuiButton)this.buttonList.get(12);
 			if(mX>=but.xPosition && mY>=but.yPosition && mX<but.xPosition+but.width && mY<but.yPosition+but.height)
-				this.drawHoveringText(Arrays.asList("Rotate with head"), mX,mY, this.fontRendererObj);
+				this.drawHoveringText(Arrays.asList(StatCollector.translateToLocal("TG.guitext.rotateWithHead")), mX,mY, this.fontRendererObj);
 		}
 	}
 

@@ -31,6 +31,14 @@ TG.guitext.renderTG=Render Traveller's Gear
 TG.guitext.renderNoBaubTG=Don't render Baubles or Traveller's Gear
 TG.guitext.style=Style >
 
+TG.guitext.add=Add
+TG.guitext.rem=Remove
+TG.guitext.translation=Translation
+TG.guitext.rotation=Rotation
+TG.guitext.scale=Scale
+TG.guitext.hideWhenEquipped=Hide when equipped
+TG.guitext.rotateWithHead=Rotate with head
+					
 TG.chattext.showItem=%1$s shows Item: %2$s
 
 itemGroup.travellersgear=Traveller's Gear

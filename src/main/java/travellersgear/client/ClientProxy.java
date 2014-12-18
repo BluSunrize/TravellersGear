@@ -47,7 +47,7 @@ import travellersgear.TravellersGear;
 import travellersgear.api.RenderTravellersGearEvent;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.gui.GuiArmorStand;
-import travellersgear.client.gui.GuiBacktool;
+import travellersgear.client.gui.GuiConfigDisplayItems;
 import travellersgear.client.gui.GuiButtonGear;
 import travellersgear.client.gui.GuiTravellersInv;
 import travellersgear.client.gui.GuiTravellersInvCustomization;
@@ -128,7 +128,7 @@ public class ClientProxy extends CommonProxy
 		case 2:
 			return new GuiTravellersInvCustomization(player);
 		case 3:
-			return new GuiBacktool(player);
+			return new GuiConfigDisplayItems(player);
 		}
 		return null;
 	}

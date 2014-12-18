@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiButtonSlider extends GuiButton
 {
-	GuiBacktool gui;
+	GuiConfigDisplayItems gui;
 	float valueH=0;
 	boolean moveH=true;
 	float valueV=0;
@@ -23,7 +23,7 @@ public class GuiButtonSlider extends GuiButton
 	String name;
 	DecimalFormat displayFormat= new DecimalFormat("0.00");
 
-	public GuiButtonSlider(GuiBacktool gui, int id, int x, int y, int width, int height, float startH, float startV)
+	public GuiButtonSlider(GuiConfigDisplayItems gui, int id, int x, int y, int width, int height, float startH, float startV)
 	{
 		super(id, x, y, width, height, "");
 		this.gui=gui;
