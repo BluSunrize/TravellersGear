@@ -220,12 +220,14 @@ public class ClientProxy extends CommonProxy
 			TravellersGear.instance.packetPipeline.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
 	
 		if(toolDisplayMap.containsKey(event.entityPlayer.getCommandSenderName()))
+		{
 			for(ToolDisplayInfo tdi : toolDisplayMap.get(event.entityPlayer.getCommandSenderName()))
 				if(tdi!=null)
 				{
-					if(tdi.hideWhenEquipped&&tdi.slot==event.entityPlayer.inventory.currentItem)
-						continue;
 					ItemStack stack = event.entityPlayer.inventory.getStackInSlot(tdi.slot);
+					if(tdi.hideWhenEquipped&& ItemStack.areItemStacksEqual(stack, event.entityPlayer.getCurrentEquippedItem()))
+						continue;
+					
 					if(stack!=null)
 					{
 						GL11.glPushMatrix();
@@ -292,6 +294,7 @@ public class ClientProxy extends CommonProxy
 						GL11.glPopMatrix();
 					}
 				}
+		}
 	}
 	public static float interpolateRotation(float par1, float par2, float par3)
 	{

@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.client.ToolDisplayInfo;
@@ -63,10 +64,15 @@ public class PacketNBTSync extends AbstractPacket
 		ClientProxy.equipmentMap.put(player.getCommandSenderName(), TravellersGearAPI.getExtendedInventory((EntityPlayer) player));
 		if(this.tag.hasKey("toolDisplay"))
 		{
+			System.out.println("updating displayTools for "+((EntityPlayer)player).getCommandSenderName());
 			NBTTagList list = this.tag.getTagList("toolDisplay", 10);
-			ClientProxy.toolDisplayMap.put(player.getCommandSenderName(), new ToolDisplayInfo[list.tagCount()]);
+			ToolDisplayInfo[] tdi = new ToolDisplayInfo[list.tagCount()];
 			for(int i=0; i<list.tagCount(); i++)
-				ClientProxy.toolDisplayMap.get(player.getCommandSenderName())[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i));
+			{
+				tdi[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i));
+			System.out.println(tdi[i]+", "+tdi[i].slot);
+			}
+			ClientProxy.toolDisplayMap.put(player.getCommandSenderName(), tdi);
 		}
 	}
 
@@ -80,6 +86,7 @@ public class PacketNBTSync extends AbstractPacket
 		if(!(player instanceof EntityPlayer))
 			return;
 		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
+		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync((EntityPlayer) player));
 	}
 
 }

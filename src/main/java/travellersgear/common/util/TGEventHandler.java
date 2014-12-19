@@ -1,18 +1,24 @@
 package travellersgear.common.util;
 
+import java.util.HashMap;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
+import travellersgear.client.ToolDisplayInfo;
 import travellersgear.common.network.PacketNBTSync;
+import travellersgear.common.network.PacketPlayerInventorySync;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class TGEventHandler
 {
+	static HashMap<String, ItemStack[]> previousInv = new HashMap();
 	@SubscribeEvent
 	public void playerTick(TickEvent.PlayerTickEvent event)
 	{
@@ -21,9 +27,41 @@ public class TGEventHandler
 
 		if(event.phase.equals(TickEvent.Phase.START) && event.player!=null)
 		{
+			ItemStack[] prev = previousInv.get(event.player.getCommandSenderName());
+			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
+			int[] targetedSlots = new int[list.tagCount()];
+			for(int i=0;i<list.tagCount();i++)
+				targetedSlots[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i)).slot;
+
+			if(list!=null && targetedSlots!=null && targetedSlots.length>0)
+				if(prev==null || prev.length!=targetedSlots.length)
+					TravellersGear.instance.packetPipeline.sendToAll(new PacketPlayerInventorySync(event.player));
+				else
+				{
+					boolean packet = false;
+					for(int i=0; i<prev.length; i++)
+						if(!ItemStack.areItemStacksEqual(prev[i], event.player.inventory.mainInventory[targetedSlots[i]]))
+							packet=true;
+					if(packet)
+						TravellersGear.instance.packetPipeline.sendToAll(new PacketPlayerInventorySync(event.player));
+				}
+
+
 			for(ItemStack stack : TravellersGearAPI.getExtendedInventory(event.player))
 				if(stack!=null && ModCompatability.getTravellersGearSlot(stack)!=-1)
 					Utils.tickTravGear(event.player, stack);
+		}
+		if(event.phase.equals(TickEvent.Phase.END) && event.player!=null)
+		{
+			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
+			int[] targetedSlots = new int[list.tagCount()];
+			for(int i=0;i<list.tagCount();i++)
+				targetedSlots[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i)).slot;
+
+			ItemStack[] newPrev = new ItemStack[targetedSlots.length];
+			for(int i=0; i<newPrev.length; i++)
+				newPrev[i] = event.player.inventory.mainInventory[targetedSlots[i]];
+			previousInv.put(event.player.getCommandSenderName(), newPrev);
 		}
 	}
 
