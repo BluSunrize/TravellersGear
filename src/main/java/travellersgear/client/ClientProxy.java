@@ -31,7 +31,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
-import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -47,8 +46,8 @@ import travellersgear.TravellersGear;
 import travellersgear.api.RenderTravellersGearEvent;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.gui.GuiArmorStand;
-import travellersgear.client.gui.GuiConfigDisplayItems;
 import travellersgear.client.gui.GuiButtonGear;
+import travellersgear.client.gui.GuiConfigDisplayItems;
 import travellersgear.client.gui.GuiTravellersInv;
 import travellersgear.client.gui.GuiTravellersInvCustomization;
 import travellersgear.client.handlers.ActiveAbilityHandler;
@@ -218,7 +217,7 @@ public class ClientProxy extends CommonProxy
 		}
 		else if(event.entityPlayer.getPlayerCoordinates()!=null)
 			TravellersGear.instance.packetPipeline.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
-	
+
 		if(toolDisplayMap.containsKey(event.entityPlayer.getCommandSenderName()))
 		{
 			for(ToolDisplayInfo tdi : toolDisplayMap.get(event.entityPlayer.getCommandSenderName()))
@@ -227,7 +226,7 @@ public class ClientProxy extends CommonProxy
 					ItemStack stack = event.entityPlayer.inventory.getStackInSlot(tdi.slot);
 					if(tdi.hideWhenEquipped&& ItemStack.areItemStacksEqual(stack, event.entityPlayer.getCurrentEquippedItem()))
 						continue;
-					
+
 					if(stack!=null)
 					{
 						GL11.glPushMatrix();
@@ -235,7 +234,7 @@ public class ClientProxy extends CommonProxy
 						if(tdi.rotateWithHead)
 						{
 							GL11.glRotatef(event.entityPlayer.rotationYawHead-event.entityPlayer.renderYawOffset, 0, 1, 0);
-								GL11.glRotatef(event.entityPlayer.rotationPitch, 1, 0, 0);
+							GL11.glRotatef(event.entityPlayer.rotationPitch, 1, 0, 0);
 						}
 						GL11.glTranslated(.5,.5,0);
 						GL11.glScalef(tdi.scale[0],tdi.scale[1],tdi.scale[2]);
@@ -254,12 +253,12 @@ public class ClientProxy extends CommonProxy
 							GL11.glRotatef(tdi.rotation[0], 1,0,0);
 						}
 						if(!isBlock)
-						GL11.glTranslated(-.5,-.5,0);
+							GL11.glTranslated(-.5,-.5,0);
 
+						Minecraft.getMinecraft().getTextureManager().bindTexture(Minecraft.getMinecraft().getTextureManager().getResourceLocation(stack.getItemSpriteNumber()));
 						if(MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED)==null)
 						{
 							RenderHelper.enableStandardItemLighting();
-							Minecraft.getMinecraft().getTextureManager().bindTexture(Minecraft.getMinecraft().getTextureManager().getResourceLocation(stack.getItemSpriteNumber()));
 							if(stack.getItemSpriteNumber()==0 && stack.getItem() instanceof ItemBlock)
 							{
 								Block b = Block.getBlockFromItem(stack.getItem());
@@ -271,7 +270,7 @@ public class ClientProxy extends CommonProxy
 								}
 								else
 									RenderBlocks.getInstance().renderBlockAsItem(b, stack.getItemDamage(), 1.0F);
-								}
+							}
 							else
 							{
 								for(int pass=0; pass<stack.getItem().getRenderPasses(stack.getItemDamage()); pass++)
@@ -283,11 +282,10 @@ public class ClientProxy extends CommonProxy
 						}
 						else
 						{
+							GL11.glEnable(GL11.GL_BLEND);
+							OpenGlHelper.glBlendFunc(770, 771, 0, 1);
 							IItemRenderer customRender = MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED);
-							if(customRender.shouldUseRenderHelper(ItemRenderType.EQUIPPED, stack, ItemRendererHelper.EQUIPPED_BLOCK))
-								customRender.renderItem(ItemRenderType.EQUIPPED, stack, RenderBlocks.getInstance(),event.entityPlayer);
-							else
-								customRender.renderItem(ItemRenderType.EQUIPPED, stack, event.entityPlayer);
+							customRender.renderItem(ItemRenderType.EQUIPPED, stack, RenderBlocks.getInstance(),event.entityPlayer);
 						}
 						GL11.glScalef(1/tdi.scale[0],1/tdi.scale[1],1/tdi.scale[2]);
 

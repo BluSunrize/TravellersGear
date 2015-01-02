@@ -171,6 +171,7 @@ public class ContainerArmorStand extends Container
 	{
 		ModCompatability.baubleInvBlockEvents(invBaubles, true);
 		this.invTG.allowEvents = false;
+		System.out.println("Inserting Stacks");
 		super.putStacksInSlots(stacks);
 	}
 	@Override
@@ -212,7 +213,7 @@ public class ContainerArmorStand extends Container
 				((Slot)this.inventorySlots.get(0+armSlot)).putStack(tempAS);
 				((Slot)this.inventorySlots.get(0+armSlot)).onSlotChanged();
 
-				if(armSlot>=tgSlotStart && armSlot<mariSlotStart)
+				if(player.worldObj.isRemote && armSlot>=tgSlotStart && armSlot<mariSlotStart)
 					ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
 				return null;
 			}
@@ -270,7 +271,8 @@ public class ContainerArmorStand extends Container
 					else if(tileEntity.getStackInSlot(8+type)==null)
 						if(!mergeItemStack(stackInSlot, playerSlots+8+type, playerSlots+8+type+1, true))
 							return null;
-					ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
+					if(player.worldObj.isRemote)
+						ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
 				}
 				else if(TravellersGear.MARI && ModCompatability.isMariJewelry(stackInSlot))
 				{

@@ -64,13 +64,13 @@ public class PacketNBTSync extends AbstractPacket
 		ClientProxy.equipmentMap.put(player.getCommandSenderName(), TravellersGearAPI.getExtendedInventory((EntityPlayer) player));
 		if(this.tag.hasKey("toolDisplay"))
 		{
-			System.out.println("updating displayTools for "+((EntityPlayer)player).getCommandSenderName());
+			//System.out.println("updating displayTools for "+((EntityPlayer)player).getCommandSenderName());
 			NBTTagList list = this.tag.getTagList("toolDisplay", 10);
 			ToolDisplayInfo[] tdi = new ToolDisplayInfo[list.tagCount()];
 			for(int i=0; i<list.tagCount(); i++)
 			{
 				tdi[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i));
-			System.out.println(tdi[i]+", "+tdi[i].slot);
+				//System.out.println(tdi[i]+", "+tdi[i].slot);
 			}
 			ClientProxy.toolDisplayMap.put(player.getCommandSenderName(), tdi);
 		}

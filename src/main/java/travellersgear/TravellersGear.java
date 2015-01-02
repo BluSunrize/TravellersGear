@@ -42,7 +42,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid = TravellersGear.MODID, name = TravellersGear.MODNAME, version = TravellersGear.VERSION, dependencies="required-after:Baubles")
+@Mod(modid = TravellersGear.MODID, name = TravellersGear.MODNAME, version = TravellersGear.VERSION, dependencies="required-after:Baubles;before:WitchingGadgets")
 public class TravellersGear
 {
 	public static final String MODID = "TravellersGear";
@@ -95,7 +95,7 @@ public class TravellersGear
 
 		OreDictionary.registerOre("baubleRingGold",new ItemStack(simpleGear,1,2));
 		OreDictionary.registerOre("baubleRingSilver",new ItemStack(simpleGear,1,3));
-		OreDictionary.registerOre("baubleBeltIron",new ItemStack(simpleGear,1,1));
+		OreDictionary.registerOre("baubleBeltBase",new ItemStack(simpleGear,1,1));
 		OreDictionary.registerOre("travelgearCloakBase",new ItemStack(simpleGear,1,0));
 		OreDictionary.registerOre("travelgearVambraceBase",new ItemStack(simpleGear,1,5));
 		OreDictionary.registerOre("travelgearShoulderBase",new ItemStack(simpleGear,1,4));
@@ -107,7 +107,7 @@ public class TravellersGear
 			{
 				OreDictionary.registerOre("baubleAmuletGold",new ItemStack(blankBauble,1,0));
 				OreDictionary.registerOre("baubleRingGold",new ItemStack(blankBauble,1,1));
-				OreDictionary.registerOre("baubleBeltGold",new ItemStack(blankBauble,1,2));
+				OreDictionary.registerOre("baubleBeltBase",new ItemStack(blankBauble,1,2));
 			}
 		}
 

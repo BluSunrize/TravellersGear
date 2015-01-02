@@ -59,7 +59,7 @@ public class ContainerTravellersInv extends Container
 		travGear[3]=addSlot(new SlotRestricted(this.invTG, 3,  6, 98, player, SlotRestricted.SlotType.TRAVEL_TITLE));
 		nonInventorySlots+=(travGear[0]>=0?1:0)+(travGear[1]>=0?1:0)+(travGear[2]>=0?1:0)+(travGear[3]>=0?1:0);
 
-		if(TravellersGear.BAUBLES)
+		if(TravellersGear.BAUBLES && invBaubles!=null)
 		{
 			baubles[0]=addSlot(new SlotRestricted(this.invBaubles, 0, 24,  8, player, SlotRestricted.SlotType.BAUBLE_NECK));
 			baubles[1]=addSlot(new SlotRestricted(this.invBaubles, 1, 24, 98, player, SlotRestricted.SlotType.BAUBLE_RING));
@@ -68,18 +68,18 @@ public class ContainerTravellersInv extends Container
 			nonInventorySlots+=(baubles[0]>=0?1:0)+(baubles[1]>=0?1:0)+(baubles[2]>=0?1:0)+(baubles[3]>=0?1:0);
 		}
 
-		if(TravellersGear.MARI)
+		this.invMari = ModCompatability.getMariInventory(player);
+		if(TravellersGear.MARI && invMari!=null)
 		{
-			this.invMari = ModCompatability.getMariInventory(player);
 			mari[0]=addSlot(new SlotRestricted(this.invMari, 0, 60, 98, player, SlotRestricted.SlotType.MARI_RING));
 			mari[1]=addSlot(new SlotRestricted(this.invMari, 1, 78, 80, player, SlotRestricted.SlotType.MARI_BRACELET));
 			mari[2]=addSlot(new SlotRestricted(this.invMari, 2, 60,  8, player, SlotRestricted.SlotType.MARI_NECKLACE));
 			nonInventorySlots+=(mari[0]>=0?1:0)+(mari[1]>=0?1:0)+(mari[2]>=0?1:0);
 		}
 
-		if(TravellersGear.TCON)
+		this.invTConArmor = ModCompatability.getTConArmorInv(player);
+		if(TravellersGear.TCON && invTConArmor!=null)
 		{
-			this.invTConArmor = ModCompatability.getTConArmorInv(player);
 			tcon[0]=addSlot(new SlotRestricted(this.invTConArmor, 1, 78, 98, player, SlotRestricted.SlotType.TINKERS_GLOVE));
 			tcon[1]=addSlot(new SlotRestricted(this.invTConArmor, 2, 78, 8, player, SlotRestricted.SlotType.TINKERS_BAG));
 			tcon[2]=addSlot(new SlotRestricted(this.invTConArmor, 4, 191, 31, player, SlotRestricted.SlotType.TINKERS_HEART_R));
@@ -418,10 +418,11 @@ public class ContainerTravellersInv extends Container
 			{
 				if(bme.hideElement)
 				{
+					IInventory iinv = slot.inventory;
 					int indx = slot.getSlotIndex();
 					int x = slot.xDisplayPosition;
 					int y = slot.yDisplayPosition;
-					slot = new SlotNull(indx,x,y);
+					slot = new SlotNull(iinv,indx,x,y);
 				}
 				slot.xDisplayPosition = bme.elementX+1;
 				slot.yDisplayPosition = bme.elementY+1;
@@ -431,10 +432,11 @@ public class ContainerTravellersInv extends Container
 			boolean[] hidden = CommonProxy.hiddenSlots.get(player.getCommandSenderName());
 			if(hidden!=null && hidden.length>this.inventorySlots.size() && hidden[this.inventorySlots.size()])
 			{
+				IInventory iinv = slot.inventory;
 				int indx = slot.getSlotIndex();
 				int x = slot.xDisplayPosition;
 				int y = slot.yDisplayPosition;
-				slot = new SlotNull(indx,x,y);
+				slot = new SlotNull(iinv,indx,x,y);
 			}
 		}
 		//System.out.print(this.inventorySlots.size()+":"+(slot instanceof SlotNull)+", ");

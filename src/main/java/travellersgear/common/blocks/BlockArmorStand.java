@@ -72,9 +72,16 @@ public class BlockArmorStand extends BlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int idk, float what, float these, float are)
 	{
+		System.out.println(player.getCurrentEquippedItem());
 		if(!player.isSneaking())
 		{
 			player.openGui(TravellersGear.instance, 1, world, x, y, z);
+			return true;
+		}
+		if(player.getCurrentEquippedItem()!=null)
+		{
+			System.out.println("set damage");
+			player.getCurrentEquippedItem().damageItem(-356, player);
 			return true;
 		}
 		return false;

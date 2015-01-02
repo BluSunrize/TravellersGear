@@ -1,7 +1,6 @@
 package travellersgear.common.inventory;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -9,9 +8,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SlotNull extends Slot
 {
-	public SlotNull(int id, int x, int y)
+	public SlotNull(IInventory inv, int id, int x, int y)
 	{
-		super(new InventoryBasic("TGFakeInv",false,1), id, x, y);
+		super(inv, id, x, y);
 	}
 
 	@Override

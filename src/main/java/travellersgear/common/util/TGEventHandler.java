@@ -1,17 +1,27 @@
 package travellersgear.common.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import travellersgear.TravellersGear;
+import travellersgear.api.IEventGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ToolDisplayInfo;
 import travellersgear.common.network.PacketNBTSync;
 import travellersgear.common.network.PacketPlayerInventorySync;
+import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -98,4 +108,81 @@ public class TGEventHandler
 		TravellersGear.TCON &= ModCompatability.getTConArmorInv(event.player)!=null;
 	}
 
+
+	@SubscribeEvent
+	public void onPlayerDamaged(LivingHurtEvent event)
+	{
+		if(event.entityLiving instanceof EntityPlayer)
+			for(ItemStack stack : buildEventGearList((EntityPlayer) event.entityLiving))
+				((IEventGear)stack.getItem()).onUserDamaged(event, stack);
+	}
+	@SubscribeEvent
+	public void onPlayerAttacking(AttackEntityEvent event)
+	{
+		for(ItemStack stack : buildEventGearList(event.entityPlayer))
+			((IEventGear)stack.getItem()).onUserAttacking(event, stack);
+	}
+	@SubscribeEvent
+	public void onPlayerJump(LivingJumpEvent event)
+	{
+		if(event.entityLiving instanceof EntityPlayer)
+			for(ItemStack stack : buildEventGearList((EntityPlayer) event.entityLiving))
+				((IEventGear)stack.getItem()).onUserJump(event, stack);
+	}
+	@SubscribeEvent
+	public void onPlayerFall(LivingFallEvent event)
+	{
+		if(event.entityLiving instanceof EntityPlayer)
+			for(ItemStack stack : buildEventGearList((EntityPlayer) event.entityLiving))
+				((IEventGear)stack.getItem()).onUserFall(event, stack);
+	}
+	@SubscribeEvent
+	public void onPlayerTargeted(LivingSetAttackTargetEvent event)
+	{
+		if(event.target instanceof EntityPlayer)
+			for(ItemStack stack : buildEventGearList((EntityPlayer) event.target))
+				((IEventGear)stack.getItem()).onUserTargeted(event, stack);
+	}
+
+	public ItemStack[] buildEventGearList(EntityPlayer player)
+	{
+		ArrayList<ItemStack> list = new ArrayList();
+
+		ItemStack[] is = player.inventory.armorInventory;
+		for(int armor=0; armor<is.length; armor++)
+			if(is[armor]!=null && is[armor].getItem() instanceof IEventGear)
+				list.add(is[armor]);
+
+		if(TravellersGear.BAUBLES)
+		{
+			IInventory inv = BaublesApi.getBaubles(player);
+			for(int i=0; i<inv.getSizeInventory(); i++)
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IEventGear)
+					list.add(inv.getStackInSlot(i));
+		}
+
+		is = TravellersGearAPI.getExtendedInventory(player);
+		for(int tg=0; tg<is.length; tg++)
+			if(is[tg]!=null && is[tg].getItem() instanceof IEventGear)
+				list.add(is[tg]);
+
+		if(TravellersGear.MARI)
+		{
+			IInventory inv = ModCompatability.getMariInventory(player);
+			for(int i=0; i<inv.getSizeInventory(); i++)
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IEventGear)
+					list.add(inv.getStackInSlot(i));
+		}
+		if(TravellersGear.TCON)
+		{
+			IInventory inv = ModCompatability.getTConArmorInv(player);
+			for(int i=1; i<3; i++)
+				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IEventGear)
+					list.add(inv.getStackInSlot(i));
+		}
+		if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof IEventGear)
+			list.add(list.size()/2, player.getCurrentEquippedItem());
+
+		return list.toArray(new ItemStack[0]);
+	}
 }
