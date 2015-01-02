@@ -13,7 +13,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
@@ -195,7 +194,7 @@ public class ClientProxy extends CommonProxy
 				{
 					GL11.glPushMatrix();
 					GL11.glColor4f(1, 1, 1, 1);
-					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+//					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
 					GL11.glPopMatrix();
 				}
 			}
@@ -210,7 +209,7 @@ public class ClientProxy extends CommonProxy
 						event.renderCape = false;
 					GL11.glPushMatrix();
 					GL11.glColor4f(1, 1, 1, 1);
-					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+//					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
 					GL11.glPopMatrix();
 				}
 			}
@@ -258,7 +257,6 @@ public class ClientProxy extends CommonProxy
 						Minecraft.getMinecraft().getTextureManager().bindTexture(Minecraft.getMinecraft().getTextureManager().getResourceLocation(stack.getItemSpriteNumber()));
 						if(MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED)==null)
 						{
-							RenderHelper.enableStandardItemLighting();
 							if(stack.getItemSpriteNumber()==0 && stack.getItem() instanceof ItemBlock)
 							{
 								Block b = Block.getBlockFromItem(stack.getItem());
@@ -287,8 +285,7 @@ public class ClientProxy extends CommonProxy
 							IItemRenderer customRender = MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED);
 							customRender.renderItem(ItemRenderType.EQUIPPED, stack, RenderBlocks.getInstance(),event.entityPlayer);
 						}
-						GL11.glScalef(1/tdi.scale[0],1/tdi.scale[1],1/tdi.scale[2]);
-
+						
 						GL11.glPopMatrix();
 					}
 				}

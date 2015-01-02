@@ -153,7 +153,7 @@ public class ContainerArmorStand extends Container
 	{
 		return true;
 	}
-
+	
 	@Override
 	public void onContainerClosed(EntityPlayer player)
 	{
@@ -171,7 +171,16 @@ public class ContainerArmorStand extends Container
 	{
 		ModCompatability.baubleInvBlockEvents(invBaubles, true);
 		this.invTG.allowEvents = false;
-		System.out.println("Inserting Stacks");
+		if(!this.player.worldObj.isRemote)
+		{
+			System.out.println("Inserting Stacks");
+			int is = 0;
+			for(ItemStack st : stacks)
+			{
+				System.out.println("  "+is+": "+st);
+				is++;
+			}
+		}
 		super.putStacksInSlots(stacks);
 	}
 	@Override
@@ -196,6 +205,7 @@ public class ContainerArmorStand extends Container
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int iSlot)
 	{
+		System.out.println("TRANSFER");
 		ItemStack stack = null;
 		Slot slotObject = (Slot)this.inventorySlots.get(iSlot);
 		if ((slotObject != null) && (slotObject.getHasStack()))
