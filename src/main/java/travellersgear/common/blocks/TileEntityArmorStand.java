@@ -17,14 +17,15 @@ public class TileEntityArmorStand extends TileEntity implements IInventory
 {
 	public ItemStack[] Inv;
 	public int facing = 4;
-	public boolean renderHelmet = true;
-	public boolean renderChest = true;
-	public boolean renderLegs = true;
-	public boolean renderBoots = true;
-	public boolean renderBaubles = true;
 	public boolean renderFloor = true;
-	public boolean renderTravellersGear = true;
-	public boolean renderMariculture = true;
+	public boolean renderTable = true;
+	public boolean renderArmor[] = {true,true,true,true};
+	public boolean displayBaubles[] = {true,true,true,true};
+	public boolean renderBaubles[] = {true,true,true,true};
+	public boolean displayTravellersGear[] = {true,true,true};
+	public boolean renderTravellersGear[] = {true,true,true};
+	public boolean renderMari[] = {true,true,true};
+	public boolean renderGlove = true;
 
 	public TileEntityArmorStand()
 	{
@@ -76,12 +77,15 @@ public class TileEntityArmorStand extends TileEntity implements IInventory
 				Inv[slot] = ItemStack.loadItemStackFromNBT(tag);
 		}
 		facing = tags.getInteger("facing");
-		renderHelmet = tags.getBoolean("renderHelmet");
-		renderChest = tags.getBoolean("renderChest");
-		renderLegs = tags.getBoolean("renderLegs");
-		renderBoots = tags.getBoolean("renderBoots");
+
 		renderFloor = tags.getBoolean("renderFloor");
-		renderBaubles = tags.getBoolean("renderBaubles");
+		renderArmor= new boolean[]{tags.getBoolean("renderArmor0"),tags.getBoolean("renderArmor1"),tags.getBoolean("renderArmor2"),tags.getBoolean("renderArmor3")};
+		displayBaubles = new boolean[]{tags.getBoolean("displayBaubles0"),tags.getBoolean("displayBaubles1"),tags.getBoolean("displayBaubles2"),tags.getBoolean("displayBaubles3")};
+		displayTravellersGear = new boolean[]{tags.getBoolean("displayTG0"),tags.getBoolean("displayTG1"),tags.getBoolean("displayTG2")};
+		renderBaubles = new boolean[]{tags.getBoolean("renderBaubles0"),tags.getBoolean("renderBaubles1"),tags.getBoolean("renderBaubles2"),tags.getBoolean("renderBaubles3")};
+		renderTravellersGear = new boolean[]{tags.getBoolean("renderTG0"),tags.getBoolean("renderTG1"),tags.getBoolean("renderTG2")};
+		renderMari = new boolean[]{tags.getBoolean("renderMari0"),tags.getBoolean("renderMari1"),tags.getBoolean("renderMari2")};
+		renderGlove = tags.getBoolean("renderGlove");
 	}
 
 	public void writeCustomNBT(NBTTagCompound tags)
@@ -98,12 +102,20 @@ public class TileEntityArmorStand extends TileEntity implements IInventory
 				}}tags.setTag("Inv", itemList);}
 
 		tags.setInteger("facing", facing);
-		tags.setBoolean("renderHelmet", renderHelmet);
-		tags.setBoolean("renderChest", renderChest);
-		tags.setBoolean("renderLegs", renderLegs);
-		tags.setBoolean("renderBoots", renderBoots);
 		tags.setBoolean("renderFloor", renderFloor);
-		tags.setBoolean("renderBaubles", renderBaubles);
+		for(int i=0;i<4;i++)
+		{
+			tags.setBoolean("renderArmor"+i, renderArmor[i]);
+			tags.setBoolean("displayBaubles"+i, displayBaubles[i]);
+			tags.setBoolean("renderBaubles"+i, renderBaubles[i]);
+			if(i<3)
+			{
+				tags.setBoolean("displayTG"+i, displayTravellersGear[i]);
+				tags.setBoolean("renderTG"+i, renderTravellersGear[i]);
+				tags.setBoolean("renderMari"+i, renderMari[i]);
+			}
+		}
+		tags.setBoolean("renderGlove", renderGlove);
 	}
 
 	@Override

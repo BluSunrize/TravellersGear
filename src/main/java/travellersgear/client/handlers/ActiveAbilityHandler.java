@@ -47,9 +47,10 @@ public class ActiveAbilityHandler
 		if(TravellersGear.BAUBLES)
 		{
 			IInventory inv = BaublesApi.getBaubles(player);
-			for(int i=0; i<inv.getSizeInventory(); i++)
-				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
-					list.add(new Object[]{inv.getStackInSlot(i),9+4+i});
+			if(inv!=null)
+				for(int i=0; i<inv.getSizeInventory(); i++)
+					if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
+						list.add(new Object[]{inv.getStackInSlot(i),9+4+i});
 		}
 
 		is = TravellersGearAPI.getExtendedInventory(player);
@@ -60,16 +61,18 @@ public class ActiveAbilityHandler
 		if(TravellersGear.MARI)
 		{
 			IInventory inv = ModCompatability.getMariInventory(player);
-			for(int i=0; i<inv.getSizeInventory(); i++)
-				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
-					list.add(new Object[]{inv.getStackInSlot(i),9+12+i});
+			if(inv!=null)
+				for(int i=0; i<inv.getSizeInventory(); i++)
+					if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
+						list.add(new Object[]{inv.getStackInSlot(i),9+12+i});
 		}
 		if(TravellersGear.TCON)
 		{
 			IInventory inv = ModCompatability.getTConArmorInv(player);
-			for(int i=1; i<3; i++)
-				if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
-					list.add(new Object[]{inv.getStackInSlot(i),9+15+i});
+			if(inv!=null)
+				for(int i=1; i<3; i++)
+					if(inv.getStackInSlot(i)!=null && inv.getStackInSlot(i).getItem() instanceof IActiveAbility && ((IActiveAbility)inv.getStackInSlot(i).getItem()).canActivate(player, inv.getStackInSlot(i), false) )
+						list.add(new Object[]{inv.getStackInSlot(i),9+15+i});
 		}
 		if(player.getCurrentEquippedItem()!=null && player.getCurrentEquippedItem().getItem() instanceof IActiveAbility&& ((IActiveAbility)player.getCurrentEquippedItem().getItem()).canActivate(player, player.getCurrentEquippedItem(), true) )
 			list.add(list.size()/2, new Object[]{player.getCurrentEquippedItem(),player.inventory.currentItem});

@@ -85,8 +85,8 @@ public class BlockArmorStand extends BlockContainer
 	{
 		if(iBlockAccess.getTileEntity(x, y, z) instanceof TileEntityArmorStand)
 		{
-			float yMax = ((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).renderHelmet?2 :((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).renderChest?1.8125f : 1;
-			float depth = ((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).renderBaubles? 0 :.25f;
+			float yMax = ((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).renderArmor[0]?2 :((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).renderArmor[1]?1.8125f : 1;
+			float depth = ((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).renderTable? 0 :.25f;
 			switch (((TileEntityArmorStand)iBlockAccess.getTileEntity(x, y, z)).facing)
 			{ 
 			case 2:

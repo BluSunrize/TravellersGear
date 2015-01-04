@@ -34,6 +34,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -58,6 +59,7 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 	public TileRenderArmorStand()
 	{
 		this.modelStand = new ModelArmorStand();
+		this.modelArmor.isChild=false;
 	}
 
 	@Override
@@ -68,18 +70,7 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 			{
 				this.fakepl = new FakeClientPlayer(Minecraft.getMinecraft().theWorld);
 				this.fakepl.ticksExisted=0;
-				
-				float partialRenderTick = 1;
-				float f2 = ClientProxy.interpolateRotation(this.fakepl.prevRenderYawOffset, this.fakepl.renderYawOffset, partialRenderTick);
-				float f3 = ClientProxy.interpolateRotation(this.fakepl.prevRotationYawHead, this.fakepl.rotationYawHead, partialRenderTick);
-				float f13 = this.fakepl.prevRotationPitch + (this.fakepl.rotationPitch - this.fakepl.prevRotationPitch) * partialRenderTick;
-				float f4 = this.fakepl.ticksExisted+partialRenderTick;
-				float f5 = 0.0625F;
-				float f6 = Math.min(1, this.fakepl.prevLimbSwingAmount + (this.fakepl.limbSwingAmount - this.fakepl.prevLimbSwingAmount) * partialRenderTick);
-				float f7 = this.fakepl.limbSwing - this.fakepl.limbSwingAmount * (1.0F - partialRenderTick);
-				this.modelArmor.isChild = false;
-				this.modelArmor.setLivingAnimations(this.fakepl, f7, f6, partialRenderTick);
-				this.modelArmor.setRotationAngles(f7, f6, f4, f3-f2, f13, f5, fakepl);
+
 			}
 			if(this.renderPlayer == null)
 				this.renderPlayer = (RenderPlayer) RenderManager.instance.getEntityRenderObject(this.fakepl);
@@ -109,20 +100,21 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 			}
 
 			this.bindTexture(texture);
-			this.modelStand.renderAll(tile.renderHelmet, tile.renderChest, tile.renderLegs, tile.renderBoots, tile.renderFloor, tile.renderBaubles);
+			this.modelStand.renderAll(tile.renderArmor[0], tile.renderArmor[1], tile.renderArmor[2], tile.renderArmor[3], tile.renderFloor, tile.renderTable);
 
 			GL11.glTranslated(0, 1.61, 0);
 			GL11.glTranslatef(0,0,-.25f);
 			for(int armor=0;armor<4;armor++)
-				if( (armor==0&&tile.renderHelmet)||(armor==1&&tile.renderChest)||(armor==2&&tile.renderLegs)||(armor==3&&tile.renderBoots) )
-					this.fakepl.inventory.armorInventory[3-armor] = tile.getStackInSlot(armor)!=null? tile.getStackInSlot(armor).copy() : null;
-					else
-						this.fakepl.inventory.armorInventory[3-armor] = null;
-
+			{
+				if(tile.renderArmor[armor])
+					this.fakepl.setCurrentItemOrArmor(1+armor, tile.getStackInSlot(armor));
+				else
+					this.fakepl.inventory.armorInventory[3-armor] = null;
+			}
 			GL11.glDisable(GL11.GL_CULL_FACE);
 			boolean[] renderPlayer = {false,false,false,false};
 			for(int armor=0;armor<4;armor++)
-				if( (armor==0&&tile.renderHelmet)||(armor==1&&tile.renderChest)||(armor==2&&tile.renderLegs)||(armor==3&&tile.renderBoots) )
+				if( (armor==0&&tile.renderArmor[0])||(armor==1&&tile.renderArmor[1])||(armor==2&&tile.renderArmor[2])||(armor==3&&tile.renderArmor[3]) )
 					if(tile.getStackInSlot(armor)!=null)
 					{
 						ItemStack armorStack = tile.getStackInSlot(armor);
@@ -145,7 +137,6 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 								for(int pass=0;pass<armorItem.getRenderPasses(armorStack.getItemDamage()); pass++)
 								{
 									boolean isEnchanted = armorItem.hasEffect(armorStack, pass);
-									this.fakepl.inventory.armorInventory[3-armor] = null;
 
 									ResourceLocation texture = RenderBiped.getArmorResource(this.fakepl, armorStack, armor, pass==0?null:"overlay");
 
@@ -164,9 +155,6 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 										GL11.glColor3f(f1, f2, f3);
 									}
 
-									if(this.modelArmor.isChild)
-										this.modelArmor.isChild=false;
-
 									if(armor==1)
 										GL11.glScaled(1.1,1.1,1.1);
 									if(armor==3)
@@ -174,38 +162,42 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 									if(armor==2)
 										GL11.glTranslated(0, -.125, 0);
 
-
+									GL11.glPushMatrix();
 									this.renderDefaultArmor(armor);
+									GL11.glPopMatrix();
 
 									if(isEnchanted)
 									{
-										GL11.glDepthFunc(GL11.GL_EQUAL);
-										GL11.glDisable(GL11.GL_LIGHTING);
+										float tick = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 48.0F;
 										this.bindTexture(new ResourceLocation("textures/misc/enchanted_item_glint.png"));
 										GL11.glEnable(GL11.GL_BLEND);
-										OpenGlHelper.glBlendFunc(768, 1, 1, 0);
-										float f7 = 0.76F;
-										GL11.glColor4f(0.5F * f7, 0.25F * f7, 0.8F * f7, 1.0F);
+										float f2 = 0.5F;
+										GL11.glColor4f(f2, f2, f2, 1.0F);
+										GL11.glDepthFunc(GL11.GL_EQUAL);
+										GL11.glDepthMask(false);
+										for (int var21 = 0; var21 < 2; var21++)
+										{
+											GL11.glDisable(GL11.GL_LIGHTING);
+											float var22 = 0.76F;
+											GL11.glColor4f(0.5F * var22, 0.25F * var22, 0.8F * var22, 1.0F);
+											GL11.glBlendFunc(768, 1);
+											GL11.glMatrixMode(GL11.GL_TEXTURE);
+											GL11.glLoadIdentity();
+											float var23 = tick * (0.001F + var21 * 0.003F) * 20.0F;
+											float var24 = 0.3333333F;
+											GL11.glScalef(var24, var24, var24);
+											GL11.glRotatef(30.0F - var21 * 60.0F, 0.0F, 0.0F, 1.0F);
+											GL11.glTranslatef(0.0F, var23, 0.0F);
+											GL11.glMatrixMode(GL11.GL_MODELVIEW);
+											this.renderDefaultArmor(armor);
+										}
+										GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 										GL11.glMatrixMode(GL11.GL_TEXTURE);
-										GL11.glPushMatrix();
-										float f8 = 0.125F;
-										GL11.glScalef(f8, f8, f8);
-										float f9 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
-										GL11.glTranslatef(f9, 0.0F, 0.0F);
-										GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
-										this.renderDefaultArmor(armor);
-										GL11.glPopMatrix();
-
-										GL11.glPushMatrix();
-										GL11.glScalef(f8, f8, f8);
-										f9 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
-										GL11.glTranslatef(-f9, 0.0F, 0.0F);
-										GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
-										this.renderDefaultArmor(armor);
-										GL11.glPopMatrix();
+										GL11.glDepthMask(true);
+										GL11.glLoadIdentity();
 										GL11.glMatrixMode(GL11.GL_MODELVIEW);
-										GL11.glDisable(GL11.GL_BLEND);
 										GL11.glEnable(GL11.GL_LIGHTING);
+										GL11.glDisable(GL11.GL_BLEND);
 										GL11.glDepthFunc(GL11.GL_LEQUAL);
 									}
 									GL11.glPopMatrix();
@@ -246,7 +238,6 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 									else if (nbttagcompound.hasKey("SkullOwner", 8) && !StringUtils.isNullOrEmpty(nbttagcompound.getString("SkullOwner")))
 										gp = new GameProfile((UUID)null, nbttagcompound.getString("SkullOwner"));
 								}
-								//						skull.func_152674_a(-.25f,-.1875f,-.5f, 0, 0, type, gp);
 								TileEntitySkullRenderer.field_147536_b.func_152674_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, armorStack.getItemDamage(), gp);
 
 								GL11.glPopMatrix();
@@ -255,20 +246,21 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 					}
 
-			if(tile.renderTravellersGear)
-			{
-				GL11.glTranslatef(0,-.05f,0);
-				GL11.glRotatef(180, 1, 0, 0);
-				for(int ieq=0;ieq<=1;ieq++)
-					if(tile.getStackInSlot(8+ieq)!=null)
-						ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, this.renderPlayer, f);
-				GL11.glRotatef(180, 1, 0, 0);
-				GL11.glTranslatef(0,.05f,0);
-			}
+			//Traveller's Gear
+			GL11.glTranslatef(0,-.05f,0);
+			GL11.glRotatef(180, 1, 0, 0);
+			for(int ieq=0;ieq<4;ieq++)
+				if(tile.getStackInSlot(4+ieq)!=null && tile.renderBaubles[ieq])
+					ClientProxy.renderTravellersItem(tile.getStackInSlot(4+ieq), ieq, this.fakepl, this.renderPlayer, f);
+			for(int ieq=0;ieq<3;ieq++)
+				if(tile.getStackInSlot(8+ieq)!=null && tile.renderTravellersGear[ieq])
+					ClientProxy.renderTravellersItem(tile.getStackInSlot(8+ieq), ieq, this.fakepl, this.renderPlayer, f);
+			GL11.glRotatef(180, 1, 0, 0);
+			GL11.glTranslatef(0,.05f,0);
 
-			GL11.glScalef(1.0625f,1.0625f,1.0625f);
-			GL11.glTranslatef(0,.1f,0);
-
+			float playerScale = .95f;
+			GL11.glScalef(playerScale,playerScale,playerScale);
+			GL11.glTranslatef(0,.1875f,0);
 			if(renderPlayer[0]||renderPlayer[1]||renderPlayer[2]||renderPlayer[3])
 			{
 				for(int its=0;its<4;its++)
@@ -276,6 +268,7 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 						fakepl.inventory.armorInventory[3-its]=null;
 				RenderManager.instance.renderEntitySimple(fakepl, 0);
 			}
+			GL11.glScalef(1/playerScale,1/playerScale,1/playerScale);
 
 			this.bindTexture(TextureMap.locationItemsTexture);
 			GL11.glRotatef(180, 1, 0, 0);
@@ -287,74 +280,93 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 
 			GL11.glRotated(90, 1,0,0);
 
-			boolean hasBaub = tile.renderBaubles && (tile.getStackInSlot(4+0)!=null || tile.getStackInSlot(4+1)!=null || tile.getStackInSlot(4+2)!=null || tile.getStackInSlot(4+3)!=null);
-			boolean hasMari = tile.renderBaubles && (tile.getStackInSlot(11+0)!=null || tile.getStackInSlot(11+1)!=null || tile.getStackInSlot(11+2)!=null);
-			boolean hasVam = tile.renderBaubles && tile.renderTravellersGear && tile.getStackInSlot(8+2)!=null;
-			boolean hasGlove = tile.renderBaubles && tile.getStackInSlot(14)!=null;
-
-			int style = hasBaub&&hasMari&&hasVam&&hasGlove?0: hasBaub&&!hasMari&&!hasVam&&!hasGlove?1: hasBaub&&hasMari&&!hasVam&&!hasGlove?2: hasBaub&&hasMari&&hasVam&&!hasGlove?3: hasBaub&&hasMari&&!hasVam&&hasGlove?4: 5;
-
-			float[] xOffset = new float[9];
-			xOffset[0]= style==0?.1f: style==1?-.75f: style==2?-.5f: style==3?-.5f: style==4?-.5f: -1.375f;
-			xOffset[1]= style==0?-.9f: style==1?-1.35f: style==2?-.9f: style==3?-.9f: style==4?-.9f: -.875f;
-			xOffset[2]= -1.35f;
-			xOffset[3]= style==0?1f: style==1?.375f: style==2?.375f: style==3?1.125f: style==4?1.125f: .9375f;
-			xOffset[4]= style==0?-.5f: style==2?-1.125f: style==3?-1.125f: -1.125f;
-			xOffset[5]= style==0?-1.375f: -1.3125f;
-			xOffset[6]= style==0?-.125f: -.625f;
-			xOffset[7]= style==0?.5f: style==3?.125f: -.5625f;
-			xOffset[8]= style==0?-1.125f: style==4?.25f: -.375f;
-
-			float[] yOffset = new float[9];
-			yOffset[0]= style==0?-.275f: style==1?-1.25f: style==2?-1.25f: style==3?-1.25f: style==4?-1.25f: -.5f;
-			yOffset[1]= style==0?-1.25f: style==1?-.5f: -1.25f;
-			yOffset[2]= -1.25f;
-			yOffset[3]= -1.25f;
-			yOffset[4]= style==0?-1.25f: -.75f;
-			yOffset[5]= style==0?-1f: -.3f;
-			yOffset[6]= style==0?-1.3f: -.25f;
-			yOffset[7]= style==0?.35f: style==3?.375f: .375f;		
-			yOffset[8]= style==0?1f: style==4?1f: -1.375f;
-
-			float[] scale = new float[9];
-			scale[0]= style==0?1f: style==1?1.25f: style==2?1f: style==3?1f: style==4?1f: 1.25f;
-			scale[1]= style==0?.375f: style==1?.75f: .5f;
-			scale[2]= style==0?.375f: style==1?.75f: .5f;
-			scale[3]= style==0?1.125f: style==1?2f: style==2?2f: style==3?1.25f: style==4?1.25f: 1.5f;
-			scale[4]= style==0?.375f: .5f;
-			scale[5]= .75f;
-			scale[6]= 1f;
-			scale[7]= 1.5f;
-			scale[8]= 1.25f;
-
-			float[] hscale = new float[9];
-			hscale[0]= .75f;
-			hscale[1]= .5f;
-			hscale[2]= .5f;
-			hscale[3]= 1f;
-			hscale[4]= .5f;
-			hscale[5]= .75f;
-			hscale[6]= 1f;
-			hscale[7]= 1f;		
-			hscale[8]= .75f;
-
-			float[] rotation = new float[9];
-			rotation[7]= -45;
-			rotation[8]= style==0||style==4?-90 : 0;
-
-			if(tile.renderBaubles)
-				for(int dis=0;dis<9;dis++)
+			//0-3 baubles
+			//4-6 TG
+			//7-9 Mari
+			//10 Glove
+			float zOffset = .15f;
+			float[] hscale =
 				{
-					if(dis>=4 && dis<7 && (style==1 || style==5))
+					.625f,
+					.5f,
+					.5f,
+					1,
+					.5f,
+					1,
+					1,
+					.5f,
+					.5f,
+					.5f,
+					.75f
+				};
+
+			float[] rotation = new float[11];
+			rotation[6]= -45;
+
+			float[] scaleForType = {1,.5f,1.25f};
+			float[][] posNormal = {{1.5f,-.3f}, {-1.5f,-.3f}, {-.15f,-1.2f}, {.8f,-.6f}};
+			int usedNormal = 0;
+			float[][] posTiny = {{-1.5f,-1.5f}, {-1f,-1.5f}, {-.5f,-1.5f}, {-1.45f,-1f}, {-.9f,-.8f}};
+			int usedTiny = 0;
+			float[][] posBig = {{1.2f,-1.6f}, {-.3f,-.8f}};
+			int usedBig = 0;
+
+			int occupiedTiny=0;
+			for(int dis=0;dis<11;dis++)
+				if(tile.getStackInSlot(dis+4)!=null)
+				{
+					int type = dis==1||dis==2||dis==7||dis==8||dis==9?1: dis==3||dis==4?2: 0;
+					if(type==1)
+						occupiedTiny++;
+				}
+
+
+			GL11.glColor4f(1, 1, 1, 1);
+			if(tile.renderTable)
+				for(int dis=0;dis<11;dis++)
+				{
+					int type = dis==1||dis==2||dis==7||dis==8||dis==9?1: dis==3||dis==4?2: 0;
+					//0=normal, 1=tiny, 2=big, 3=small
+					if(dis==10 && usedBig<posBig.length)
+						type = 2;
+
+					if(dis<4 && !tile.displayBaubles[dis])
 						continue;
-					if(dis>=7 && dis<8 && (!tile.renderTravellersGear || style==1 || style==2 || style==4))
+					if(dis>=4 && dis<7 && !tile.displayTravellersGear[dis-4])
 						continue;
-					if(dis>=8 && (style==1 || style==2 || style==3))
+					if(dis>=7 && dis<10 && !tile.renderMari[dis-7])
 						continue;
 
-					int slot = dis<4?4+dis: dis<7?7+dis: dis<8?10 : 14;
+					int slot = dis+4;
 					if(tile.getStackInSlot(slot)!=null)
-						this.renderStackOnDisplay(tile.getStackInSlot(slot), xOffset[dis], yOffset[dis], .0375f, scale[dis], hscale[dis], rotation[dis]);
+					{
+						float scale = scaleForType[type];
+						double oX = type==2?posBig[usedBig][0]: type==1?posTiny[usedTiny][0]: posNormal[usedNormal][0];
+						double oY = type==2?posBig[usedBig][1]: type==1?posTiny[usedTiny][1]: posNormal[usedNormal][1];
+						if(dis==5 && occupiedTiny<4)
+						{
+							scale = 1.25f;
+							oY -= .375;
+						}
+
+						GL11.glTranslated(oX,oY,zOffset);
+						GL11.glScaled(scale,scale,hscale[dis]);
+						GL11.glRotatef(rotation[dis], 0, 0, 1);
+
+						if(!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), Minecraft.getMinecraft().renderEngine, tile.getStackInSlot(slot), true, 0, 0, 0))
+							this.renderStackOnDisplay(tile.getStackInSlot(slot));
+
+						GL11.glRotatef(-rotation[dis], 0, 0, 1);
+						GL11.glScaled(1/scale,1/scale,1/hscale[dis]);
+						GL11.glTranslated(-oX,-oY,-zOffset);
+
+						if(type==2 && usedBig<posBig.length)
+							usedBig++;
+						if(type==1 && usedTiny<posTiny.length)
+							usedTiny++;
+						if(type==0 && usedNormal<posNormal.length)
+							usedNormal++;
+					}
 				}
 
 			GL11.glEnable(GL11.GL_LIGHTING);
@@ -392,15 +404,15 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 		}
 	}
 
-	void renderStackOnDisplay(ItemStack stack, float x, float y, float z, float scaleXY, float scaleZ, float rotateY)
+	void renderStackOnDisplay(ItemStack stack)
 	{
-		GL11.glTranslated(x,y,z);
-		GL11.glScaled(scaleXY,scaleXY,scaleZ);
-		GL11.glRotatef(rotateY, 0, 0, 1);
 		for(int pass=0;pass<stack.getItem().getRenderPasses(stack.getItemDamage());pass++)
 		{
+			int col = stack.getItem().getColorFromItemStack(stack, pass);
+			GL11.glColor3f((col>>16&255)/255f,(col>>8&255)/255f,(col&255)/255f);
 			IIcon iicon = stack.getItem().getIcon(stack, pass);
 			ItemRenderer.renderItemIn2D(Tessellator.instance,  iicon.getMaxU(), iicon.getMinV(), iicon.getMinU(), iicon.getMaxV(), iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
+			GL11.glColor3f(1,1,1);
 			if (stack.hasEffect(pass))
 			{
 				GL11.glPushMatrix();
@@ -436,9 +448,6 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 				this.bindTexture(TextureMap.locationItemsTexture);
 			}
 		}
-		GL11.glRotatef(-rotateY, 0, 0, 1);
-		GL11.glScaled(1/scaleXY,1/scaleXY,1/scaleZ);
-		GL11.glTranslated(-x,-y,-z);
 	}
 
 	public static class ModelArmorStand extends ModelBase

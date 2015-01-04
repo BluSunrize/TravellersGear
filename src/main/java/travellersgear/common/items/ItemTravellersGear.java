@@ -195,7 +195,6 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public void onTravelGearUnequip(EntityPlayer player, ItemStack stack)
 	{
-		System.out.println("TrvlGear Unequipped ("+stack+") on "+(player.worldObj.isRemote?"Client":"Server")+"World");
 	}
 
 	@Override

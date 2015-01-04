@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
@@ -79,8 +80,8 @@ public class GuiConfigDisplayItems extends GuiScreen
 			sl.incrementStep = .015625f;
 			this.buttonList.add(sl);
 
-			this.buttonList.add( new GuiButton(11, width-100,height-30, 40,20, tools[sel].hideWhenEquipped?"§2\u2714":"§4\u2716") );
-			this.buttonList.add( new GuiButton(12, width- 60,height-30, 40,20, tools[sel].rotateWithHead?"§2\u2714":"§4\u2716") );
+			this.buttonList.add( new GuiButton(11, width-100,height-30, 40,20, tools[sel].hideWhenEquipped?EnumChatFormatting.DARK_GREEN+"\u2714":EnumChatFormatting.DARK_RED+"\u2716") );
+			this.buttonList.add( new GuiButton(12, width- 60,height-30, 40,20, tools[sel].rotateWithHead?EnumChatFormatting.DARK_GREEN+"\u2714":EnumChatFormatting.DARK_RED+"\u2716") );
 
 			for(int i=0; i<player.inventory.mainInventory.length; i++)
 			{
@@ -176,12 +177,12 @@ public class GuiConfigDisplayItems extends GuiScreen
 			else if(button.id==11)
 			{
 				tools[sel].hideWhenEquipped = !tools[sel].hideWhenEquipped;
-				button.displayString = tools[sel].hideWhenEquipped?"§2\u2714":"§4\u2716";
+				button.displayString = tools[sel].hideWhenEquipped?EnumChatFormatting.DARK_GREEN+"\u2714":EnumChatFormatting.DARK_RED+"\u2716";
 			}
 			else if(button.id==12)
 			{
 				tools[sel].rotateWithHead = !tools[sel].rotateWithHead;
-				button.displayString = tools[sel].rotateWithHead?"§2\u2714":"§4\u2716";
+				button.displayString = tools[sel].rotateWithHead?EnumChatFormatting.DARK_GREEN+"\u2714":EnumChatFormatting.DARK_RED+"\u2716";
 			}
 
 			ClientProxy.toolDisplayMap.put(player.getCommandSenderName(), tools);

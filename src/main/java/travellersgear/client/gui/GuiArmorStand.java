@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
@@ -25,6 +24,7 @@ public class GuiArmorStand extends GuiContainer
 	static ResourceLocation texture = new ResourceLocation("travellersgear:textures/gui/armorStand.png");
 	static List<int[]> slotOverlays = null;
 	boolean styleMenu = false;
+	static final int foldOutSize = 73;
 
 	public GuiArmorStand(InventoryPlayer inventoryPlayer, TileEntityArmorStand tile)
 	{
@@ -105,10 +105,10 @@ public class GuiArmorStand extends GuiContainer
 		this.mc.getTextureManager().bindTexture(texture);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
-		if(styleMenu && foldOut<80)
-			foldOut++;
+		if(styleMenu && foldOut<foldOutSize)
+			foldOut+=4;
 		if(!styleMenu && foldOut>0)
-			foldOut--;
+			foldOut-=4;
 		if(foldOut>0)
 			this.drawTexturedModalRect(x+174, y, 176, 0, foldOut, 114);
 
@@ -125,41 +125,6 @@ public class GuiArmorStand extends GuiContainer
 				}
 
 		GuiInventory.func_147046_a(x + 48, y + 85, 30, (float)(x + 51) - mouseX, (float)(y + 75 - 50) - mouseY, this.mc.thePlayer);
-
-		if(styleMenu && foldOut>=80)
-		{
-			GL11.glPushMatrix();
-			try{
-				GL11.glEnable(GL11.GL_LIGHTING);
-				GL11.glTranslatef(x+178,y+40,1);
-				GL11.glRotatef(-20, 1, 0, 0);
-				GL11.glRotatef(45, 0, 1, 0);
-				GL11.glScaled(15,-15,15);
-				TileEntityRendererDispatcher.instance.renderTileEntityAt(getModifiedTilecopy(tile,true,true), 0.0D, 0.0D, 0.0D, 0.0F);
-				GL11.glTranslatef(2.25f,0,2.25f);
-				TileEntityRendererDispatcher.instance.renderTileEntityAt(getModifiedTilecopy(tile,false,true), 0.0D, 0.0D, 0.0D, 0.0F);
-				GL11.glTranslatef(-2.25f,0,-2.25f);
-				GL11.glTranslatef(-1f,-3.5f,1f);
-				TileEntityRendererDispatcher.instance.renderTileEntityAt(getModifiedTilecopy(tile,true,false), 0.0D, 0.0D, 0.0D, 0.0F);
-				GL11.glTranslatef(2.25f,0.0625f,2.25f);
-				TileEntityRendererDispatcher.instance.renderTileEntityAt(getModifiedTilecopy(tile,false,false), 0.0D, 0.0D, 0.0D, 0.0F);
-			}catch(Exception e)
-			{
-				e.printStackTrace();
-				GL11.glPopMatrix();
-			}
-			GL11.glEnable(32826);
-			GL11.glPopMatrix();
-		}
-	}
-
-	static TileEntityArmorStand getModifiedTilecopy(TileEntityArmorStand base, boolean baub, boolean trav)
-	{
-		TileEntityArmorStand copy = new TileEntityArmorStand();
-		copy.Inv = base.Inv;
-		copy.renderBaubles = baub;
-		copy.renderTravellersGear = trav;
-		return copy;
 	}
 
 	@Override
@@ -168,56 +133,56 @@ public class GuiArmorStand extends GuiContainer
 		List<String> l = new ArrayList();
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
-		if(mouseX>x+102&&mouseX<x+110 && mouseY>y+26&&mouseY<y+34)
-			l.add(StatCollector.translateToLocal("TG.guitext.showHelmet"));
-		if(tile.renderHelmet)
-			this.drawString(fontRendererObj, "\u2714", 103, 25, 0xffffff);
 
-		if(mouseX>x+102&&mouseX<x+110 && mouseY>y+44&&mouseY<y+52)
-			l.add(StatCollector.translateToLocal("TG.guitext.showChest"));
-		if(tile.renderChest)
-			this.drawString(fontRendererObj, "\u2714", 103, 43, 0xffffff);
-
-		if(mouseX>x+102&&mouseX<x+110 && mouseY>y+62&&mouseY<y+70)
-			l.add(StatCollector.translateToLocal("TG.guitext.showLegs"));
-		if(tile.renderLegs)
-			this.drawString(fontRendererObj, "\u2714", 103, 61, 0xffffff);
-
-		if(mouseX>x+102&&mouseX<x+110 && mouseY>y+80&&mouseY<y+88)
-			l.add(StatCollector.translateToLocal("TG.guitext.showBoots"));
-		if(tile.renderBoots)
-			this.drawString(fontRendererObj, "\u2714", 103, 79, 0xffffff);
-
-		if(mouseX>x+102&&mouseX<x+110 && mouseY>y+98&&mouseY<y+106)
-			l.add(StatCollector.translateToLocal("TG.guitext.showPlate"));
-		if(tile.renderFloor)
-			this.drawString(fontRendererObj, "\u2714", 103, 97, 0xffffff);
-
-		if(styleMenu&&foldOut>=80)
+		if(styleMenu&&foldOut>=foldOutSize)
 		{
-			if(mouseX>x+176&&mouseX<x+204 && mouseY>y+4&&mouseY<y+44)
+			if(mouseX>x+178&&mouseX<x+178+8 && mouseY>y+8&&mouseY<y+8+8)
+				l.add(StatCollector.translateToLocal("TG.guitext.showPlate"));
+			if(tile.renderFloor)
+				this.drawString(fontRendererObj, "\u2714", 179, 7, 0xffffff);
+
+			if(mouseX>x+191&&mouseX<x+191+8 && mouseY>y+8&&mouseY<y+8+8)
+				l.add(StatCollector.translateToLocal("TG.guitext.showTable"));
+			if(tile.renderTable)
+				this.drawString(fontRendererObj, "\u2714", 192, 7, 0xffffff);
+
+			for(int i=0; i<4; i++)
 			{
-				String s = StatCollector.translateToLocal("TG.guitext.renderBaubTG");
-				for(String s2:s.split(" "))
-					l.add(s2);
+				if(mouseX>x+178&&mouseX<x+178+8 && mouseY>y+26+18*i&&mouseY<y+26+8+18*i)
+					l.add(StatCollector.translateToLocal("TG.guitext.showArmor"+i));
+				if(tile.renderArmor[i])
+					this.drawString(fontRendererObj, "\u2714", 179, 25+18*i, 0xffffff);
 			}
-			if(mouseX>x+222&&mouseX<x+250 && mouseY>y+8&&mouseY<y+44)
+			for(int i=0; i<4; i++)
 			{
-				String s = StatCollector.translateToLocal("TG.guitext.renderTG");
-				for(String s2:s.split(" "))
-					l.add(s2);
+				if(mouseX>x+191&&mouseX<x+191+8 && mouseY>y+26+18*i&&mouseY<y+26+8+18*i)
+					l.add(StatCollector.translateToLocal("TG.guitext.showBaubles"+i));
+				if(tile.displayBaubles[i])
+					this.drawString(fontRendererObj, "\u2714", 192, 25+18*i, 0xffffff);
+
+				if(mouseX>x+200&&mouseX<x+200+8 && mouseY>y+26+18*i&&mouseY<y+26+8+18*i)
+					l.add(StatCollector.translateToLocal("TG.guitext.renderBaubles"+i));
+				if(tile.renderBaubles[i])
+					this.drawString(fontRendererObj, "\u2714", 201, 25+18*i, 0xffffff);
 			}
-			if(mouseX>x+176&&mouseX<x+204 && mouseY>y+64&&mouseY<y+102)
+			for(int i=0; i<3; i++)
 			{
-				String s = StatCollector.translateToLocal("TG.guitext.renderBaub");
-				for(String s2:s.split(" "))
-					l.add(s2);
+				if(mouseX>x+211&&mouseX<x+211+8 && mouseY>y+26+18*i&&mouseY<y+26+8+18*i)
+					l.add(StatCollector.translateToLocal("TG.guitext.showTG"+i));
+				if(tile.displayTravellersGear[i])
+					this.drawString(fontRendererObj, "\u2714", 212, 25+18*i, 0xffffff);
+
+				if(mouseX>x+220&&mouseX<x+220+8 && mouseY>y+26+18*i&&mouseY<y+26+8+18*i)
+					l.add(StatCollector.translateToLocal("TG.guitext.renderTG"+i));
+				if(tile.renderTravellersGear[i])
+					this.drawString(fontRendererObj, "\u2714", 221, 25+18*i, 0xffffff);
 			}
-			if(mouseX>x+222&&mouseX<x+250 && mouseY>y+64&&mouseY<y+102)
+			for(int i=0; i<3; i++)
 			{
-				String s = StatCollector.translateToLocal("TG.guitext.renderNoBaubTG");
-				for(String s2:s.split(" "))
-					l.add(s2);
+				if(mouseX>x+233&&mouseX<x+233+8 && mouseY>y+26+18*i&&mouseY<y+26+8+18*i)
+					l.add(StatCollector.translateToLocal("TG.guitext.showMari"+i));
+				if(tile.renderMari[i])
+					this.drawString(fontRendererObj, "\u2714", 234, 25+18*i, 0xffffff);
 			}
 		}
 		this.drawCenteredString(fontRendererObj, StatCollector.translateToLocal("TG.guitext.style"), 147, 98, 0xffffff);
@@ -225,7 +190,11 @@ public class GuiArmorStand extends GuiContainer
 
 		if(!l.isEmpty())
 		{
-			this.drawHoveringText(l, mouseX-x, mouseY-y, this.fontRendererObj);
+			int k = 0;
+			for(String ss : l)
+				if(fontRendererObj.getStringWidth(ss)>k)
+					k=fontRendererObj.getStringWidth(ss);
+			this.drawHoveringText(l, mouseX-x-(k+18), mouseY-y, this.fontRendererObj);
 			RenderHelper.enableGUIStandardItemLighting();
 		}
 	}
@@ -243,45 +212,46 @@ public class GuiArmorStand extends GuiContainer
 			this.initGui();
 		}
 
-		if(mX>102&&mX<110 && mY>26&&mY<34)
-			tile.renderHelmet = !tile.renderHelmet;
-		if(mX>102&&mX<110 && mY>44&&mY<52)
-			tile.renderChest = !tile.renderChest;
-		if(mX>102&&mX<110 && mY>62&&mY<70)
-			tile.renderLegs = !tile.renderLegs;
-		if(mX>102&&mX<110 && mY>80&&mY<88)
-			tile.renderBoots = !tile.renderBoots;
-		if(mX>102&&mX<110 && mY>98&&mY<106)
-			tile.renderFloor = !tile.renderFloor;
-		if(styleMenu&&foldOut>=80)
+		if(styleMenu&&foldOut>=foldOutSize)
 		{
-			if(mX>176&&mX<204 && mY>4&&mY<44)
+			if(mX>178&&mX<178+8 && mY>8&&mY<16)
+				tile.renderFloor = !tile.renderFloor;
+			if(mX>194&&mX<194+8 && mY>8&&mY<16)
+				tile.renderTable = !tile.renderTable;
+
+			for(int i=0; i<4; i++)
+				if(mX>178&&mX<178+8 && mY>26+18*i&&mY<34+18*i)
+					tile.renderArmor[i] = !tile.renderArmor[i];
+			for(int i=0; i<4; i++)
 			{
-				tile.renderBaubles = true;
-				tile.renderTravellersGear = true;
+				if(mX>191&&mX<191+8 && mY>26+18*i&&mY<34+18*i)
+					tile.displayBaubles[i] = !tile.displayBaubles[i];
+				if(mX>200&&mX<200+8 && mY>26+18*i&&mY<34+18*i)
+					tile.renderBaubles[i] = !tile.renderBaubles[i];
 			}
-			if(mX>222&&mX<250 && mY>8&&mY<44)
+			for(int i=0; i<3; i++)
 			{
-				tile.renderBaubles = false;
-				tile.renderTravellersGear = true;
+				if(mX>211&&mX<211+8 && mY>26+18*i&&mY<34+18*i)
+					tile.displayTravellersGear[i] = !tile.displayTravellersGear[i];
+				if(mX>220&&mX<220+8 && mY>26+18*i&&mY<34+18*i)
+					tile.renderTravellersGear[i] = !tile.renderTravellersGear[i];
 			}
-			if(mX>176&&mX<204 && mY>64&&mY<102)
-			{
-				tile.renderBaubles = true;
-				tile.renderTravellersGear = false;
-			}
-			if(mX>222&&mX<250 && mY>64&&mY<102)
-			{
-				tile.renderBaubles = false;
-				tile.renderTravellersGear = false;
-			}
+			for(int i=0; i<3; i++)
+				if(mX>233&&mX<233+8 && mY>26+18*i&&mY<34+18*i)
+					tile.renderMari[i] = !tile.renderMari[i];
 		}
 	}
 
 	@Override
 	public void onGuiClosed()
 	{
-		TravellersGear.instance.packetPipeline.sendToServer(new PacketTileUpdate(tile));
+		try{
+			TravellersGear.instance.packetPipeline.sendToServer(new PacketTileUpdate(tile));
+
+		}catch(Throwable t)
+		{
+			t.printStackTrace();
+		}
 	}
 
 }

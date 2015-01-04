@@ -194,7 +194,7 @@ public class ClientProxy extends CommonProxy
 				{
 					GL11.glPushMatrix();
 					GL11.glColor4f(1, 1, 1, 1);
-//					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+					renderTravellersItem(bb, i, event.entityPlayer, event.renderer, event.partialRenderTick);
 					GL11.glPopMatrix();
 				}
 			}
@@ -209,7 +209,7 @@ public class ClientProxy extends CommonProxy
 						event.renderCape = false;
 					GL11.glPushMatrix();
 					GL11.glColor4f(1, 1, 1, 1);
-//					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
+					renderTravellersItem(eq, i, event.entityPlayer, event.renderer, event.partialRenderTick);
 					GL11.glPopMatrix();
 				}
 			}
@@ -301,16 +301,16 @@ public class ClientProxy extends CommonProxy
 		return par1 + par3 * f3;
 	}
 
-	public static void renderTravellersItem(ItemStack stack, int slot, EntityPlayer player, RenderPlayer renderer, float partialRenderTick)
+	public static boolean renderTravellersItem(ItemStack stack, int slot, EntityPlayer player, RenderPlayer renderer, float partialRenderTick)
 	{
 		RenderTravellersGearEvent renderEvent = new RenderTravellersGearEvent(player, renderer, stack, partialRenderTick);
 		MinecraftForge.EVENT_BUS.post(renderEvent);
 		if(!renderEvent.shouldRender)
-			return;
+			return false;
 
 		ModelBiped m = stack.getItem().getArmorModel(player, stack, 4+slot);
 		if(m==null)
-			return;
+			return false;
 		String tex = stack.getItem().getArmorTexture(stack, player, 4+slot, null);
 		if(tex!=null && !tex.isEmpty())
 			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(stack.getItem().getArmorTexture(stack, player, 0, null)));
@@ -341,6 +341,7 @@ public class ClientProxy extends CommonProxy
 		float f7 = (player.isChild()?3:1) *(player.limbSwing - player.limbSwingAmount * (1.0F - partialRenderTick));
 		m.setLivingAnimations(player, f7, f6, partialRenderTick);
 		m.render(player, f7, f6, f4, f3 - f2, f13, f5);
+		return true;
 	}
 
 	@SubscribeEvent(priority=EventPriority.LOWEST)
