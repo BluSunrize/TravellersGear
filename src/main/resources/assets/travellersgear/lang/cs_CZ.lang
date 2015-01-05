@@ -1,0 +1,74 @@
+# -- Items --
+item.TravellersGear.simpleGear.cloak.name=Plášť
+item.TravellersGear.simpleGear.belt.name=Opasek
+item.TravellersGear.simpleGear.ringGold.name=Zlatý prsten
+item.TravellersGear.simpleGear.ringSilver.name=Stříbrný prsten
+item.TravellersGear.simpleGear.pauldrons.name=Nárameníky
+item.TravellersGear.simpleGear.vambraces.name=Předloketníky
+item.TravellersGear.simpleGear.title.name=Hráčův popisek
+# -- Blocks -- 
+tile.TravellersGear.armorstand.name=Stojan
+
+#-- GUI --
+TG.guitext.equipment=Vybavení
+TG.guitext.lvl=Lvl
+TG.guitext.visDiscount=Sleva vis
+
+TG.guitext.preset=Přednastavené
+TG.guitext.texture=Textury
+
+TG.guitext.rightclickToOpen=Otevři pravým
+TG.guitext.linkInChat=Ctrl+Pravé myšítko pro poslání do chatu
+
+TG.guitext.showPlate=Zobraz podstavec
+TG.guitext.showTable=Zobraz stůl
+TG.guitext.showArmor0=Zobraz helmu
+TG.guitext.showArmor1=Zobraz brnění
+TG.guitext.showArmor2=Zobraz kalhoty
+TG.guitext.showArmor3=Zobraz boty
+TG.guitext.showBaubles0=Zobraz na stole amulet
+TG.guitext.showBaubles1=Zobraz 1. prsten na stole
+TG.guitext.showBaubles2=Zobraz 2. prsten na stole
+TG.guitext.showBaubles3=Zobraz pásek na stole
+TG.guitext.showTG0=Zobraz plášť na stole
+TG.guitext.showTG1=Zobraz nárameník na stole
+TG.guitext.showTG2=Zobraz předloketník na stole
+TG.guitext.showMari0=Zobraz prsten na stole
+TG.guitext.showMari1=Zobraz náramek na stole
+TG.guitext.showMari2=Zobraz náhrdelník na stole
+
+TG.guitext.renderBaubles0=Vykresli amulet na stojanu
+TG.guitext.renderBaubles1=Vykresli 1. prsten na stojanu
+TG.guitext.renderBaubles2=Vykresli 2. prsten na stojanu
+TG.guitext.renderBaubles3=Vykresli opasek na stojanu
+TG.guitext.renderTG0=Vykresli plášť na stojanu
+TG.guitext.renderTG1=Vykresli nárameníky na stojanu
+TG.guitext.renderTG2=Vykresli předloketníky na stojanu
+TG.guitext.style=Styl >
+
+TG.guitext.add=Přidat
+TG.guitext.rem=Odebrat
+TG.guitext.translation=Překlady
+TG.guitext.rotation=Otáčení
+TG.guitext.scale=Škálování
+TG.guitext.hideWhenEquipped=Schovat při vyzbrojení
+TG.guitext.rotateWithHead=Otáčet s hlavou
+					
+TG.chattext.showItem=%1$s ukazuje předmět: %2$s
+
+itemGroup.travellersgear=Traveller's Gear
+
+TG.keybind.openInv=Inventář Traveller's Gear
+TG.keybind.activeaAbilities=Aktivní dovednosti Traveller's Gear
+
+#-- Title --
+TG.personaltitle.treepuncher=Profesionální stromoúderník
+TG.personaltitle.titan=Prospektor Titánů
+TG.personaltitle.librarian=Knihovník
+TG.personaltitle.bursar=Kvestor
+TG.personaltitle.archchancellor=Archchancellor
+TG.personaltitle.justicar=Justičník
+TG.personaltitle.explorer=Kráčející průzkumník
+TG.personaltitle.defender=Počestný obránce
+TG.personaltitle.seeker=Hledač pokladů
+TG.personaltitle.boxFox=Liška v krabici
