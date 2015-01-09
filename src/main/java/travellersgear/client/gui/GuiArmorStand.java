@@ -28,6 +28,7 @@ public class GuiArmorStand extends GuiContainer
 
 	public GuiArmorStand(InventoryPlayer inventoryPlayer, TileEntityArmorStand tile)
 	{
+//		super(new ContainerArmorStand(inventoryPlayer, tile));
 		super(new ContainerArmorStand(inventoryPlayer, tile));
 		this.ySize=199;
 		this.tile = tile;

@@ -44,6 +44,7 @@ public class PacketOpenGui extends AbstractPacket
 	@Override
 	public void handleClientSide(EntityPlayer player)
 	{
+		System.out.println("gui packet");
 		player.openGui(TravellersGear.instance, guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
 	}
 

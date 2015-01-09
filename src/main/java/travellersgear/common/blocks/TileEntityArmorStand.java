@@ -79,6 +79,7 @@ public class TileEntityArmorStand extends TileEntity implements IInventory
 		facing = tags.getInteger("facing");
 
 		renderFloor = tags.getBoolean("renderFloor");
+		renderTable = tags.getBoolean("renderTable");
 		renderArmor= new boolean[]{tags.getBoolean("renderArmor0"),tags.getBoolean("renderArmor1"),tags.getBoolean("renderArmor2"),tags.getBoolean("renderArmor3")};
 		displayBaubles = new boolean[]{tags.getBoolean("displayBaubles0"),tags.getBoolean("displayBaubles1"),tags.getBoolean("displayBaubles2"),tags.getBoolean("displayBaubles3")};
 		displayTravellersGear = new boolean[]{tags.getBoolean("displayTG0"),tags.getBoolean("displayTG1"),tags.getBoolean("displayTG2")};
@@ -103,6 +104,7 @@ public class TileEntityArmorStand extends TileEntity implements IInventory
 
 		tags.setInteger("facing", facing);
 		tags.setBoolean("renderFloor", renderFloor);
+		tags.setBoolean("renderTable", renderTable);
 		for(int i=0;i<4;i++)
 		{
 			tags.setBoolean("renderArmor"+i, renderArmor[i]);
