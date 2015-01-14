@@ -20,6 +20,7 @@ import travellersgear.api.IEventGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ToolDisplayInfo;
 import travellersgear.common.network.PacketNBTSync;
+import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.network.PacketPlayerInventorySync;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -45,7 +46,7 @@ public class TGEventHandler
 
 			if(list!=null && targetedSlots!=null && targetedSlots.length>0)
 				if(prev==null || prev.length!=targetedSlots.length)
-					TravellersGear.instance.packetPipeline.sendToAll(new PacketPlayerInventorySync(event.player));
+					PacketPipeline.INSTANCE.sendToAll(new PacketPlayerInventorySync(event.player));
 				else
 				{
 					boolean packet = false;
@@ -53,7 +54,7 @@ public class TGEventHandler
 						if(!ItemStack.areItemStacksEqual(prev[i], event.player.inventory.mainInventory[targetedSlots[i]]))
 							packet=true;
 					if(packet)
-						TravellersGear.instance.packetPipeline.sendToAll(new PacketPlayerInventorySync(event.player));
+						PacketPipeline.INSTANCE.sendToAll(new PacketPlayerInventorySync(event.player));
 				}
 
 
@@ -95,14 +96,14 @@ public class TGEventHandler
 					tg[i] = null;
 				}
 			TravellersGearAPI.setExtendedInventory(event.entityPlayer, tg);
-			TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(event.entityPlayer));
+			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.entityPlayer));
 		}
 	}
 
 	@SubscribeEvent
 	public void onLogin(PlayerLoggedInEvent event)
 	{
-		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(event.player));
+		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
 		TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv(event.player)!=null;
 		TravellersGear.MARI &= ModCompatability.getMariInventory(event.player)!=null;
 		TravellersGear.TCON &= ModCompatability.getTConArmorInv(event.player)!=null;

@@ -8,10 +8,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
-import travellersgear.TravellersGear;
 import travellersgear.api.ITravellersGear;
 import travellersgear.client.ClientProxy;
 import travellersgear.common.network.PacketNBTSync;
+import travellersgear.common.network.PacketPipeline;
 
 public class Utils
 {
@@ -22,7 +22,7 @@ public class Utils
 			ItemStack stack2 = stack;
 			((ITravellersGear)stack.getItem()).onTravelGearTick(player, stack);
 			if(!Utils.itemsMatch(stack2, stack, true, true))
-				TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+				PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 		}
 		else if(ModCompatability.getPseudoTravellersGearData(stack)!=null && ModCompatability.getPseudoTravellersGearData(stack).length>=4)
 			if(ModCompatability.getPseudoTravellersGearData(stack)[1]!=null)
@@ -30,7 +30,7 @@ public class Utils
 					ItemStack stack2 = stack;
 					((Method)ModCompatability.getPseudoTravellersGearData(stack)[1]).invoke(stack.getItem(), player,stack);
 					if(!Utils.itemsMatch(stack2, stack, true, true))
-						TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+						PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 				}catch(Exception e)
 				{}
 

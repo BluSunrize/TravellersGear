@@ -20,11 +20,11 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.client.ToolDisplayInfo;
 import travellersgear.common.network.PacketNBTSync;
+import travellersgear.common.network.PacketPipeline;
 
 public class GuiConfigDisplayItems extends GuiScreen
 {
@@ -104,7 +104,7 @@ public class GuiConfigDisplayItems extends GuiScreen
 		for(int i=0; i<tools.length; i++)
 			list.appendTag(tools[i].writeToNBT());
 		TravellersGearAPI.getTravellersNBTData(player).setTag("toolDisplay", list);
-		TravellersGear.instance.packetPipeline.sendToServer(new PacketNBTSync(player));
+		PacketPipeline.INSTANCE.sendToServer(new PacketNBTSync(player));
 	}
 
 	boolean usingButton = false;

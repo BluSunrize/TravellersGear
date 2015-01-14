@@ -6,8 +6,8 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import travellersgear.TravellersGear;
 import travellersgear.common.network.PacketOpenGui;
+import travellersgear.common.network.PacketPipeline;
 
 public class TGClientCommand extends CommandBase
 {
@@ -35,11 +35,11 @@ public class TGClientCommand extends CommandBase
 	{
 		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("gui"))
 		{
-			TravellersGear.instance.packetPipeline.sendToServer(new PacketOpenGui((EntityPlayer) sender,2));
+			PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui((EntityPlayer) sender,2));
 		}
 		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("toolDisplay"))
 		{
-			TravellersGear.instance.packetPipeline.sendToServer(new PacketOpenGui((EntityPlayer) sender,3));
+			PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui((EntityPlayer) sender,3));
 		}
 	}
 

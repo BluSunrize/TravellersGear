@@ -16,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 import travellersgear.TravellersGear;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.inventory.ContainerArmorStand;
+import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.network.PacketTileUpdate;
 
 public class GuiArmorStand extends GuiContainer
@@ -247,7 +248,7 @@ public class GuiArmorStand extends GuiContainer
 	public void onGuiClosed()
 	{
 		try{
-			TravellersGear.instance.packetPipeline.sendToServer(new PacketTileUpdate(tile));
+			PacketPipeline.INSTANCE.sendToServer(new PacketTileUpdate(tile));
 
 		}catch(Throwable t)
 		{

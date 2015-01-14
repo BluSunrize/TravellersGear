@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import travellersgear.TravellersGear;
 
 public class PacketRequestNBTSync extends AbstractPacket
 {
@@ -43,25 +42,23 @@ public class PacketRequestNBTSync extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer p2)
+	public void handleClientSide(EntityPlayer p)
 	{
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer p)
 	{
-		World world0 = DimensionManager.getWorld(this.worldId);
-		if(world0 == null)return;
-		Entity player0 = world0.getEntityByID(this.playerId);
-		
+		World world = DimensionManager.getWorld(this.worldId);
+		if(world == null)
+			return;
+		Entity player = world.getEntityByID(this.playerId);
+
 		World worldR = DimensionManager.getWorld(this.requestWorldId);
-		if(worldR == null)return;
+		if(worldR == null)
+			return;
 		Entity playerR = worldR.getEntityByID(this.requestPlayerId);
 
-		if ( player0!=null&&player0 instanceof EntityPlayer && playerR!=null&&playerR instanceof EntityPlayerMP)
-		{
-			TravellersGear.instance.packetPipeline.sendTo(new PacketNBTSync((EntityPlayer)player0), (EntityPlayerMP) playerR);
-		}
+		if ( player!=null&&player instanceof EntityPlayer && playerR!=null&&playerR instanceof EntityPlayerMP)
+			PacketPipeline.INSTANCE.sendTo(new PacketNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
 	}
-
 }

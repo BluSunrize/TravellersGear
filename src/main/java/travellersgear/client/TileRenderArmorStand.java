@@ -261,9 +261,9 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 			GL11.glRotatef(180, 1, 0, 0);
 			GL11.glTranslatef(0,.05f,0);
 
-			float playerScale = .95f;
+			float playerScale = 1.03125f;
 			GL11.glScalef(playerScale,playerScale,playerScale);
-			GL11.glTranslatef(0,.1875f,0);
+			GL11.glTranslatef(0,.2f,0);
 			if(renderPlayer[0]||renderPlayer[1]||renderPlayer[2]||renderPlayer[3])
 			{
 				for(int its=0;its<4;its++)

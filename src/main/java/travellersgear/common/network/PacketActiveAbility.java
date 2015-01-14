@@ -8,7 +8,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import travellersgear.TravellersGear;
 import travellersgear.api.IActiveAbility;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.common.util.ModCompatability;
@@ -39,7 +38,6 @@ public class PacketActiveAbility extends AbstractPacket
 		ByteBufUtils.writeItemStack(buffer, item);
 		buffer.writeInt(slot);
 	}
-
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
@@ -50,12 +48,11 @@ public class PacketActiveAbility extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer p2)
+	public void handleClientSide(EntityPlayer p)
 	{
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
 		if (world == null)
@@ -88,7 +85,7 @@ public class PacketActiveAbility extends AbstractPacket
 		case 11:
 		case 12: // ARMOR
 			ItemStack[] armorInv = player.inventory.armorInventory;
-			if(!Utils.itemsMatch(armorInv[slot], item, true, true))
+			if(!Utils.itemsMatch(armorInv[slot-9], item, true, true))
 				armorInv[slot-9]=item;
 			player.inventory.armorInventory=armorInv;
 			break;
@@ -111,7 +108,7 @@ public class PacketActiveAbility extends AbstractPacket
 				if(!Utils.itemsMatch(tgInv[slot-8-9], item, true, true))
 					tgInv[slot-8-9]= item;
 			TravellersGearAPI.setExtendedInventory(player, tgInv);
-			TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 			break;
 		case 21:
 		case 22:
@@ -132,5 +129,4 @@ public class PacketActiveAbility extends AbstractPacket
 			break;
 		}
 	}
-
 }

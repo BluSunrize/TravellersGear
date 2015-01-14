@@ -101,7 +101,7 @@ public class InventoryTG implements IInventory
 
 	@Override
 	public String getInventoryName() {
-		return "container.TravelersRPG.Skills";
+		return "container.TravelersGear";
 	}
 
 	@Override

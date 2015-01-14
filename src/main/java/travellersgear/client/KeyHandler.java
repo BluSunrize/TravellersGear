@@ -5,10 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.input.Keyboard;
 
-import travellersgear.TravellersGear;
 import travellersgear.client.handlers.ActiveAbilityHandler;
 import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.network.PacketOpenGui;
+import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.network.PacketSlotSync;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -44,8 +44,8 @@ public class KeyHandler
 				boolean[] hidden = new boolean[CustomizeableGuiHandler.moveableInvElements.size()];
 				for(int bme=0;bme<hidden.length;bme++)
 					hidden[bme] = CustomizeableGuiHandler.moveableInvElements.get(bme).hideElement;
-				TravellersGear.instance.packetPipeline.sendToServer(new PacketSlotSync(player,hidden));
-				TravellersGear.instance.packetPipeline.sendToServer(new PacketOpenGui(player,0));
+				PacketPipeline.INSTANCE.sendToServer(new PacketSlotSync(player,hidden));
+				PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui(player,0));
 				keyDown[0] = true;
 			}
 			else if(keyDown[0])

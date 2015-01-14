@@ -9,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.client.ToolDisplayInfo;
@@ -37,7 +36,6 @@ public class PacketNBTSync extends AbstractPacket
 		buffer.writeInt(playerid);
 		ByteBufUtils.writeTag(buffer, tag);
 	}
-
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
@@ -47,19 +45,14 @@ public class PacketNBTSync extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer p2)
+	public void handleClientSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
-		world = p2.worldObj;
 		if (world == null)
-		{
 			return;
-		}
 		Entity player = world.getEntityByID(this.playerid);
 		if(!(player instanceof EntityPlayer))
-		{
 			return;
-		}
 		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
 		ClientProxy.equipmentMap.put(player.getCommandSenderName(), TravellersGearAPI.getExtendedInventory((EntityPlayer) player));
 		if(this.tag.hasKey("toolDisplay"))
@@ -75,9 +68,8 @@ public class PacketNBTSync extends AbstractPacket
 			ClientProxy.toolDisplayMap.put(player.getCommandSenderName(), tdi);
 		}
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
 		if (world == null)
@@ -86,7 +78,6 @@ public class PacketNBTSync extends AbstractPacket
 		if(!(player instanceof EntityPlayer))
 			return;
 		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
-		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync((EntityPlayer) player));
+		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync((EntityPlayer) player));
 	}
-
 }

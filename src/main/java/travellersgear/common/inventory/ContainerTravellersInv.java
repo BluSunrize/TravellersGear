@@ -14,6 +14,7 @@ import travellersgear.client.gui.GuiButtonMoveableElement;
 import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.CommonProxy;
 import travellersgear.common.network.PacketNBTSync;
+import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.util.ModCompatability;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
@@ -108,7 +109,7 @@ public class ContainerTravellersInv extends Container
 		{
 			ModCompatability.setPlayerBaubles(player, invBaubles);
 			TravellersGearAPI.setExtendedInventory(player, this.invTG.stackList);
-			TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 		}
 	}
 

@@ -5,14 +5,19 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.network.PacketNBTSync;
+import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.util.ModCompatability;
+import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
+import baubles.api.IBauble;
 
 public class ContainerArmorStand extends Container
 {
@@ -35,10 +40,11 @@ public class ContainerArmorStand extends Container
 		this.player = inventoryPlayer.player;
 		this.tileEntity = te;
 
-		this.invBaubles = ModCompatability.getNewBaublesInv(player);
-		ModCompatability.setBaubleContainer(invBaubles, this);
-		if(!player.worldObj.isRemote)
-			ModCompatability.setBaubleInvStacklist(invBaubles, BaublesApi.getBaubles(player));
+		this.invBaubles = BaublesApi.getBaubles(player);
+		//		this.invBaubles = ModCompatability.getNewBaublesInv(player);
+		//		ModCompatability.setBaubleContainer(invBaubles, this);
+		//		if(!player.worldObj.isRemote)
+		//			ModCompatability.setBaubleInvStacklist(invBaubles, BaublesApi.getBaubles(player));
 
 		this.invTG = new InventoryTG(this, player);
 		if(!player.worldObj.isRemote)
@@ -135,7 +141,7 @@ public class ContainerArmorStand extends Container
 		{
 			ModCompatability.setPlayerBaubles(player, invBaubles);
 			TravellersGearAPI.setExtendedInventory(player, this.invTG.stackList);
-			TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
+			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 		}
 	}
 	@Override
@@ -167,11 +173,12 @@ public class ContainerArmorStand extends Container
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int iSlot)
 	{
+		ItemStack stack = null;
 		Slot slotObject = (Slot)this.inventorySlots.get(iSlot);
 		if ((slotObject != null) && (slotObject.getHasStack()))
 		{
-			//			ItemStack stackInSlot = slotObject.getStack();
-			//			stack = stackInSlot.copy();
+			ItemStack stackInSlot = slotObject.getStack();
+			stack = stackInSlot.copy();
 			if(iSlot<playerSlots || (iSlot>=playerSlots&&iSlot<playerSlots*2))
 			{
 				int armSlot = iSlot%playerSlots;
@@ -183,104 +190,103 @@ public class ContainerArmorStand extends Container
 				((Slot)this.inventorySlots.get(0+armSlot)).onSlotChanged();
 
 
-				if(player.worldObj.isRemote && iSlot>=tgStart&&iSlot<mariStart)
-					ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
+				//				if(player.worldObj.isRemote && iSlot>=tgStart&&iSlot<mariStart)
+				//					ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
 				return null;
 			}
-			//			else
-			//			{
-			//			ItemStack stack = null;
-			//			Item stackItem = stack.getItem();
-			//				if(stackItem instanceof ItemArmor)
-			//				{
-			//					ItemArmor specificItem = (ItemArmor)stackItem;
-			//					int type = specificItem.armorType;
-			//
-			//					if(player.getCurrentArmor(3-type)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, 0+type, 0+type+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(type)==null)
-			//						if(!mergeItemStack(stackInSlot, playerSlots+type, playerSlots+type+1, true))
-			//							return null;
-			//				}
-			//				else if(TravellersGear.BAUBLES && stackItem instanceof IBauble && ((IBauble)stackItem).getBaubleType(stackInSlot)!=null)
-			//				{
-			//					IBauble baubleItem = (IBauble)stackItem;
-			//					BaubleType type = baubleItem.getBaubleType(stackInSlot);
-			//					int min= type==BaubleType.AMULET?0 :type==BaubleType.RING?1 :3;
-			//					int max= type==BaubleType.AMULET?0 :type==BaubleType.RING?2 :3;
-			//					if(invBaubles.getStackInSlot(min)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, baubleSlotStart+min, baubleSlotStart+min+1, true))
-			//							return null;
-			//					}
-			//					else if(invBaubles.getStackInSlot(max)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, baubleSlotStart+max, baubleSlotStart+max+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(4+min)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, playerSlots+4+min, playerSlots+4+min+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(4+max)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, playerSlots+4+max, playerSlots+4+max+1, true))
-			//							return null;
-			//					}
-			//				}
-			//				else if(ModCompatability.getTravellersGearSlot(stackInSlot)>=0)
-			//				{
-			//					int type = ModCompatability.getTravellersGearSlot(stackInSlot);
-			//					if(invTG.getStackInSlot(type)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, tgSlotStart+type, tgSlotStart+type+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(8+type)==null)
-			//						if(!mergeItemStack(stackInSlot, playerSlots+8+type, playerSlots+8+type+1, true))
-			//							return null;
-			//					if(player.worldObj.isRemote)
-			//						ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
-			//				}
-			//				else if(TravellersGear.MARI && ModCompatability.isMariJewelry(stackInSlot))
-			//				{
-			//					int type = ModCompatability.getMariJeweleryType(stackInSlot).contains("BRACELET")?1 : ModCompatability.getMariJeweleryType(stackInSlot).contains("NECKLACE")?2 : 0;
-			//					if(invMari.getStackInSlot(type)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, mariSlotStart+type, mariSlotStart+type+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(11+type)==null)
-			//						if(!mergeItemStack(stackInSlot, playerSlots+11+type, playerSlots+11+type+1, true))
-			//							return null;
-			//				}
-			//				else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(stackInSlot, 1))
-			//				{
-			//					if(invTConArmor.getStackInSlot(1)==null)
-			//					{
-			//						if(!mergeItemStack(stackInSlot, tconSlotStart, tconSlotStart+1, true))
-			//							return null;
-			//					}
-			//					else if(tileEntity.getStackInSlot(14)==null)
-			//						if(!mergeItemStack(stackInSlot, playerSlots+14+1, playerSlots+14+1+1, true))
-			//							return null;
-			//				}
-			//
-			//			}
-			//			if (stackInSlot.stackSize == 0) {
-			//				slotObject.putStack(null);
-			//			} else {
-			//				slotObject.onSlotChanged();
-			//			}
-			//			if (stackInSlot.stackSize == stack.stackSize) {
-			//				return null;
-			//			}
-			//			slotObject.onPickupFromSlot(player, stackInSlot);
-			//			return stack;
+			else
+			{
+				Item stackItem = stack.getItem();
+				if(stackItem instanceof ItemArmor)
+				{
+					ItemArmor specificItem = (ItemArmor)stackItem;
+					int type = specificItem.armorType;
+
+					if(player.getCurrentArmor(3-type)==null)
+					{
+						if(!mergeItemStack(stackInSlot, 0+type, 0+type+1, true))
+							return null;
+					}
+					else if(tileEntity.getStackInSlot(type)==null)
+						if(!mergeItemStack(stackInSlot, playerSlots+type, playerSlots+type+1, true))
+							return null;
+				}
+				else if(TravellersGear.BAUBLES && stackItem instanceof IBauble && ((IBauble)stackItem).getBaubleType(stackInSlot)!=null)
+				{
+					IBauble baubleItem = (IBauble)stackItem;
+					BaubleType type = baubleItem.getBaubleType(stackInSlot);
+					int min= type==BaubleType.AMULET?0 :type==BaubleType.RING?1 :3;
+					int max= type==BaubleType.AMULET?0 :type==BaubleType.RING?2 :3;
+					if(invBaubles.getStackInSlot(min)==null)
+					{
+						if(!mergeItemStack(stackInSlot, baubleStart+min, baubleStart+min+1, true))
+							return null;
+					}
+					else if(invBaubles.getStackInSlot(max)==null)
+					{
+						if(!mergeItemStack(stackInSlot, baubleStart+max, baubleStart+max+1, true))
+							return null;
+					}
+					else if(tileEntity.getStackInSlot(4+min)==null)
+					{
+						if(!mergeItemStack(stackInSlot, playerSlots+4+min, playerSlots+4+min+1, true))
+							return null;
+					}
+					else if(tileEntity.getStackInSlot(4+max)==null)
+					{
+						if(!mergeItemStack(stackInSlot, playerSlots+4+max, playerSlots+4+max+1, true))
+							return null;
+					}
+				}
+				else if(ModCompatability.getTravellersGearSlot(stackInSlot)>=0)
+				{
+					int type = ModCompatability.getTravellersGearSlot(stackInSlot);
+					if(invTG.getStackInSlot(type)==null)
+					{
+						if(!mergeItemStack(stackInSlot, tgStart+type, tgStart+type+1, true))
+							return null;
+					}
+					else if(tileEntity.getStackInSlot(8+type)==null)
+						if(!mergeItemStack(stackInSlot, playerSlots+8+type, playerSlots+8+type+1, true))
+							return null;
+					if(player.worldObj.isRemote)
+						ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
+				}
+				else if(TravellersGear.MARI && ModCompatability.isMariJewelry(stackInSlot))
+				{
+					int type = ModCompatability.getMariJeweleryType(stackInSlot).contains("BRACELET")?1 : ModCompatability.getMariJeweleryType(stackInSlot).contains("NECKLACE")?2 : 0;
+					if(invMari.getStackInSlot(type)==null)
+					{
+						if(!mergeItemStack(stackInSlot, mariStart+type, mariStart+type+1, true))
+							return null;
+					}
+					else if(tileEntity.getStackInSlot(11+type)==null)
+						if(!mergeItemStack(stackInSlot, playerSlots+11+type, playerSlots+11+type+1, true))
+							return null;
+				}
+				else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(stackInSlot, 1))
+				{
+					if(invTConArmor.getStackInSlot(1)==null)
+					{
+						if(!mergeItemStack(stackInSlot, tconStart, tconStart+1, true))
+							return null;
+					}
+					else if(tileEntity.getStackInSlot(14)==null)
+						if(!mergeItemStack(stackInSlot, playerSlots+14+1, playerSlots+14+1+1, true))
+							return null;
+				}
+
+			}
+			if (stackInSlot.stackSize == 0) {
+				slotObject.putStack(null);
+			} else {
+				slotObject.onSlotChanged();
+			}
+			if (stackInSlot.stackSize == stack.stackSize) {
+				return null;
+			}
+			slotObject.onPickupFromSlot(player, stackInSlot);
+			return stack;
 		}
 		return null;
 	}

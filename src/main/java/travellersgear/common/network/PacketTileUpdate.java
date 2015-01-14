@@ -21,12 +21,12 @@ public class PacketTileUpdate extends AbstractPacket
 	public PacketTileUpdate(TileEntity te)
 	{
 		try{
-		this.worldId = te.getWorldObj().provider.dimensionId;
-		this.x = te.xCoord;
-		this.y = te.yCoord;
-		this.z = te.zCoord;
-		this.tag = new NBTTagCompound();
-		te.writeToNBT(this.tag);
+			this.worldId = te.getWorldObj().provider.dimensionId;
+			this.x = te.xCoord;
+			this.y = te.yCoord;
+			this.z = te.zCoord;
+			this.tag = new NBTTagCompound();
+			te.writeToNBT(this.tag);
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class PacketTileUpdate extends AbstractPacket
 
 
 	@Override
-	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		buffer.writeInt(worldId);
 		buffer.writeInt(x);
@@ -43,9 +43,8 @@ public class PacketTileUpdate extends AbstractPacket
 		buffer.writeInt(z);
 		ByteBufUtils.writeTag(buffer, tag);
 	}
-
 	@Override
-	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		this.worldId = buffer.readInt();
 		this.x = buffer.readInt();
@@ -55,19 +54,15 @@ public class PacketTileUpdate extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer clientPlayer)
+	public void handleClientSide(EntityPlayer player)
 	{
-
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer player)
 	{
 		World world = DimensionManager.getWorld(this.worldId);
-		if (world == null)
-			return;
-		if(world.getTileEntity(x, y, z)!=null)
-			world.getTileEntity(x, y, z).readFromNBT(tag);
+		if (world != null)
+			if(world.getTileEntity(x, y, z)!=null)
+				world.getTileEntity(x, y, z).readFromNBT(tag);
 	}
-
 }

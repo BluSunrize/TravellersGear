@@ -35,7 +35,7 @@ public class PacketPlayerInventorySync extends AbstractPacket
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext context, ByteBuf buffer)
+	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		buffer.writeInt(dim);
 		buffer.writeInt(playerid);
@@ -45,9 +45,8 @@ public class PacketPlayerInventorySync extends AbstractPacket
 		for(int i=0; i<targetedSlots.length; i++)
 			ByteBufUtils.writeItemStack(buffer, items[i]);
 	}
-
 	@Override
-	public void decodeInto(ChannelHandlerContext context, ByteBuf buffer)
+	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		this.dim = buffer.readInt();
 		this.playerid = buffer.readInt();
@@ -61,23 +60,20 @@ public class PacketPlayerInventorySync extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer clientPlayer)
+	public void handleClientSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
-		world = clientPlayer.worldObj;
 		if (world == null)
 			return;
 		Entity player = world.getEntityByID(this.playerid);
 		if(!(player instanceof EntityPlayer))
 			return;
-		
+
 		for(int i=0; i<targetedSlots.length; i++)
 			((EntityPlayer)player).inventory.mainInventory[targetedSlots[i]] = items[i];
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer p)
 	{
 	}
-
 }

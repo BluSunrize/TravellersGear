@@ -2,6 +2,7 @@ package travellersgear.common.network;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,6 +27,13 @@ public class PacketOpenGui extends AbstractPacket
 	}
 
 	@Override
+	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
+	{
+		buffer.writeInt(this.dim);
+		buffer.writeInt(this.playerid);
+		buffer.writeInt(this.guiid);
+	}
+	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		this.dim = buffer.readInt();
@@ -34,22 +42,12 @@ public class PacketOpenGui extends AbstractPacket
 	}
 
 	@Override
-	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
+	public void handleClientSide(EntityPlayer p)
 	{
-		buffer.writeInt(this.dim);
-		buffer.writeInt(this.playerid);
-		buffer.writeInt(this.guiid);
+		Minecraft.getMinecraft().thePlayer.openGui(TravellersGear.instance, guiid, Minecraft.getMinecraft().thePlayer.worldObj, MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.posX), MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.posY), MathHelper.floor_double(Minecraft.getMinecraft().thePlayer.posZ));
 	}
-
 	@Override
-	public void handleClientSide(EntityPlayer player)
-	{
-		System.out.println("gui packet");
-		player.openGui(TravellersGear.instance, guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
-	}
-
-	@Override
-	public void handleServerSide(EntityPlayer player2)
+	public void handleServerSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
 		if (world == null)
@@ -58,9 +56,8 @@ public class PacketOpenGui extends AbstractPacket
 		if(!(ent instanceof EntityPlayer))
 			return;
 		EntityPlayer player = (EntityPlayer) ent;
-		TravellersGear.instance.packetPipeline.sendToAll(new PacketNBTSync(player));
-		TravellersGear.instance.packetPipeline.sendTo(new PacketOpenGui(player,guiid), (EntityPlayerMP) player);
+		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
+		PacketPipeline.INSTANCE.sendTo(new PacketOpenGui(player,guiid), (EntityPlayerMP) player);
 		player.openGui(TravellersGear.instance, guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
 	}
-
 }

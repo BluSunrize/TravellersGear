@@ -30,7 +30,6 @@ public class PacketSlotSync extends AbstractPacket
 		for(boolean b : hidden)
 			buffer.writeBoolean(b);
 	}
-
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
@@ -43,25 +42,17 @@ public class PacketSlotSync extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer p2)
+	public void handleClientSide(EntityPlayer p)
 	{
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
-		world = p2.worldObj;
 		if (world == null)
-		{
 			return;
-		}
 		Entity player = world.getEntityByID(this.playerid);
-		if(!(player instanceof EntityPlayer))
-		{
-			return;
-		}
-		CommonProxy.hiddenSlots.put(player.getCommandSenderName(), hidden);
+		if(player instanceof EntityPlayer)
+			CommonProxy.hiddenSlots.put(player.getCommandSenderName(), hidden);
 	}
-
 }

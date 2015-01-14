@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,7 @@ import travellersgear.common.CommonProxy;
 import travellersgear.common.blocks.BlockArmorStand;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.items.ItemTravellersGear;
-import travellersgear.common.network.TGPacketPipeline;
+import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.util.CloakColourizationRecipe;
 import travellersgear.common.util.ComparableItemStack;
 import travellersgear.common.util.TGCreativeTab;
@@ -49,7 +50,6 @@ public class TravellersGear
 	public static final String MODNAME = "Traveller's Gear";
 	public static final String VERSION = "${version}";
 	public static final Logger logger = LogManager.getLogger(MODID);
-	public final TGPacketPipeline packetPipeline = new TGPacketPipeline();
 
 	@Instance(MODID)
 	public static TravellersGear instance = new TravellersGear();	
@@ -73,6 +73,7 @@ public class TravellersGear
 		NEI = Loader.isModLoaded("NotEnoughItems");
 
 		GameRegistry.addRecipe(new CloakColourizationRecipe());
+		RecipeSorter.register("TravellersGear:cloakdye", CloakColourizationRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
 
 		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
 		ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
@@ -115,13 +116,11 @@ public class TravellersGear
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		MinecraftForge.EVENT_BUS.register(new TGEventHandler());
 		FMLCommonHandler.instance().bus().register(new TGEventHandler());
-		packetPipeline.initialise();
+		PacketPipeline.INSTANCE.initalise();
 	}
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		packetPipeline.postInitialise();
-
 		ImmutableList<FMLInterModComms.IMCMessage> messages = FMLInterModComms.fetchRuntimeMessages(this);
 		for (FMLInterModComms.IMCMessage message : messages)
 		{
@@ -132,6 +131,7 @@ public class TravellersGear
 				addItemToTravelersGear(stack,slot);
 			}
 		}
+		PacketPipeline.INSTANCE.postInitialise();
 	}
 	
 	public static HashMap<ComparableItemStack, Object[]> additionalTravelersGear = new HashMap();

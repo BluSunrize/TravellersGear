@@ -33,7 +33,6 @@ public class PacketItemShoutout extends AbstractPacket
 		buffer.writeInt(playerid);
 		ByteBufUtils.writeItemStack(buffer, item);
 	}
-
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
@@ -43,19 +42,19 @@ public class PacketItemShoutout extends AbstractPacket
 	}
 
 	@Override
-	public void handleClientSide(EntityPlayer p2)
+	public void handleClientSide(EntityPlayer p)
 	{
 	}
-
 	@Override
-	public void handleServerSide(EntityPlayer p2)
+	public void handleServerSide(EntityPlayer p)
 	{
 		World world = DimensionManager.getWorld(this.dim);
-		if (world == null) return;
+		if (world == null)
+			return;
 		Entity player = world.getEntityByID(this.playerid);
-		if(!(player instanceof EntityPlayer)) return;
+		if(!(player instanceof EntityPlayer))
+			return;
 		for(EntityPlayer onlineP : (List<EntityPlayer>)world.playerEntities)
 			onlineP.addChatMessage(new ChatComponentTranslation("TG.chattext.showItem", ((EntityPlayer)player).getDisplayName(), item.func_151000_E()));
 	}
-
 }

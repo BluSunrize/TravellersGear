@@ -30,7 +30,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 {
 	public static String[] subNames = {"cloak","belt","ringGold","ringSilver","pauldrons","vambraces", "title"};
 	IIcon[] icons = new IIcon[subNames.length];
-	static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker","boxFox"};
+	static String[] titles = {"treepuncher","titan","librarian","bursar","archchancellor","justicar","explorer","defender","seeker","boxFox","freshPrince"};
 
 	public ItemTravellersGear()
 	{
@@ -237,8 +237,9 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 		protected ItemStack[] generateChestContent(Random random, IInventory newInventory)
 		{
 			ItemStack s = theItemId.copy();
-			s.setTagCompound(new NBTTagCompound());
-			s.getTagCompound().setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
+			s.setTagCompound(tag);
 			return new ItemStack[]{s};
 		}
 	}
