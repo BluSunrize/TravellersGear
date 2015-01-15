@@ -72,9 +72,10 @@ public class BlockArmorStand extends BlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int idk, float what, float these, float are)
 	{
-		if(!world.isRemote && !player.isSneaking())
+		if(!player.isSneaking())
 		{
-			player.openGui(TravellersGear.instance, 1, world, x, y, z);
+			if(!world.isRemote)
+				player.openGui(TravellersGear.instance, 1, world, x, y, z);
 			return true;
 		}
 		return false;
