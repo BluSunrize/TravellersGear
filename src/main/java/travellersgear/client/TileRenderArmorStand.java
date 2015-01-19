@@ -70,7 +70,6 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 			{
 				this.fakepl = new FakeClientPlayer(Minecraft.getMinecraft().theWorld);
 				this.fakepl.ticksExisted=0;
-
 			}
 			if(this.renderPlayer == null)
 				this.renderPlayer = (RenderPlayer) RenderManager.instance.getEntityRenderObject(this.fakepl);
@@ -106,9 +105,6 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 			GL11.glTranslatef(0,0,-.25f);
 			for(int armor=0;armor<4;armor++)
 			{
-//				System.out.println("armor="+armor+", "+tile.getStackInSlot(armor));
-//				System.out.println(Minecraft.getMinecraft().thePlayer.getEquipmentInSlot(3));
-				
 				if(tile.renderArmor[armor])
 					this.fakepl.inventory.armorInventory[3-armor] = tile.getStackInSlot(armor);
 				else

@@ -33,11 +33,11 @@ public class TGClientCommand extends CommandBase
 	@Override
 	public void processCommand(ICommandSender sender, String[] args)
 	{
-		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("gui"))
+		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("gui") && ((EntityPlayer)sender).worldObj.isRemote)
 		{
 			PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui((EntityPlayer) sender,2));
 		}
-		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("toolDisplay"))
+		if(sender instanceof EntityPlayer && args.length>=1 && args[0].equalsIgnoreCase("toolDisplay") && ((EntityPlayer)sender).worldObj.isRemote)
 		{
 			PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui((EntityPlayer) sender,3));
 		}

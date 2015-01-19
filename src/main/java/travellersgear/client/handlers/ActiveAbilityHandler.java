@@ -119,10 +119,8 @@ public class ActiveAbilityHandler
 
 			if(sel>=0 && sel<gear.length && gear[sel][0]!=null)
 			{
-				ItemStack stack = (ItemStack) gear[sel][0];
-				if(stack.getItem() instanceof IActiveAbility && ((IActiveAbility)stack.getItem()).canActivate((EntityPlayer) player, stack, stack.equals( ((EntityPlayer)player).getCurrentEquippedItem() )))
-					((IActiveAbility)stack.getItem()).activate((EntityPlayer) player, stack);
-				PacketPipeline.INSTANCE.sendToServer(new PacketActiveAbility(player,stack, (Integer) gear[sel][1]));
+				PacketPipeline.INSTANCE.sendToServer(new PacketActiveAbility(player, (Integer) gear[sel][1]));
+				PacketActiveAbility.performAbility(player, (Integer) gear[sel][1]);
 			}
 		}
 	}
@@ -141,6 +139,8 @@ public class ActiveAbilityHandler
 			int h = scaledresolution.getScaledHeight();
 
 			Object[][] gear = buildActiveAbilityList(player);
+			if(gear.length<1)
+				return;
 
 			float n = gear.length+1;
 			float segmentAngle = 360f / n;

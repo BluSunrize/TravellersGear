@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
@@ -37,16 +36,9 @@ public class GuiConfigDisplayItems extends GuiScreen
 	public GuiConfigDisplayItems(EntityPlayer player)
 	{
 		this.player = player;
-
-		NBTTagCompound tgTag = TravellersGearAPI.getTravellersNBTData(player);
-		tools = new ToolDisplayInfo[0];
-		if(tgTag.hasKey("toolDisplay"))
-		{
-			NBTTagList list = tgTag.getTagList("toolDisplay", 10);
-			tools = new ToolDisplayInfo[list.tagCount()];
-			for(int i=0; i<list.tagCount(); i++)
-				tools[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i));
-		}
+		tools = ClientProxy.toolDisplayMap.get(player.getCommandSenderName());
+		if(tools==null)
+			tools = new ToolDisplayInfo[0];
 	}
 
 	@Override

@@ -53,6 +53,7 @@ public class PacketNBTSync extends AbstractPacket
 		Entity player = world.getEntityByID(this.playerid);
 		if(!(player instanceof EntityPlayer))
 			return;
+		//System.out.println("Handling NBTSYNC!"+((EntityPlayer)player).getCommandSenderName());
 		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
 		ClientProxy.equipmentMap.put(player.getCommandSenderName(), TravellersGearAPI.getExtendedInventory((EntityPlayer) player));
 		if(this.tag.hasKey("toolDisplay"))

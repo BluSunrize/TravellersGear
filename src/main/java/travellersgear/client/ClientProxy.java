@@ -198,7 +198,7 @@ public class ClientProxy extends CommonProxy
 					GL11.glPopMatrix();
 				}
 			}
-		if(equipmentMap.containsKey(event.entityPlayer.getCommandSenderName()))
+		if(equipmentMap.get(event.entityPlayer.getCommandSenderName())!=null)
 		{
 			for(int i=0;i<equipmentMap.get(event.entityPlayer.getCommandSenderName()).length;i++)
 			{
@@ -216,8 +216,8 @@ public class ClientProxy extends CommonProxy
 		}
 		else if(event.entityPlayer.getPlayerCoordinates()!=null)
 			PacketPipeline.INSTANCE.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
-
-		if(toolDisplayMap.containsKey(event.entityPlayer.getCommandSenderName()))
+		
+		if(toolDisplayMap.get(event.entityPlayer.getCommandSenderName())!=null)
 		{
 			for(ToolDisplayInfo tdi : toolDisplayMap.get(event.entityPlayer.getCommandSenderName()))
 				if(tdi!=null)

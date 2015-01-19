@@ -41,7 +41,7 @@ public class Utils
 			if(stack.getItem() instanceof ITravellersGear)
 			{
 				((ITravellersGear)stack.getItem()).onTravelGearEquip(player, stack);
-				if(player.worldObj.isRemote)
+				if(player.worldObj.isRemote && player.worldObj.isRemote && ClientProxy.equipmentMap.get(player.getCommandSenderName())!=null)
 					ClientProxy.equipmentMap.get(player.getCommandSenderName())[ModCompatability.getTravellersGearSlot(stack)] = stack;
 			}
 			else if(ModCompatability.getPseudoTravellersGearData(stack)!=null && ModCompatability.getPseudoTravellersGearData(stack).length>=4)
@@ -51,7 +51,7 @@ public class Utils
 						((Method)ModCompatability.getPseudoTravellersGearData(stack)[2]).invoke(stack.getItem(), player,stack);
 					}catch(Exception e)
 					{}
-				if(player.worldObj.isRemote)
+				if(player.worldObj.isRemote && player.worldObj.isRemote && ClientProxy.equipmentMap.get(player.getCommandSenderName())!=null)
 					ClientProxy.equipmentMap.get(player.getCommandSenderName())[ModCompatability.getTravellersGearSlot(stack)] = stack;
 			}
 	}
@@ -61,7 +61,7 @@ public class Utils
 			if(stack.getItem() instanceof ITravellersGear)
 			{
 				((ITravellersGear)stack.getItem()).onTravelGearUnequip(player, stack);
-				if(player.worldObj.isRemote)
+				if(player.worldObj.isRemote && ClientProxy.equipmentMap.get(player.getCommandSenderName())!=null)
 					ClientProxy.equipmentMap.get(player.getCommandSenderName())[ModCompatability.getTravellersGearSlot(stack)] = null;
 			}
 			else if(ModCompatability.getPseudoTravellersGearData(stack)!=null && ModCompatability.getPseudoTravellersGearData(stack).length>=4)
@@ -71,7 +71,7 @@ public class Utils
 						((Method)ModCompatability.getPseudoTravellersGearData(stack)[3]).invoke(stack.getItem(), player,stack);
 					}catch(Exception e)
 					{}
-				if(player.worldObj.isRemote)
+				if(player.worldObj.isRemote && ClientProxy.equipmentMap.get(player.getCommandSenderName())!=null)
 					ClientProxy.equipmentMap.get(player.getCommandSenderName())[ModCompatability.getTravellersGearSlot(stack)] = null;
 			}
 	}

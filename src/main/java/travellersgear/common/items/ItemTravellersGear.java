@@ -17,6 +17,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ChestGenHooks;
 import travellersgear.TravellersGear;
 import travellersgear.api.ITravellersGear;
 import travellersgear.client.ModelCloak;
@@ -226,21 +227,31 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 		}
 	}
 
-	public static class WeightedRandomTitleScroll extends WeightedRandomChestContent
-	{
-		public WeightedRandomTitleScroll()
-		{
-			super(new ItemStack(TravellersGear.simpleGear,1,6), 1,1, 8);
-		}
-
-		@Override
-		protected ItemStack[] generateChestContent(Random random, IInventory newInventory)
-		{
-			ItemStack s = theItemId.copy();
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
-			s.setTagCompound(tag);
-			return new ItemStack[]{s};
-		}
-	}
+	@Override
+	public WeightedRandomChestContent getChestGenBase(ChestGenHooks chest, Random random, WeightedRandomChestContent original)
+    {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
+		original.theItemId.setTagCompound(tag);
+		
+        return original;
+    }
+	
+//	public static class WeightedRandomTitleScroll extends WeightedRandomChestContent
+//	{
+//		public WeightedRandomTitleScroll()
+//		{
+//			super(new ItemStack(TravellersGear.simpleGear,1,6), 1,1, 8);
+//		}
+//
+//		@Override
+//		protected ItemStack[] generateChestContent(Random random, IInventory newInventory)
+//		{
+//			ItemStack s = theItemId.copy();
+//			NBTTagCompound tag = new NBTTagCompound();
+//			tag.setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
+//			s.setTagCompound(tag);
+//			return new ItemStack[]{s};
+//		}
+//	}
 }

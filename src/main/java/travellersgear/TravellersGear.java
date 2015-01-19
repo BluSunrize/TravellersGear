@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
@@ -75,11 +76,16 @@ public class TravellersGear
 		GameRegistry.addRecipe(new CloakColourizationRecipe());
 		RecipeSorter.register("TravellersGear:cloakdye", CloakColourizationRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
 
-		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-		ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
+//		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
+//		ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
+//		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
+//		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
+//		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
+		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
+		ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
+		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
+		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
+		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
 
 		int[] dyeColours = {0xffffff, 0xD87F33, 0xB24CD8 , 0x6699D8   , 0xE5E533, 0x7FCC19, 0xF27FA5, 0x4C4C4C, 0x999999   , 0x4C7F99, 0x7F3FB2, 0x334CB2, 0x664C33, 0x667F33, 0x993333, 0x191919};
 		for(int d=0;d<dyeColours.length;d++)
