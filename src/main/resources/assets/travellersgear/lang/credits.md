@@ -4,3 +4,7 @@ Localization credit
 * OndraSter - cs_CZ.lang
 * TeamMMKP(puyo061) - ko_KR.lang
 * ViKaleidoscope - zh_CN.lang
+
+Code credit
+----
+* TTFTCUTS - Important pointers in the generation of loot
