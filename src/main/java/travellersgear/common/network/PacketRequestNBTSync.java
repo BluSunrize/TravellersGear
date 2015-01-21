@@ -48,6 +48,7 @@ public class PacketRequestNBTSync extends AbstractPacket
 	@Override
 	public void handleServerSide(EntityPlayer p)
 	{
+		System.out.println("prep sync");
 		World world = DimensionManager.getWorld(this.worldId);
 		if(world == null)
 			return;
@@ -58,7 +59,11 @@ public class PacketRequestNBTSync extends AbstractPacket
 			return;
 		Entity playerR = worldR.getEntityByID(this.requestPlayerId);
 
-		if ( player!=null&&player instanceof EntityPlayer && playerR!=null&&playerR instanceof EntityPlayerMP)
+		System.out.println("ready sync of "+player+" for "+playerR);
+		if ( player!=null&&player instanceof EntityPlayer && playerR!=null &&playerR instanceof EntityPlayerMP)
+		{
+			System.out.println("send sync to "+playerR);
 			PacketPipeline.INSTANCE.sendTo(new PacketNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
+		}
 	}
 }

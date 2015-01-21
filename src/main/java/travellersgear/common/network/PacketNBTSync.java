@@ -5,10 +5,12 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.client.ToolDisplayInfo;
@@ -47,14 +49,33 @@ public class PacketNBTSync extends AbstractPacket
 	@Override
 	public void handleClientSide(EntityPlayer p)
 	{
-		World world = DimensionManager.getWorld(this.dim);
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("HEYOOOOOO");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		World world = TravellersGear.proxy.getClientWorld();
 		if (world == null)
+		{
+			System.out.println("No World");
 			return;
+		}
 		Entity player = world.getEntityByID(this.playerid);
 		if(!(player instanceof EntityPlayer))
 			return;
-		//System.out.println("Handling NBTSYNC!"+((EntityPlayer)player).getCommandSenderName());
+		System.out.println("BEFORE");
+		for(ItemStack ss : TravellersGearAPI.getExtendedInventory((EntityPlayer) player))
+			System.out.println(ss);
+		System.out.println("AFTER");
+		
+		
+//		System.out.println("Handling NBTSYNC!"+((EntityPlayer)player).getCommandSenderName());
 		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
+
+		for(ItemStack ss : TravellersGearAPI.getExtendedInventory((EntityPlayer) player))
+			System.out.println(ss);
 		ClientProxy.equipmentMap.put(player.getCommandSenderName(), TravellersGearAPI.getExtendedInventory((EntityPlayer) player));
 		if(this.tag.hasKey("toolDisplay"))
 		{

@@ -61,6 +61,7 @@ import travellersgear.common.util.ModCompatability;
 import travellersgear.common.util.TGClientCommand;
 import travellersgear.common.util.Utils;
 import baubles.api.BaublesApi;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -432,5 +433,11 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArmorStand.class, new TileRenderArmorStand());
 		ClientCommandHandler.instance.registerCommand(new TGClientCommand());
 
+	}
+	
+	@Override
+	public World getClientWorld()
+	{
+		return FMLClientHandler.instance().getClient().theWorld;
 	}
 }

@@ -103,12 +103,29 @@ public class TGEventHandler
 	@SubscribeEvent
 	public void onLogin(PlayerLoggedInEvent event)
 	{
-		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
-		TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv(event.player)!=null;
-		TravellersGear.MARI &= ModCompatability.getMariInventory(event.player)!=null;
-		TravellersGear.TCON &= ModCompatability.getTConArmorInv(event.player)!=null;
+		if(!event.player.worldObj.isRemote)
+		{
+			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
+//			TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv(event.player)!=null;
+//			TravellersGear.MARI &= ModCompatability.getMariInventory(event.player)!=null;
+//			TravellersGear.TCON &= ModCompatability.getTConArmorInv(event.player)!=null;
+		}
 	}
-
+	//	@SubscribeEvent
+	//	public void onJoinWorld(EntityJoinWorldEvent event)
+	//	{
+	//		if(event.entity instanceof EntityPlayer)
+	//		{
+	//			if(!event.world.isRemote)
+	//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync((EntityPlayer) event.entity));
+	//			else
+	//			{
+	//			TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv((EntityPlayer) event.entity)!=null;
+	//			TravellersGear.MARI &= ModCompatability.getMariInventory((EntityPlayer) event.entity)!=null;
+	//			TravellersGear.TCON &= ModCompatability.getTConArmorInv((EntityPlayer) event.entity)!=null;
+	//		}
+	//		}
+	//	}
 
 	@SubscribeEvent
 	public void onPlayerDamaged(LivingHurtEvent event)
