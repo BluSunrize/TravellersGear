@@ -95,7 +95,8 @@ public class GuiConfigDisplayItems extends GuiScreen
 		NBTTagList list = new NBTTagList();
 		for(int i=0; i<tools.length; i++)
 			list.appendTag(tools[i].writeToNBT());
-		TravellersGearAPI.getTravellersNBTData(player).setTag("toolDisplay", list);
+		TravellersGearAPI.setDisplayTools(player, list);
+//		TravellersGearAPI.getTravellersNBTData(player).setTag("toolDisplay", list);
 		PacketPipeline.INSTANCE.sendToServer(new PacketNBTSync(player));
 	}
 

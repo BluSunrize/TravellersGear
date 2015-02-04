@@ -17,14 +17,12 @@ public class PacketActiveAbility extends AbstractPacket
 {
 	int dim;
 	int playerid;
-	//	ItemStack item;
 	int slot;
 	public PacketActiveAbility(){}
 	public PacketActiveAbility(EntityPlayer player, int slot)
 	{
 		this.dim = player.worldObj.provider.dimensionId;
 		this.playerid = player.getEntityId();
-		//		this.item = stack;
 		this.slot = slot;
 	}
 
@@ -33,7 +31,6 @@ public class PacketActiveAbility extends AbstractPacket
 	{
 		buffer.writeInt(dim);
 		buffer.writeInt(playerid);
-		//		ByteBufUtils.writeItemStack(buffer, item);
 		buffer.writeInt(slot);
 	}
 	@Override
@@ -41,7 +38,6 @@ public class PacketActiveAbility extends AbstractPacket
 	{
 		this.dim = buffer.readInt();
 		this.playerid = buffer.readInt();
-		//		this.item=ByteBufUtils.readItemStack(buffer);
 		this.slot = buffer.readInt();
 	}
 
@@ -61,11 +57,6 @@ public class PacketActiveAbility extends AbstractPacket
 		EntityPlayer player = (EntityPlayer) ent;
 		performAbility(player,slot);
 		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
-		//		if(item!=null && item.getItem() instanceof IActiveAbility)
-		//			if(((IActiveAbility)item.getItem()).canActivate(player, item, slot<9))
-		//				((IActiveAbility)item.getItem()).activate(player, item);
-		//		System.out.println("ohai "+item.getTagCompound().getBoolean("test"));
-		//		updateInventories(player,slot,item);
 	}
 	
 	
@@ -115,6 +106,7 @@ public class PacketActiveAbility extends AbstractPacket
 //				tgInv[slot-8-9]= item;
 //			TravellersGearAPI.setExtendedInventory(player, tgInv);
 			activateItem(tgInv[slot-8-9], player, false);
+			TravellersGearAPI.setExtendedInventory(player, tgInv);
 			//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 			break;
 		case 21:

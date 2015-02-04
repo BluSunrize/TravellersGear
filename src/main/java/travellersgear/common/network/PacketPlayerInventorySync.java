@@ -7,14 +7,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
+import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ToolDisplayInfo;
 import cpw.mods.fml.common.network.ByteBufUtils;
 
 public class PacketPlayerInventorySync extends AbstractPacket
 {
-	int dim;
 	int playerid;
 	int[] targetedSlots;
 	ItemStack[] items;
@@ -23,9 +22,10 @@ public class PacketPlayerInventorySync extends AbstractPacket
 	}
 	public PacketPlayerInventorySync(EntityPlayer player)
 	{
-		dim = player.worldObj.provider.dimensionId;
 		playerid = player.getEntityId();
-		NBTTagList list = TravellersGearAPI.getTravellersNBTData(player).getTagList("toolDisplay", 10);
+//		NBTTagList list = TravellersGearAPI.getTravellersNBTData(player).getTagList("toolDisplay", 10);
+		NBTTagList list = TravellersGearAPI.getDisplayTools(player);
+		
 		targetedSlots = new int[list.tagCount()];
 		for(int i=0;i<list.tagCount();i++)
 			targetedSlots[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i)).slot;
@@ -37,7 +37,6 @@ public class PacketPlayerInventorySync extends AbstractPacket
 	@Override
 	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
-		buffer.writeInt(dim);
 		buffer.writeInt(playerid);
 		buffer.writeInt(targetedSlots.length);
 		for(int i=0; i<targetedSlots.length; i++)
@@ -48,7 +47,6 @@ public class PacketPlayerInventorySync extends AbstractPacket
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
-		this.dim = buffer.readInt();
 		this.playerid = buffer.readInt();
 		int l = buffer.readInt();
 		this.targetedSlots = new int[l];
@@ -62,7 +60,7 @@ public class PacketPlayerInventorySync extends AbstractPacket
 	@Override
 	public void handleClientSide(EntityPlayer p)
 	{
-		World world = DimensionManager.getWorld(this.dim);
+		World world = TravellersGear.proxy.getClientWorld();
 		if (world == null)
 			return;
 		Entity player = world.getEntityByID(this.playerid);

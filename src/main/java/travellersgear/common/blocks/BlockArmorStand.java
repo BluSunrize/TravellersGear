@@ -34,7 +34,7 @@ public class BlockArmorStand extends BlockContainer
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister)
 	{
-		this.blockIcon = iconRegister.registerIcon("");
+		this.blockIcon = iconRegister.registerIcon("planks_big_oak");
 	}
 
 	@Override
@@ -58,8 +58,6 @@ public class BlockArmorStand extends BlockContainer
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side)
 	{
-		if(world.getBlockMetadata(x, y, z)==3)
-			return true;
 		return super.shouldSideBeRendered(world, x, y, z, side);
 	}
 

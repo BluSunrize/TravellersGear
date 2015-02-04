@@ -5,12 +5,12 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import travellersgear.TravellersGear;
+import travellersgear.api.TGSaveData;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.client.ToolDisplayInfo;
@@ -27,7 +27,21 @@ public class PacketNBTSync extends AbstractPacket
 	{
 		this.dim = player.worldObj.provider.dimensionId;
 		this.playerid = player.getEntityId();
-		this.tag = TravellersGearAPI.getTravellersNBTData(player);
+		
+		this.tag = TGSaveData.getPlayerData(player);
+		if(this.tag==null)
+		{
+			tag = new NBTTagCompound();
+			if(player.getEntityData().getCompoundTag("TravellersRPG")!=null)
+			{
+				tag = player.getEntityData().getCompoundTag("TravellersRPG");
+				player.getEntityData().removeTag("TravellersRPG");
+			}
+			tag.setLong("UUIDMost", player.getPersistentID().getMostSignificantBits());
+			tag.setLong("UUIDLeast", player.getPersistentID().getLeastSignificantBits());
+		}
+			
+//		this.tag = TravellersGearAPI.getTravellersNBTData(player);
 		this.tag.setDouble("info_playerDamage", player.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue());
 	}
 
@@ -49,44 +63,26 @@ public class PacketNBTSync extends AbstractPacket
 	@Override
 	public void handleClientSide(EntityPlayer p)
 	{
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println("HEYOOOOOO");
-		System.out.println();
-		System.out.println();
-		System.out.println();
 		World world = TravellersGear.proxy.getClientWorld();
 		if (world == null)
-		{
-			System.out.println("No World");
 			return;
-		}
 		Entity player = world.getEntityByID(this.playerid);
 		if(!(player instanceof EntityPlayer))
 			return;
-		System.out.println("BEFORE");
-		for(ItemStack ss : TravellersGearAPI.getExtendedInventory((EntityPlayer) player))
-			System.out.println(ss);
-		System.out.println("AFTER");
+		if(tag == null)
+		throw new RuntimeException("HEYO!");
+//		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
+//		this.tag = TGSaveData.INSTANCE.playerData.get(player.getPersistentID());
+		TGSaveData.setPlayerData((EntityPlayer) player, this.tag);
+		TGSaveData.setDirty();
 		
-		
-//		System.out.println("Handling NBTSYNC!"+((EntityPlayer)player).getCommandSenderName());
-		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
-
-		for(ItemStack ss : TravellersGearAPI.getExtendedInventory((EntityPlayer) player))
-			System.out.println(ss);
 		ClientProxy.equipmentMap.put(player.getCommandSenderName(), TravellersGearAPI.getExtendedInventory((EntityPlayer) player));
 		if(this.tag.hasKey("toolDisplay"))
 		{
-			//System.out.println("updating displayTools for "+((EntityPlayer)player).getCommandSenderName());
 			NBTTagList list = this.tag.getTagList("toolDisplay", 10);
 			ToolDisplayInfo[] tdi = new ToolDisplayInfo[list.tagCount()];
 			for(int i=0; i<list.tagCount(); i++)
-			{
 				tdi[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i));
-				//System.out.println(tdi[i]+", "+tdi[i].slot);
-			}
 			ClientProxy.toolDisplayMap.put(player.getCommandSenderName(), tdi);
 		}
 	}
@@ -99,7 +95,9 @@ public class PacketNBTSync extends AbstractPacket
 		Entity player = world.getEntityByID(this.playerid);
 		if(!(player instanceof EntityPlayer))
 			return;
-		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
+//		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
+		TGSaveData.setPlayerData((EntityPlayer) player, this.tag);
+		TGSaveData.setDirty();
 		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync((EntityPlayer) player));
 	}
 }

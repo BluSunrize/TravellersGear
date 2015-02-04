@@ -229,29 +229,11 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 
 	@Override
 	public WeightedRandomChestContent getChestGenBase(ChestGenHooks chest, Random random, WeightedRandomChestContent original)
-    {
+	{
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
 		original.theItemId.setTagCompound(tag);
-		
-        return original;
-    }
-	
-//	public static class WeightedRandomTitleScroll extends WeightedRandomChestContent
-//	{
-//		public WeightedRandomTitleScroll()
-//		{
-//			super(new ItemStack(TravellersGear.simpleGear,1,6), 1,1, 8);
-//		}
-//
-//		@Override
-//		protected ItemStack[] generateChestContent(Random random, IInventory newInventory)
-//		{
-//			ItemStack s = theItemId.copy();
-//			NBTTagCompound tag = new NBTTagCompound();
-//			tag.setString("title", "TG.personaltitle."+titles[random.nextInt(titles.length)]);
-//			s.setTagCompound(tag);
-//			return new ItemStack[]{s};
-//		}
-//	}
+
+		return original;
+	}
 }

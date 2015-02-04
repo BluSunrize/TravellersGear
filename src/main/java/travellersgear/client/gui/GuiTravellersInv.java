@@ -24,6 +24,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import travellersgear.TravellersGear;
+import travellersgear.api.TGSaveData;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.inventory.ContainerTravellersInv;
@@ -301,7 +302,7 @@ public class GuiTravellersInv extends GuiContainer
 			fontRendererObj.drawString( (int) (attr.getAttributeValue()*1000)+"%", (int)(drawSpeed.elementX+10/scale),(int)((drawSpeed.elementY)/scale), 0x777777);
 		}
 		if(!drawDamage.hideElement)
-			fontRendererObj.drawString( Math.round(TravellersGearAPI.getTravellersNBTData(player).getDouble("info_playerDamage")*100)+"%", (int)(drawDamage.elementX+10/scale),(int)((drawDamage.elementY)/scale), 0x777777);
+			fontRendererObj.drawString( Math.round(TGSaveData.getPlayerData(player).getDouble("info_playerDamage")*100)+"%", (int)(drawDamage.elementX+10/scale),(int)((drawDamage.elementY)/scale), 0x777777);
 		//ASPECTS
 		if(TravellersGear.THAUM && !drawVisDiscounts.hideElement)
 		{

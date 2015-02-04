@@ -15,8 +15,10 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import travellersgear.TravellersGear;
 import travellersgear.api.IEventGear;
+import travellersgear.api.TGSaveData;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ToolDisplayInfo;
 import travellersgear.common.network.PacketNBTSync;
@@ -24,11 +26,30 @@ import travellersgear.common.network.PacketPipeline;
 import travellersgear.common.network.PacketPlayerInventorySync;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class TGEventHandler
 {
+	TGSaveData worldData;
+
+	@SubscribeEvent
+	public void onLoad(WorldEvent.Load event)
+	{
+		if(event.world.provider.dimensionId==0)
+			if(!event.world.isRemote)
+			{
+				worldData = (TGSaveData) event.world.loadItemData(TGSaveData.class, TGSaveData.dataName);
+				if(worldData==null)
+				{
+					worldData = new TGSaveData(TGSaveData.dataName);
+					event.world.setItemData(TGSaveData.dataName, worldData);
+				}
+				TGSaveData.setInstance(worldData);
+			}
+	}
+
 	static HashMap<String, ItemStack[]> previousInv = new HashMap();
 	@SubscribeEvent
 	public void playerTick(TickEvent.PlayerTickEvent event)
@@ -39,7 +60,9 @@ public class TGEventHandler
 		if(event.phase.equals(TickEvent.Phase.START) && event.player!=null)
 		{
 			ItemStack[] prev = previousInv.get(event.player.getCommandSenderName());
-			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
+//			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
+			NBTTagList list = TravellersGearAPI.getDisplayTools(event.player);
+			
 			int[] targetedSlots = new int[list.tagCount()];
 			for(int i=0;i<list.tagCount();i++)
 				targetedSlots[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i)).slot;
@@ -64,7 +87,8 @@ public class TGEventHandler
 		}
 		if(event.phase.equals(TickEvent.Phase.END) && event.player!=null)
 		{
-			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
+//			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
+			NBTTagList list = TravellersGearAPI.getDisplayTools(event.player);
 			int[] targetedSlots = new int[list.tagCount()];
 			for(int i=0;i<list.tagCount();i++)
 				targetedSlots[i] = ToolDisplayInfo.readFromNBT(list.getCompoundTagAt(i)).slot;
@@ -106,26 +130,16 @@ public class TGEventHandler
 		if(!event.player.worldObj.isRemote)
 		{
 			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
-//			TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv(event.player)!=null;
-//			TravellersGear.MARI &= ModCompatability.getMariInventory(event.player)!=null;
-//			TravellersGear.TCON &= ModCompatability.getTConArmorInv(event.player)!=null;
 		}
 	}
-	//	@SubscribeEvent
-	//	public void onJoinWorld(EntityJoinWorldEvent event)
-	//	{
-	//		if(event.entity instanceof EntityPlayer)
-	//		{
-	//			if(!event.world.isRemote)
-	//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync((EntityPlayer) event.entity));
-	//			else
-	//			{
-	//			TravellersGear.BAUBLES &= ModCompatability.getNewBaublesInv((EntityPlayer) event.entity)!=null;
-	//			TravellersGear.MARI &= ModCompatability.getMariInventory((EntityPlayer) event.entity)!=null;
-	//			TravellersGear.TCON &= ModCompatability.getTConArmorInv((EntityPlayer) event.entity)!=null;
-	//		}
-	//		}
-	//	}
+	@SubscribeEvent
+	public void onDimensionChange(PlayerChangedDimensionEvent event)
+	{
+		if(!event.player.worldObj.isRemote)
+		{
+			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
+		}
+	}
 
 	@SubscribeEvent
 	public void onPlayerDamaged(LivingHurtEvent event)
