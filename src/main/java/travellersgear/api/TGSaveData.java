@@ -14,11 +14,11 @@ import cpw.mods.fml.relauncher.Side;
 public class TGSaveData extends WorldSavedData
 {
 	private static TGSaveData INSTANCE;
-	/** THis is for the server! */
+	/** This is for the server! */
 	public HashMap<UUID, NBTTagCompound> playerData = new HashMap();
-	/** THis is for the client! */
+	/** This is for the client! */
 	public static HashMap<UUID, NBTTagCompound> clientData = new HashMap();
-    
+
 	public static final String dataName = "TG-SaveData";
 	public TGSaveData(String s)
 	{
@@ -58,26 +58,34 @@ public class TGSaveData extends WorldSavedData
 	public static NBTTagCompound getPlayerData(EntityPlayer player)
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide()==Side.SERVER)
-			return INSTANCE.playerData.get(player.getPersistentID());
+		{
+			if(INSTANCE!=null)
+				return INSTANCE.playerData.get(player.getPersistentID());
+		}
 		else
 			return clientData.get(player.getPersistentID());
-		
+		return new NBTTagCompound();
 	}
 	public static void setPlayerData(EntityPlayer player, NBTTagCompound tag)
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide()==Side.SERVER)
-			INSTANCE.playerData.put(player.getPersistentID(),tag);
+		{
+			if(INSTANCE!=null)
+				INSTANCE.playerData.put(player.getPersistentID(),tag);
+		}
 		else
 			clientData.put(player.getPersistentID(),tag);
 	}
 	public static void setDirty()
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide()==Side.SERVER)
-			INSTANCE.markDirty();
+			if(INSTANCE!=null)
+				INSTANCE.markDirty();
 	}
 	public static void setInstance(TGSaveData in)
 	{
 		if(FMLCommonHandler.instance().getEffectiveSide()==Side.SERVER)
-			INSTANCE = in;
+			if(INSTANCE!=null)
+				INSTANCE = in;
 	}
 }

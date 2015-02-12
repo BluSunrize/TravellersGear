@@ -60,7 +60,6 @@ public class TGEventHandler
 		if(event.phase.equals(TickEvent.Phase.START) && event.player!=null)
 		{
 			ItemStack[] prev = previousInv.get(event.player.getCommandSenderName());
-//			NBTTagList list = TravellersGearAPI.getTravellersNBTData(event.player).getTagList("toolDisplay", 10);
 			NBTTagList list = TravellersGearAPI.getDisplayTools(event.player);
 			
 			int[] targetedSlots = new int[list.tagCount()];

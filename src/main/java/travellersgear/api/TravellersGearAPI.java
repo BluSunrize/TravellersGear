@@ -26,6 +26,7 @@ public class TravellersGearAPI
 			tag.setLong("UUIDMost", player.getPersistentID().getMostSignificantBits());
 			tag.setLong("UUIDLeast", player.getPersistentID().getLeastSignificantBits());
 			TGSaveData.setPlayerData(player, tag);
+			TGSaveData.setDirty();
 		}
 		if(player.getEntityData().hasKey("TravellersRPG"))
 		{
@@ -34,6 +35,7 @@ public class TravellersGearAPI
 			tag.setLong("UUIDMost", player.getPersistentID().getMostSignificantBits());
 			tag.setLong("UUIDLeast", player.getPersistentID().getLeastSignificantBits());
 			TGSaveData.setPlayerData(player, tag);
+			TGSaveData.setDirty();
 		}
 		return TGSaveData.getPlayerData(player);
 	}
