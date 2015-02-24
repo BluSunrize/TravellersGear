@@ -13,9 +13,9 @@ import cpw.mods.fml.common.Loader;
 
 public class ModCompatability
 {
-	static Class clazz_TPlayerStats;
-	static Class clazz_IAccessory;
-	static Class clazz_ArmorControls;
+	static Class<?> clazz_TPlayerStats;
+	static Class<?> clazz_IAccessory;
+	static Class<?> clazz_ArmorControls;
 	static Method method_canEquipAccessory;
 	static Method method_openKnapsackGui;
 	public static IInventory getTConArmorInv(EntityPlayer player)
@@ -70,8 +70,8 @@ public class ModCompatability
 			}
 	}
 
-	static Class clazz_JewelryHandler;
-	static Class clazz_InventoryMirror;
+	static Class<?> clazz_JewelryHandler;
+	static Class<?> clazz_InventoryMirror;
 	static Method method_getType;
 
 	public static String getMariJeweleryType(ItemStack stack)
@@ -114,7 +114,7 @@ public class ModCompatability
 	}
 
 
-	static Class clazz_PlayerHandler;
+	static Class<?> clazz_PlayerHandler;
 	static Class<? extends IInventory> clazz_InventoryBaubles;
 	static Method method_setPlayerBaubles;
 	static Method method_setEventHandler;
@@ -192,7 +192,7 @@ public class ModCompatability
 		}
 	}
 
-	static Class clazz_NEIClientConfig;
+	static Class<?> clazz_NEIClientConfig;
 	static Method method_isHidden;
 	public static boolean isNeiHidden()
 	{
@@ -235,9 +235,9 @@ public class ModCompatability
 		return -1;
 	}
 
-	static Class clazz_Aspect;
+	static Class<?> clazz_Aspect;
 	static Method method_getAspect;
-	static Class clazz_WandManager;
+	static Class<?> clazz_WandManager;
 	static Method method_getTotalVisDiscount;
 	public static float getTCVisDiscount(EntityPlayer player, String aspect)
 	{
@@ -259,7 +259,7 @@ public class ModCompatability
 		}
 		return 0;
 	}
-	static Class clazz_UtilsFX;
+	static Class<?> clazz_UtilsFX;
 	static Method method_drawTag;
 	public static void drawTCAspect(int x, int y, String aspect)
 	{

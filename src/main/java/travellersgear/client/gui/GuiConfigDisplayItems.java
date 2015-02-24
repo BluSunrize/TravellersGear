@@ -116,7 +116,7 @@ public class GuiConfigDisplayItems extends GuiScreen
 		}
 		else if(button.id==1 && sel>=0 && tools[sel]!=null)
 		{
-			List<ToolDisplayInfo> newTools = new ArrayList(Arrays.asList(tools));
+			List<ToolDisplayInfo> newTools = new ArrayList<ToolDisplayInfo>(Arrays.asList(tools));
 			newTools.remove(sel);
 			tools = newTools.toArray(new ToolDisplayInfo[0]);
 			sel = -1;

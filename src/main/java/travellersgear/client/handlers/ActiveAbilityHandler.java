@@ -38,7 +38,7 @@ public class ActiveAbilityHandler
 
 	public Object[][] buildActiveAbilityList(EntityPlayer player)
 	{
-		ArrayList<Object[]> list = new ArrayList();
+		ArrayList<Object[]> list = new ArrayList<Object[]>();
 
 		ItemStack[] is = player.inventory.armorInventory;
 		for(int armor=0; armor<is.length; armor++)

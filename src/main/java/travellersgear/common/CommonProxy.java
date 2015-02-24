@@ -12,7 +12,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler
 {
-	public static HashMap<String, boolean[]> hiddenSlots = new HashMap(); 
+	public static HashMap<String, boolean[]> hiddenSlots = new HashMap<String, boolean[]>(); 
 	
 	public void preInit(FMLPreInitializationEvent event)
 	{

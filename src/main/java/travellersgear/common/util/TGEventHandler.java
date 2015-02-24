@@ -50,7 +50,7 @@ public class TGEventHandler
 			}
 	}
 
-	static HashMap<String, ItemStack[]> previousInv = new HashMap();
+	static HashMap<String, ItemStack[]> previousInv = new HashMap<String, ItemStack[]>();
 	@SubscribeEvent
 	public void playerTick(TickEvent.PlayerTickEvent event)
 	{
@@ -177,7 +177,7 @@ public class TGEventHandler
 
 	public ItemStack[] buildEventGearList(EntityPlayer player)
 	{
-		ArrayList<ItemStack> list = new ArrayList();
+		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
 		ItemStack[] is = player.inventory.armorInventory;
 		for(int armor=0; armor<is.length; armor++)

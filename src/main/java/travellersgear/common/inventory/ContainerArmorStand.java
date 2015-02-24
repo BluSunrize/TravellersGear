@@ -40,11 +40,10 @@ public class ContainerArmorStand extends Container
 		this.player = inventoryPlayer.player;
 		this.tileEntity = te;
 
-		this.invBaubles = BaublesApi.getBaubles(player);
-		//		this.invBaubles = ModCompatability.getNewBaublesInv(player);
-		//		ModCompatability.setBaubleContainer(invBaubles, this);
-		//		if(!player.worldObj.isRemote)
-		//			ModCompatability.setBaubleInvStacklist(invBaubles, BaublesApi.getBaubles(player));
+		this.invBaubles = ModCompatability.getNewBaublesInv(player);
+		ModCompatability.setBaubleContainer(invBaubles, this);
+		if(!player.worldObj.isRemote)
+			ModCompatability.setBaubleInvStacklist(invBaubles, BaublesApi.getBaubles(player));
 
 		this.invTG = new InventoryTG(this, player);
 		if(!player.worldObj.isRemote)
@@ -155,8 +154,8 @@ public class ContainerArmorStand extends Container
 	public ItemStack slotClick(int slotNumber, int p_75144_2_, int p_75144_3_, EntityPlayer player)
 	{
 		ItemStack stack =  super.slotClick(slotNumber, p_75144_2_, p_75144_3_, player);
-		if(player.worldObj.isRemote && slotNumber<playerSlots)
-			ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
+		//		if(player.worldObj.isRemote && slotNumber<playerSlots)
+		//			ClientProxy.equipmentMap.put(player.getCommandSenderName(), this.invTG.stackList);
 		return stack;
 	}
 

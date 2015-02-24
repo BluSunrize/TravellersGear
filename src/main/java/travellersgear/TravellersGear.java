@@ -140,7 +140,7 @@ public class TravellersGear
 		PacketPipeline.INSTANCE.postInitialise();
 	}
 	
-	public static HashMap<ComparableItemStack, Object[]> additionalTravelersGear = new HashMap();
+	public static HashMap<ComparableItemStack, Object[]> additionalTravelersGear = new HashMap<ComparableItemStack, Object[]>();
 	
 	public static boolean BAUBLES;
 	public static boolean MARI;

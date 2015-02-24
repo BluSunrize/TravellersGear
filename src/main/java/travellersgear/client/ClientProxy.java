@@ -66,14 +66,15 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientProxy extends CommonProxy
 {
-	public static HashMap<String, ItemStack[]> equipmentMap = new HashMap();
-	public static HashMap<String, ToolDisplayInfo[]> toolDisplayMap = new HashMap();
+	public static HashMap<String, ItemStack[]> equipmentMap = new HashMap<String, ItemStack[]>();
+	public static HashMap<String, ToolDisplayInfo[]> toolDisplayMap = new HashMap<String, ToolDisplayInfo[]>();
 	public static int[] equipmentButtonPos;
 	public static float activeAbilityGuiSpeed;
 	@Override
@@ -90,7 +91,7 @@ public class ClientProxy extends CommonProxy
 	@SubscribeEvent
 	public void loadTextures(TextureStitchEvent event)
 	{
-		List<ResourceLocation> txts = new ArrayList();
+		List<ResourceLocation> txts = new ArrayList<ResourceLocation>();
 		txts.add(new ResourceLocation("travellersgear","textures/gui/inventory_book.png"));
 		txts.add(new ResourceLocation("travellersgear","textures/gui/inventory_digital.png"));
 		txts.add(new ResourceLocation("travellersgear","textures/gui/inventory_epic.png"));
@@ -152,9 +153,9 @@ public class ClientProxy extends CommonProxy
 		if(Loader.isModLoaded("GalacticraftCore"))
 			if(event.gui instanceof GuiInventory)
 			{
-				List bList = null;
+				List<GuiButtonGear> bList = null;
 				try{
-					bList = (List) GuiScreen.class.getDeclaredFields()[4].get(event.gui);
+					bList = (List<GuiButtonGear>) GuiScreen.class.getDeclaredFields()[4].get(event.gui);
 				}
 				catch(Exception e){e.printStackTrace();}
 				if(bList!=null)
@@ -214,10 +215,12 @@ public class ClientProxy extends CommonProxy
 					GL11.glPopMatrix();
 				}
 			}
+			if(Loader.isModLoaded("Botania"))
+				this.handleBotaniaRenders(event.entityPlayer, event);
 		}
 		else if(event.entityPlayer.getPlayerCoordinates()!=null)
 			PacketPipeline.INSTANCE.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
-		
+
 		if(toolDisplayMap.get(event.entityPlayer.getCommandSenderName())!=null)
 		{
 			for(ToolDisplayInfo tdi : toolDisplayMap.get(event.entityPlayer.getCommandSenderName()))
@@ -286,7 +289,7 @@ public class ClientProxy extends CommonProxy
 							IItemRenderer customRender = MinecraftForgeClient.getItemRenderer(stack, ItemRenderType.EQUIPPED);
 							customRender.renderItem(ItemRenderType.EQUIPPED, stack, RenderBlocks.getInstance(),event.entityPlayer);
 						}
-						
+
 						GL11.glPopMatrix();
 					}
 				}
@@ -434,10 +437,61 @@ public class ClientProxy extends CommonProxy
 		ClientCommandHandler.instance.registerCommand(new TGClientCommand());
 
 	}
-	
+
 	@Override
 	public World getClientWorld()
 	{
 		return FMLClientHandler.instance().getClient().theWorld;
+	}
+
+	@Optional.Method(modid = "Botania")
+	public void handleBotaniaRenders(EntityPlayer player, RenderPlayerEvent event)
+	{
+		ItemStack[] tgInv = equipmentMap.get(player.getCommandSenderName());
+		//BODY
+		for(int i=0;i<tgInv.length;i++)
+		{
+			ItemStack eq = tgInv[i];
+			if(eq!=null && eq.getItem() instanceof vazkii.botania.api.item.ICosmeticAttachable)
+			{
+				vazkii.botania.api.item.ICosmeticAttachable attachable = (vazkii.botania.api.item.ICosmeticAttachable) eq.getItem();
+				ItemStack cosmetic = attachable.getCosmeticItem(eq);
+				if(cosmetic != null)
+				{
+					GL11.glPushMatrix();
+					GL11.glColor4f(1F, 1F, 1F, 1F);
+					((vazkii.botania.api.item.IBaubleRender) cosmetic.getItem()).onPlayerBaubleRender(cosmetic, event, vazkii.botania.api.item.IBaubleRender.RenderType.BODY);
+					GL11.glPopMatrix();
+				}
+			}
+		}
+
+		//HEAD
+		float yaw = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * event.partialRenderTick;
+		float yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick;
+		float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.partialRenderTick;
+		GL11.glPushMatrix();
+		GL11.glRotatef(yawOffset, 0, -1, 0);
+		GL11.glRotatef(yaw - 270, 0, 1, 0);
+		GL11.glRotatef(pitch, 0, 0, 1);
+		//BODY
+		for(int i=0;i<tgInv.length;i++)
+		{
+			ItemStack eq = tgInv[i];
+			if(eq!=null && eq.getItem() instanceof vazkii.botania.api.item.ICosmeticAttachable)
+			{
+				vazkii.botania.api.item.ICosmeticAttachable attachable = (vazkii.botania.api.item.ICosmeticAttachable) eq.getItem();
+				ItemStack cosmetic = attachable.getCosmeticItem(eq);
+				if(cosmetic != null)
+				{
+					GL11.glPushMatrix();
+					GL11.glColor4f(1F, 1F, 1F, 1F);
+					((vazkii.botania.api.item.IBaubleRender) cosmetic.getItem()).onPlayerBaubleRender(cosmetic, event, vazkii.botania.api.item.IBaubleRender.RenderType.HEAD);
+					GL11.glPopMatrix();
+				}
+			}
+		}
+		GL11.glPopMatrix();
+
 	}
 }

@@ -29,14 +29,13 @@ public class GuiArmorStand extends GuiContainer
 
 	public GuiArmorStand(InventoryPlayer inventoryPlayer, TileEntityArmorStand tile)
 	{
-//		super(new ContainerArmorStand(inventoryPlayer, tile));
 		super(new ContainerArmorStand(inventoryPlayer, tile));
 		this.ySize=199;
 		this.tile = tile;
 
 		if(slotOverlays==null)
 		{
-			slotOverlays = new ArrayList();
+			slotOverlays = new ArrayList<int[]>();
 			//ARMOR
 			slotOverlays.add(new int[]{ 4,22, 203,116});//HELM
 			slotOverlays.add(new int[]{ 4,40, 203,134});//CHEST
@@ -132,7 +131,7 @@ public class GuiArmorStand extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		List<String> l = new ArrayList();
+		List<String> l = new ArrayList<String>();
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 

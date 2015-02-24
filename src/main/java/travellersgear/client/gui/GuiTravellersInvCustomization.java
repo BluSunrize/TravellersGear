@@ -25,7 +25,7 @@ public class GuiTravellersInvCustomization extends GuiScreen
 	GuiDropdownMenu presetMenu;
 	GuiDropdownMenu textureMenu;
 
-	Set<GuiButtonMoveableElement> multiSelect = new HashSet();
+	Set<GuiButtonMoveableElement> multiSelect = new HashSet<GuiButtonMoveableElement>();
 
 	public GuiTravellersInvCustomization(EntityPlayer player)
 	{
@@ -69,7 +69,7 @@ public class GuiTravellersInvCustomization extends GuiScreen
 		if(button.equals(presetMenu))
 		{
 			CustomizeableGuiHandler.InvPreset ps = CustomizeableGuiHandler.presets.values().toArray(new CustomizeableGuiHandler.InvPreset[0])[presetMenu.selectedOption];
-			CustomizeableGuiHandler.moveableInvElements = new ArrayList();
+			CustomizeableGuiHandler.moveableInvElements = new ArrayList<GuiButtonMoveableElement>();
 			for(GuiButtonMoveableElement bme : ps.elements)
 				CustomizeableGuiHandler.moveableInvElements.add(bme.copy());
 			CustomizeableGuiHandler.invTexture = ps.texture;

@@ -20,14 +20,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import travellersgear.TravellersGear;
 import travellersgear.api.ITravellersGear;
-import travellersgear.client.ModelCloak;
+import travellersgear.client.ModelSimpleGear;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
 import baubles.api.IBauble;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
+@Optional.Interface(iface = "vazkii.botania.api.item.ICosmeticAttachable", modid = "Botania")
+public class ItemTravellersGear extends Item implements IBauble, ITravellersGear, vazkii.botania.api.item.ICosmeticAttachable
 {
 	public static String[] subNames = {"cloak","belt","ringGold","ringSilver","pauldrons","vambraces", "title"};
 	IIcon[] icons = new IIcon[subNames.length];
@@ -78,8 +81,17 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
 	{
+		String type = getSlot(stack)>0?"tg."+getSlot(stack):"bauble."+getBaubleType(stack);
+		list.add(StatCollector.translateToLocalFormatted("TG.desc.gearSlot."+type));
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("title"))
 			list.add(StatCollector.translateToLocal(stack.getTagCompound().getString("title")));
+
+		if(Loader.isModLoaded("Baubles"))
+		{
+			ItemStack cosmetic = getCosmeticItem(stack);
+			if(cosmetic != null)
+				list.add( String.format(StatCollector.translateToLocal("botaniamisc.hasCosmetic"), cosmetic.getDisplayName()).replaceAll("&","\u00a7") );
+		}
 	}
 
 	@Override
@@ -87,18 +99,16 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
 		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
-		if( !subName.startsWith("cloak") )
-			return null;
-		return "travellersgear:textures/models/cloak.png";
+		return subName.startsWith("cloak") ? "travellersgear:textures/models/cloak.png" : "travellersgear:textures/models/tgTextures.png";
 	}
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack stack, int armorSlot)
 	{
 		String subName = stack.getItemDamage()<subNames.length?subNames[stack.getItemDamage()]:"";
-		if( !subName.startsWith("cloak") )
-			return null;
-		return new ModelCloak(getColorFromItemStack(stack, 0));
+		if(subName.startsWith("belt")||subName.startsWith("pauldrons")||subName.startsWith("vambraces")||subName.startsWith("cloak"))
+			return ModelSimpleGear.getModel(entityLiving, stack);
+		return null;
 	}
 
 	@Override
@@ -235,5 +245,22 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 		original.theItemId.setTagCompound(tag);
 
 		return original;
+	}
+
+	@Optional.Method(modid = "Botania")
+	public ItemStack getCosmeticItem(ItemStack stack)
+	{
+		if(!stack.hasTagCompound())
+			return null;
+		ItemStack cosmetic = ItemStack.loadItemStackFromNBT(stack.getTagCompound().getCompoundTag("botaniaCosmeticOverride"));
+		return cosmetic;
+	}
+	@Optional.Method(modid = "Botania")
+	public void setCosmeticItem(ItemStack stack, ItemStack cosmetic)
+	{
+		if(!stack.hasTagCompound())
+			stack.setTagCompound(new NBTTagCompound());
+		NBTTagCompound cosTag = cosmetic.writeToNBT(new NBTTagCompound());
+		stack.getTagCompound().setTag("botaniaCosmeticOverride",cosTag);
 	}
 }

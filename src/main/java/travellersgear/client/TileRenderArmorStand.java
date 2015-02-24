@@ -1,5 +1,7 @@
 package travellersgear.client;
 
+import static net.minecraftforge.client.IItemRenderer.ItemRenderType.ENTITY;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +23,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemSkull;
@@ -34,7 +37,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 import org.lwjgl.opengl.GL11;
@@ -352,7 +356,10 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 						GL11.glScaled(scale,scale,hscale[dis]);
 						GL11.glRotatef(rotation[dis], 0, 0, 1);
 
-						if(!ForgeHooksClient.renderInventoryItem(RenderBlocks.getInstance(), Minecraft.getMinecraft().renderEngine, tile.getStackInSlot(slot), true, 0, 0, 0))
+						IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(tile.getStackInSlot(slot), ENTITY);
+						if(customRenderer != null)
+							customRenderer.renderItem(ENTITY, tile.getStackInSlot(slot), RenderBlocks.getInstance(),new EntityItem(tile.getWorldObj(),tile.xCoord,tile.yCoord,tile.zCoord, tile.getStackInSlot(slot)));
+						else
 							this.renderStackOnDisplay(tile.getStackInSlot(slot));
 
 						GL11.glRotatef(-rotation[dis], 0, 0, 1);
@@ -454,9 +461,9 @@ public class TileRenderArmorStand extends TileEntitySpecialRenderer
 		ModelRenderer floor;
 		ModelRenderer head;
 		ModelRenderer spine;
-		List<ModelRenderer> corpus = new ArrayList();
+		List<ModelRenderer> corpus = new ArrayList<ModelRenderer>();
 
-		List<ModelRenderer> table = new ArrayList();
+		List<ModelRenderer> table = new ArrayList<ModelRenderer>();
 
 		public ModelArmorStand()
 		{

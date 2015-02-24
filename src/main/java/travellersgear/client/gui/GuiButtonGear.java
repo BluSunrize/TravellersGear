@@ -29,10 +29,15 @@ public class GuiButtonGear extends GuiButton
 			GL11.glEnable(GL11.GL_BLEND);
 			OpenGlHelper.glBlendFunc(770, 771, 1, 0);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			this.drawTexturedModelRectFromIcon(xPosition,yPosition, Items.book.getIconFromDamage(0), this.width,this.height);
 			this.mouseDragged(mc, mX, mY);
-			if (this.field_146123_n)
-				this.drawCenteredString(fontrenderer, StatCollector.translateToLocal("TG.guitext.equipment"), this.xPosition+25, this.yPosition+height, 16777120);
+			if(this.field_146123_n)
+				GL11.glColor3f(1, 1, .5f);
+			this.drawTexturedModelRectFromIcon(xPosition,yPosition, Items.book.getIconFromDamage(0), this.width,this.height);
+			if(this.field_146123_n)
+			{
+				GL11.glColor3f(1,1,1);
+				this.drawCenteredString(fontrenderer, StatCollector.translateToLocal("TG.guitext.equipment"), this.xPosition+25, this.yPosition+height, 0xffffff);
+			}
 		}
 	}
 }

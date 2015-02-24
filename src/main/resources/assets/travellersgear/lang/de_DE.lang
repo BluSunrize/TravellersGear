@@ -56,6 +56,14 @@ TG.guitext.rotateWithHead=Entsprechend dem Kopf rotieren
 
 TG.chattext.showItem=%1$s zeigt Item: %2$s
 
+TG.desc.gearSlot.tg.0=Wird im Â§aUmhangÂ§7-Slot ausgerüstet
+TG.desc.gearSlot.tg.1=Wird im Â§aSchulterpanzerÂ§7-Slot ausgerüstet
+TG.desc.gearSlot.tg.2=Wird im Â§aArmschienenÂ§7-Slot ausgerüstet
+TG.desc.gearSlot.tg.3=Wird im Â§aTitlelÂ§7-Slot ausgerüstet
+TG.desc.gearSlot.bauble.RING=Wird im Â§aRingÂ§7-Slot ausgerüstet
+TG.desc.gearSlot.bauble.BELT=Wird im Â§aGürtelÂ§7-Slot ausgerüstet
+TG.desc.gearSlot.bauble.AMULET=Wird im Â§aAmuletÂ§7-Slot ausgerüstet
+
 itemGroup.travellersgear=Traveller's Gear
 
 TG.keybind.openInv=Traveller's Gear Inventar

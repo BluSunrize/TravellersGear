@@ -55,7 +55,7 @@ public class TravellersGearAPI
 		{
 			if(m_isStackPseudoTravellersGear==null)
 			{
-				Class c_ModCompatability = Class.forName("travellersgear.common.util.ModCompatability") ;
+				Class<?> c_ModCompatability = Class.forName("travellersgear.common.util.ModCompatability") ;
 				m_isStackPseudoTravellersGear = c_ModCompatability.getMethod("isStackPseudoTravellersGear", ItemStack.class);
 			}
 			return (Boolean) m_isStackPseudoTravellersGear.invoke(null, stack);
@@ -97,7 +97,6 @@ public class TravellersGearAPI
 	{
 		if(player==null||inv==null)
 			return;
-
 		NBTTagList list = new NBTTagList();
 		for (int i=0; i<inv.length; i++)
 			if(inv[i]!=null)

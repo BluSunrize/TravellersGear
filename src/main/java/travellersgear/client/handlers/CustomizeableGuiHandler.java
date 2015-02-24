@@ -16,7 +16,7 @@ public class CustomizeableGuiHandler
 	public static CustomizeableGuiHandler instance = new CustomizeableGuiHandler();
 	
 	public File configDir;
-	public static List<GuiButtonMoveableElement> moveableInvElements = new ArrayList();
+	public static List<GuiButtonMoveableElement> moveableInvElements = new ArrayList<GuiButtonMoveableElement>();
 	public static int elementsNonSlotStart;
 	public Configuration invConfig;
 	public static ResourceLocation[] invTextures = {new ResourceLocation("travellersgear","textures/gui/inventory_book.png"),new ResourceLocation("travellersgear","textures/gui/inventory_digital.png"),new ResourceLocation("travellersgear","textures/gui/inventory_epic.png")};
@@ -93,7 +93,7 @@ public class CustomizeableGuiHandler
 		createPresets();
 	}
 
-	GuiButtonMoveableElement addElementWithConfig(List addToList, Configuration invConfig, int id, int w, int h, String name, boolean b, int... def)
+	GuiButtonMoveableElement addElementWithConfig(List<GuiButtonMoveableElement> addToList, Configuration invConfig, int id, int w, int h, String name, boolean b, int... def)
 	{
 		int[] xy = invConfig.get("InvConfig", name, def).getIntList();
 		boolean hidden = invConfig.get("InvConfig", name+"_isHidden", false).getBoolean();
@@ -103,7 +103,7 @@ public class CustomizeableGuiHandler
 			addToList.add(bme);
 		return bme;
 	}
-	GuiButtonMoveableElement addElement(List addToList, Configuration invConfig, int id, int w, int h, String name, boolean b, int... def)
+	GuiButtonMoveableElement addElement(List<GuiButtonMoveableElement> addToList, Configuration invConfig, int id, int w, int h, String name, boolean b, int... def)
 	{
 		GuiButtonMoveableElement bme = new GuiButtonMoveableElement(id, def[0],def[1], w,h, name,true);
 		if(addToList!=null)
@@ -123,10 +123,10 @@ public class CustomizeableGuiHandler
 		invConfig.save();
 	}
 
-	public static HashMap<String,InvPreset> presets = new HashMap();
+	public static HashMap<String,InvPreset> presets = new HashMap<String, InvPreset>();
 	void createPresets()
 	{
-		List presetList = new ArrayList();
+		List<GuiButtonMoveableElement> presetList = new ArrayList<GuiButtonMoveableElement>();
 		//ARMOR
 		addElement(presetList, invConfig, 0, 18,18, "Helmet", false, 25,30);
 		addElement(presetList, invConfig, 1, 18,18, "Chestplate", false, 25,48);
@@ -186,7 +186,7 @@ public class CustomizeableGuiHandler
 		presets.put("Book", new InvPreset(invTextures[0],presetList));
 
 
-		presetList = new ArrayList();
+		presetList = new ArrayList<GuiButtonMoveableElement>();
 		//ARMOR
 		addElement(presetList, invConfig, 0, 18,18, "Helmet", false, 64,22);
 		addElement(presetList, invConfig, 1, 18,18, "Chestplate", false, 64,42);
@@ -246,7 +246,7 @@ public class CustomizeableGuiHandler
 		presets.put("Digital", new InvPreset(invTextures[1],presetList));
 
 
-		presetList = new ArrayList();
+		presetList = new ArrayList<GuiButtonMoveableElement>();
 		//ARMOR
 		addElement(presetList, invConfig, 0, 18,18, "Helmet", false, 8,49);
 		addElement(presetList, invConfig, 1, 18,18, "Chestplate", false, 8,67);

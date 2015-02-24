@@ -51,7 +51,7 @@ public class GuiTravellersInv extends GuiContainer
 			playerSlotStart= 4+4+(TravellersGear.BAUBLES?4:0)+(TravellersGear.MARI?3:0)+(TravellersGear.TCON?2:0);
 		if(slotOverlays==null)
 		{
-			slotOverlays = new ArrayList();
+			slotOverlays = new ArrayList<int[]>();
 			//ARMOR
 			slotOverlays.add(new int[]{ 6,26, 221, 19});//HELM
 			slotOverlays.add(new int[]{ 6,44, 221, 37});//CHEST
@@ -191,7 +191,7 @@ public class GuiTravellersInv extends GuiContainer
 		{
 			mX -= guiLeft;
 			mY -= guiTop;
-			Collection col = this.player.getActivePotionEffects();
+			Collection<?> col = this.player.getActivePotionEffects();
 
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glDisable(GL11.GL_LIGHTING);
@@ -200,8 +200,8 @@ public class GuiTravellersInv extends GuiContainer
 			int j=drawPotionEffects.elementY;
 			int i=drawPotionEffects.elementX;
 			j=0;
-			Iterator iterator = col.iterator();
-			List<String> textList = new ArrayList();
+			Iterator<?> iterator = col.iterator();
+			List<String> textList = new ArrayList<String>();
 			while(iterator.hasNext())
 			{
 				PotionEffect potioneffect = (PotionEffect)iterator.next();
