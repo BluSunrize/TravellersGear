@@ -260,7 +260,12 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	{
 		if(!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
-		NBTTagCompound cosTag = cosmetic.writeToNBT(new NBTTagCompound());
-		stack.getTagCompound().setTag("botaniaCosmeticOverride",cosTag);
+		if(cosmetic==null)
+			stack.getTagCompound().removeTag("botaniaCosmeticOverride");
+		else
+		{
+			NBTTagCompound cosTag = cosmetic.writeToNBT(new NBTTagCompound());
+			stack.getTagCompound().setTag("botaniaCosmeticOverride",cosTag);
+		}
 	}
 }

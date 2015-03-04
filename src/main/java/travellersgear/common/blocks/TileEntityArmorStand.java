@@ -206,7 +206,7 @@ public class TileEntityArmorStand extends TileEntity implements IInventory
 			return false;
 		if(i<4)
 			return itemstack.getItem() instanceof ItemArmor && ((ItemArmor)itemstack.getItem()).armorType==i;
-		return itemstack.getItem() instanceof IBauble && ((IBauble)itemstack.getItem()).getBaubleType(itemstack).equals(i==4?BaubleType.AMULET:i==5||i==6?BaubleType.AMULET:BaubleType.BELT);
+		return itemstack.getItem() instanceof IBauble && ((IBauble)itemstack.getItem()).getBaubleType(itemstack)!=null && ((IBauble)itemstack.getItem()).getBaubleType(itemstack).equals(i==4?BaubleType.AMULET:i==5||i==6?BaubleType.AMULET:BaubleType.BELT);
 	}
 
 }
