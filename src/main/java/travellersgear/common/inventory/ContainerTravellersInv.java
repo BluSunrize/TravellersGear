@@ -83,9 +83,9 @@ public class ContainerTravellersInv extends Container
 		{
 			tcon[0]=addSlot(new SlotRestricted(this.invTConArmor, 1, 78, 98, player, SlotRestricted.SlotType.TINKERS_GLOVE));
 			tcon[1]=addSlot(new SlotRestricted(this.invTConArmor, 2, 78, 8, player, SlotRestricted.SlotType.TINKERS_BAG));
-			tcon[2]=addSlot(new SlotRestricted(this.invTConArmor, 4, 191, 31, player, SlotRestricted.SlotType.TINKERS_HEART_R));
+			tcon[2]=addSlot(new SlotRestricted(this.invTConArmor, 6, 191, 31, player, SlotRestricted.SlotType.TINKERS_HEART_R));
 			tcon[3]=addSlot(new SlotRestricted(this.invTConArmor, 5, 191, 49, player, SlotRestricted.SlotType.TINKERS_HEART_Y));
-			tcon[4]=addSlot(new SlotRestricted(this.invTConArmor, 6, 191, 67, player, SlotRestricted.SlotType.TINKERS_HEART_G));
+			tcon[4]=addSlot(new SlotRestricted(this.invTConArmor, 4, 191, 67, player, SlotRestricted.SlotType.TINKERS_HEART_G));
 			nonInventorySlots+=(tcon[0]>=0?1:0)+(tcon[1]>=0?1:0)+(tcon[2]>=0?1:0)+(tcon[3]>=0?1:0)+(tcon[4]>=0?1:0);
 		}
 		//PLAYER INVENTORY
@@ -188,18 +188,21 @@ public class ContainerTravellersInv extends Container
 				if (!mergeItemStack(itemstack1, tcon[1], tcon[1]+1, false))
 					return null;
 			}
-			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 4))
+			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 6))
 			{
+				System.out.println("heart R");
 				if (!mergeItemStack(itemstack1, tcon[2], tcon[2]+1, false))
 					return null;
 			}
 			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 5))
 			{
+				System.out.println("heart Y");
 				if (!mergeItemStack(itemstack1, tcon[3], tcon[3]+1, false))
 					return null;
 			}
-			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 6))
+			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 4))
 			{
+				System.out.println("heart G");
 				if (!mergeItemStack(itemstack1, tcon[4], tcon[4]+1, false))
 					return null;
 			}

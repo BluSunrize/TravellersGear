@@ -81,7 +81,7 @@ public class ItemTravellersGear extends Item implements IBauble, ITravellersGear
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool)
 	{
-		String type = getSlot(stack)>0?"tg."+getSlot(stack):"bauble."+getBaubleType(stack);
+		String type = getSlot(stack)>=0?"tg."+getSlot(stack):"bauble."+getBaubleType(stack);
 		list.add(StatCollector.translateToLocalFormatted("TG.desc.gearSlot."+type));
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("title"))
 			list.add(StatCollector.translateToLocal(stack.getTagCompound().getString("title")));

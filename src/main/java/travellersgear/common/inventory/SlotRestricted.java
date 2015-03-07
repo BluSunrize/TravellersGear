@@ -54,11 +54,11 @@ public class SlotRestricted extends Slot
 		case TINKERS_BAG:
 			return ModCompatability.canEquipTConAccessory(stack, 2);
 		case TINKERS_HEART_R:
-			return ModCompatability.canEquipTConAccessory(stack, 4);
+			return ModCompatability.canEquipTConAccessory(stack, 6);
 		case TINKERS_HEART_Y:
 			return ModCompatability.canEquipTConAccessory(stack, 5);
 		case TINKERS_HEART_G:
-			return ModCompatability.canEquipTConAccessory(stack, 6);
+			return ModCompatability.canEquipTConAccessory(stack, 4);
 		default:
 			return false;
 		}
