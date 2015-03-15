@@ -65,12 +65,15 @@ public class KeyHandler
 					if(abilityRadial>1)
 						abilityRadial=1f;
 					if(abilityRadial>=1)	
+					{
 						abilityLock=true;
+						keyDown[1] = true;
+					}
 				}
 			}
 			else
 			{
-				if(keyDown[1])
+				if(keyDown[1] && !activeAbilitiesWheel.getIsKeyPressed())
 					keyDown[1]=false;
 				if(!abilityLock)
 				{

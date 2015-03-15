@@ -26,6 +26,7 @@ import org.lwjgl.opengl.GL12;
 import travellersgear.TravellersGear;
 import travellersgear.api.TGSaveData;
 import travellersgear.api.TravellersGearAPI;
+import travellersgear.client.KeyHandler;
 import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.inventory.ContainerTravellersInv;
 import travellersgear.common.inventory.SlotNull;
@@ -362,7 +363,17 @@ public class GuiTravellersInv extends GuiContainer
 				this.playerRotation -= 22.5f;
 		}
 	}
-
+	@Override
+	protected void keyTyped(char key, int code)
+    {
+		if(code==KeyHandler.openInventory.getKeyCode())
+		{
+			this.mc.thePlayer.closeScreen();
+			return;
+		}
+		super.keyTyped(key, code);
+    }
+	
 	public static void renderLiving(int x, int y, float scale, float xRotation, EntityLivingBase living)
 	{
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
