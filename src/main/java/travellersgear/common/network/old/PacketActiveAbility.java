@@ -1,4 +1,4 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -56,7 +56,8 @@ public class PacketActiveAbility extends AbstractPacket
 			return;
 		EntityPlayer player = (EntityPlayer) ent;
 		performAbility(player,slot);
-		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
+		//FIXME
+//		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 	}
 	
 	

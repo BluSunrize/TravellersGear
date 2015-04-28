@@ -1,24 +1,29 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
+
+import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import travellersgear.common.CommonProxy;
+import cpw.mods.fml.common.network.ByteBufUtils;
 
-public class PacketSlotSync extends AbstractPacket
+public class PacketItemShoutout extends AbstractPacket
 {
 	int dim;
 	int playerid;
-	boolean[] hidden;
-	public PacketSlotSync(){}
-	public PacketSlotSync(EntityPlayer player, boolean... hide)
+	ItemStack item;
+	public PacketItemShoutout(){}
+	public PacketItemShoutout(EntityPlayer player, ItemStack stack)
 	{
 		this.dim = player.worldObj.provider.dimensionId;
 		this.playerid = player.getEntityId();
-		this.hidden = hide;
+		this.item = stack;
 	}
 
 	@Override
@@ -26,19 +31,14 @@ public class PacketSlotSync extends AbstractPacket
 	{
 		buffer.writeInt(dim);
 		buffer.writeInt(playerid);
-		buffer.writeInt(hidden.length);
-		for(boolean b : hidden)
-			buffer.writeBoolean(b);
+		ByteBufUtils.writeItemStack(buffer, item);
 	}
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		this.dim = buffer.readInt();
 		this.playerid = buffer.readInt();
-		int l = buffer.readInt();
-		hidden = new boolean[l];
-		for(int b=0;b<l;b++)
-			hidden[b] = buffer.readBoolean();
+		this.item=ByteBufUtils.readItemStack(buffer);
 	}
 
 	@Override
@@ -52,7 +52,9 @@ public class PacketSlotSync extends AbstractPacket
 		if (world == null)
 			return;
 		Entity player = world.getEntityByID(this.playerid);
-		if(player instanceof EntityPlayer)
-			CommonProxy.hiddenSlots.put(player.getCommandSenderName(), hidden);
+		if(!(player instanceof EntityPlayer))
+			return;
+		for(EntityPlayer onlineP : (List<EntityPlayer>)world.playerEntities)
+			onlineP.addChatMessage(new ChatComponentTranslation("TG.chattext.showItem", ((EntityPlayer)player).getDisplayName(), item.func_151000_E()));
 	}
 }

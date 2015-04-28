@@ -21,8 +21,8 @@ import travellersgear.TravellersGear;
 import travellersgear.api.IActiveAbility;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.KeyHandler;
-import travellersgear.common.network.PacketActiveAbility;
-import travellersgear.common.network.PacketPipeline;
+import travellersgear.common.network.MessageActiveAbility;
+import travellersgear.common.network.old.PacketActiveAbility;
 import travellersgear.common.util.ModCompatability;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -119,7 +119,8 @@ public class ActiveAbilityHandler
 
 			if(sel>=0 && sel<gear.length && gear[sel][0]!=null)
 			{
-				PacketPipeline.INSTANCE.sendToServer(new PacketActiveAbility(player, (Integer) gear[sel][1]));
+				TravellersGear.packetHandler.sendToServer(new MessageActiveAbility(player, (Integer) gear[sel][1]));
+//				PacketPipeline.INSTANCE.sendToServer(new PacketActiveAbility(player, (Integer) gear[sel][1]));
 				PacketActiveAbility.performAbility(player, (Integer) gear[sel][1]);
 			}
 		}

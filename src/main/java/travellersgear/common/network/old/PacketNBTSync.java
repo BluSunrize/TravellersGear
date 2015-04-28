@@ -1,4 +1,4 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -98,6 +98,7 @@ public class PacketNBTSync extends AbstractPacket
 //		((EntityPlayer)player).getEntityData().setTag("TravellersRPG", this.tag);
 		TGSaveData.setPlayerData((EntityPlayer) player, this.tag);
 		TGSaveData.setDirty();
-		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync((EntityPlayer) player));
+		//FIXME
+//		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync((EntityPlayer) player));
 	}
 }

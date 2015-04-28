@@ -1,29 +1,24 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.common.network.ByteBufUtils;
+import travellersgear.common.CommonProxy;
 
-public class PacketItemShoutout extends AbstractPacket
+public class PacketSlotSync extends AbstractPacket
 {
 	int dim;
 	int playerid;
-	ItemStack item;
-	public PacketItemShoutout(){}
-	public PacketItemShoutout(EntityPlayer player, ItemStack stack)
+	boolean[] hidden;
+	public PacketSlotSync(){}
+	public PacketSlotSync(EntityPlayer player, boolean... hide)
 	{
 		this.dim = player.worldObj.provider.dimensionId;
 		this.playerid = player.getEntityId();
-		this.item = stack;
+		this.hidden = hide;
 	}
 
 	@Override
@@ -31,14 +26,19 @@ public class PacketItemShoutout extends AbstractPacket
 	{
 		buffer.writeInt(dim);
 		buffer.writeInt(playerid);
-		ByteBufUtils.writeItemStack(buffer, item);
+		buffer.writeInt(hidden.length);
+		for(boolean b : hidden)
+			buffer.writeBoolean(b);
 	}
 	@Override
 	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer)
 	{
 		this.dim = buffer.readInt();
 		this.playerid = buffer.readInt();
-		this.item=ByteBufUtils.readItemStack(buffer);
+		int l = buffer.readInt();
+		hidden = new boolean[l];
+		for(int b=0;b<l;b++)
+			hidden[b] = buffer.readBoolean();
 	}
 
 	@Override
@@ -52,9 +52,7 @@ public class PacketItemShoutout extends AbstractPacket
 		if (world == null)
 			return;
 		Entity player = world.getEntityByID(this.playerid);
-		if(!(player instanceof EntityPlayer))
-			return;
-		for(EntityPlayer onlineP : (List<EntityPlayer>)world.playerEntities)
-			onlineP.addChatMessage(new ChatComponentTranslation("TG.chattext.showItem", ((EntityPlayer)player).getDisplayName(), item.func_151000_E()));
+		if(player instanceof EntityPlayer)
+			CommonProxy.hiddenSlots.put(player.getCommandSenderName(), hidden);
 	}
 }

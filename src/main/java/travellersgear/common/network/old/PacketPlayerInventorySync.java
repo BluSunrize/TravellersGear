@@ -1,4 +1,4 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

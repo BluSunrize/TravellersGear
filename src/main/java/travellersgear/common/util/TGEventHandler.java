@@ -21,9 +21,8 @@ import travellersgear.api.IEventGear;
 import travellersgear.api.TGSaveData;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ToolDisplayInfo;
-import travellersgear.common.network.PacketNBTSync;
-import travellersgear.common.network.PacketPipeline;
-import travellersgear.common.network.PacketPlayerInventorySync;
+import travellersgear.common.network.MessageNBTSync;
+import travellersgear.common.network.MessagePlayerInventorySync;
 import baubles.api.BaublesApi;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
@@ -68,7 +67,8 @@ public class TGEventHandler
 
 			if(list!=null && targetedSlots!=null && targetedSlots.length>0)
 				if(prev==null || prev.length!=targetedSlots.length)
-					PacketPipeline.INSTANCE.sendToAll(new PacketPlayerInventorySync(event.player));
+					TravellersGear.packetHandler.sendToAll(new MessagePlayerInventorySync(event.player));
+//					PacketPipeline.INSTANCE.sendToAll(new PacketPlayerInventorySync(event.player));
 				else
 				{
 					boolean packet = false;
@@ -76,7 +76,8 @@ public class TGEventHandler
 						if(!ItemStack.areItemStacksEqual(prev[i], event.player.inventory.mainInventory[targetedSlots[i]]))
 							packet=true;
 					if(packet)
-						PacketPipeline.INSTANCE.sendToAll(new PacketPlayerInventorySync(event.player));
+						TravellersGear.packetHandler.sendToAll(new MessagePlayerInventorySync(event.player));
+//						PacketPipeline.INSTANCE.sendToAll(new PacketPlayerInventorySync(event.player));
 				}
 
 
@@ -119,7 +120,8 @@ public class TGEventHandler
 					tg[i] = null;
 				}
 			TravellersGearAPI.setExtendedInventory(event.entityPlayer, tg);
-			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.entityPlayer));
+			TravellersGear.packetHandler.sendToAll(new MessageNBTSync(event.entityPlayer));
+//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.entityPlayer));
 		}
 	}
 
@@ -128,7 +130,8 @@ public class TGEventHandler
 	{
 		if(!event.player.worldObj.isRemote)
 		{
-			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
+			TravellersGear.packetHandler.sendToAll(new MessageNBTSync(event.player));
+//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
 		}
 	}
 	@SubscribeEvent
@@ -136,7 +139,8 @@ public class TGEventHandler
 	{
 		if(!event.player.worldObj.isRemote)
 		{
-			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
+			TravellersGear.packetHandler.sendToAll(new MessageNBTSync(event.player));
+//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(event.player));
 		}
 	}
 

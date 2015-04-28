@@ -23,7 +23,15 @@ import travellersgear.common.CommonProxy;
 import travellersgear.common.blocks.BlockArmorStand;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.items.ItemTravellersGear;
-import travellersgear.common.network.PacketPipeline;
+import travellersgear.common.network.MessageActiveAbility;
+import travellersgear.common.network.MessageItemShoutout;
+import travellersgear.common.network.MessageNBTSync;
+import travellersgear.common.network.MessageOpenGui;
+import travellersgear.common.network.MessagePlayerInventorySync;
+import travellersgear.common.network.MessageRequestNBTSync;
+import travellersgear.common.network.MessageSlotSync;
+import travellersgear.common.network.MessageTileUpdate;
+import travellersgear.common.network.old.PacketPipeline;
 import travellersgear.common.util.CloakColourizationRecipe;
 import travellersgear.common.util.ComparableItemStack;
 import travellersgear.common.util.TGCreativeTab;
@@ -42,7 +50,9 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = TravellersGear.MODID, name = TravellersGear.MODNAME, version = TravellersGear.VERSION, dependencies="required-after:Baubles;before:WitchingGadgets")
 public class TravellersGear
@@ -57,6 +67,8 @@ public class TravellersGear
 
 	@SidedProxy(clientSide="travellersgear.client.ClientProxy", serverSide="travellersgear.common.CommonProxy")
 	public static CommonProxy proxy;
+
+	public static final SimpleNetworkWrapper packetHandler = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -76,11 +88,6 @@ public class TravellersGear
 		GameRegistry.addRecipe(new CloakColourizationRecipe());
 		RecipeSorter.register("TravellersGear:cloakdye", CloakColourizationRecipe.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
 
-//		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-//		ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-//		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-//		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_JUNGLE_CHEST).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
-//		ChestGenHooks.getInfo(ChestGenHooks.STRONGHOLD_LIBRARY).addItem(new ItemTravellersGear.WeightedRandomTitleScroll());
 		ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
 		ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
 		ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(simpleGear,1,6), 1,1, 8));
@@ -97,7 +104,7 @@ public class TravellersGear
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(simpleGear,1,4), "ll ","ill"," i ", 'i',(!OreDictionary.getOres("nuggetIron").isEmpty()?"nuggetIron":"ingotIron"), 'l',Items.leather));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(simpleGear,1,5), " l ","lil"," l ", 'i',(!OreDictionary.getOres("nuggetIron").isEmpty()?"nuggetIron":"ingotIron"), 'l',Items.leather));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(simpleGear,1,6), " l ","pbp"," l ", 'b',Items.enchanted_book, 'p',Items.paper, 'l',"gemLapis"));
-		
+
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(armorStand), "sfs"," f ","ppp", 'p',"slabWood", 'f',Blocks.fence, 's',"stickWood"));
 
 		OreDictionary.registerOre("baubleRingGold",new ItemStack(simpleGear,1,2));
@@ -122,7 +129,17 @@ public class TravellersGear
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		MinecraftForge.EVENT_BUS.register(new TGEventHandler());
 		FMLCommonHandler.instance().bus().register(new TGEventHandler());
-		PacketPipeline.INSTANCE.initalise();
+//		PacketPipeline.INSTANCE.initalise();
+
+		packetHandler.registerMessage(MessageActiveAbility.Handler.class, MessageActiveAbility.class, 0, Side.SERVER);
+		packetHandler.registerMessage(MessageItemShoutout.Handler.class, MessageItemShoutout.class, 1, Side.SERVER);
+		packetHandler.registerMessage(MessageNBTSync.HandlerServer.class, MessageNBTSync.class, 2, Side.SERVER);
+		packetHandler.registerMessage(MessageNBTSync.HandlerClient.class, MessageNBTSync.class, 3, Side.CLIENT);
+		packetHandler.registerMessage(MessageOpenGui.HandlerServer.class, MessageOpenGui.class, 4, Side.SERVER);
+		packetHandler.registerMessage(MessagePlayerInventorySync.HandlerClient.class, MessagePlayerInventorySync.class, 5, Side.CLIENT);
+		packetHandler.registerMessage(MessageRequestNBTSync.HandlerServer.class, MessageRequestNBTSync.class, 6, Side.SERVER);
+		packetHandler.registerMessage(MessageSlotSync.HandlerServer.class, MessageSlotSync.class, 7, Side.SERVER);
+		packetHandler.registerMessage(MessageTileUpdate.HandlerServer.class, MessageTileUpdate.class, 8, Side.SERVER);
 	}
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event)
@@ -137,11 +154,11 @@ public class TravellersGear
 				addItemToTravelersGear(stack,slot);
 			}
 		}
-		PacketPipeline.INSTANCE.postInitialise();
+//		PacketPipeline.INSTANCE.postInitialise();
 	}
-	
+
 	public static HashMap<ComparableItemStack, Object[]> additionalTravelersGear = new HashMap<ComparableItemStack, Object[]>();
-	
+
 	public static boolean BAUBLES;
 	public static boolean MARI;
 	public static boolean TCON;

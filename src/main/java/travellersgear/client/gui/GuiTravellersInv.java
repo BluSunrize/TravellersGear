@@ -31,8 +31,7 @@ import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.inventory.ContainerTravellersInv;
 import travellersgear.common.inventory.SlotNull;
 import travellersgear.common.inventory.SlotRestricted;
-import travellersgear.common.network.PacketItemShoutout;
-import travellersgear.common.network.PacketPipeline;
+import travellersgear.common.network.MessageItemShoutout;
 import travellersgear.common.util.ModCompatability;
 
 public class GuiTravellersInv extends GuiContainer
@@ -342,7 +341,8 @@ public class GuiTravellersInv extends GuiContainer
 			{
 				if(isCtrlKeyDown())
 				{
-					PacketPipeline.INSTANCE.sendToServer(new PacketItemShoutout(this.player,slot.getStack()));
+					TravellersGear.packetHandler.sendToServer(new MessageItemShoutout(this.player,slot.getStack()));
+//					PacketPipeline.INSTANCE.sendToServer(new PacketItemShoutout(this.player,slot.getStack()));
 					return;
 				}
 				else if(slot instanceof SlotRestricted && SlotRestricted.SlotType.TINKERS_BAG==((SlotRestricted)slot).type)

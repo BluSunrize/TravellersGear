@@ -41,6 +41,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import travellersgear.TravellersGear;
 import travellersgear.api.RenderTravellersGearEvent;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.gui.GuiArmorStand;
@@ -53,10 +54,9 @@ import travellersgear.client.handlers.CustomizeableGuiHandler;
 import travellersgear.common.CommonProxy;
 import travellersgear.common.blocks.TileEntityArmorStand;
 import travellersgear.common.inventory.SlotRestricted;
-import travellersgear.common.network.PacketOpenGui;
-import travellersgear.common.network.PacketPipeline;
-import travellersgear.common.network.PacketRequestNBTSync;
-import travellersgear.common.network.PacketSlotSync;
+import travellersgear.common.network.MessageOpenGui;
+import travellersgear.common.network.MessageRequestNBTSync;
+import travellersgear.common.network.MessageSlotSync;
 import travellersgear.common.util.ModCompatability;
 import travellersgear.common.util.TGClientCommand;
 import travellersgear.common.util.Utils;
@@ -179,8 +179,10 @@ public class ClientProxy extends CommonProxy
 			boolean[] hidden = new boolean[CustomizeableGuiHandler.moveableInvElements.size()];
 			for(int bme=0;bme<hidden.length;bme++)
 				hidden[bme] = CustomizeableGuiHandler.moveableInvElements.get(bme).hideElement;
-			PacketPipeline.INSTANCE.sendToServer(new PacketSlotSync(event.gui.mc.thePlayer,hidden));
-			PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui(event.gui.mc.thePlayer, 0));
+			TravellersGear.packetHandler.sendToServer(new MessageSlotSync(event.gui.mc.thePlayer,hidden));
+//			PacketPipeline.INSTANCE.sendToServer(new PacketSlotSync(event.gui.mc.thePlayer,hidden));
+			TravellersGear.packetHandler.sendToServer(new MessageOpenGui(event.gui.mc.thePlayer, 0));
+//			PacketPipeline.INSTANCE.sendToServer(new PacketOpenGui(event.gui.mc.thePlayer, 0));
 		}
 	}
 
@@ -219,7 +221,8 @@ public class ClientProxy extends CommonProxy
 				this.handleBotaniaRenders(event.entityPlayer, event);
 		}
 		else if(event.entityPlayer.getPlayerCoordinates()!=null)
-			PacketPipeline.INSTANCE.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
+			TravellersGear.packetHandler.sendToServer(new MessageRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
+//			PacketPipeline.INSTANCE.sendToServer(new PacketRequestNBTSync(event.entityPlayer,Minecraft.getMinecraft().thePlayer));
 
 		if(toolDisplayMap.get(event.entityPlayer.getCommandSenderName())!=null)
 		{

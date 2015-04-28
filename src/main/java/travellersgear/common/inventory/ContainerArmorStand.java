@@ -12,8 +12,7 @@ import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
 import travellersgear.common.blocks.TileEntityArmorStand;
-import travellersgear.common.network.PacketNBTSync;
-import travellersgear.common.network.PacketPipeline;
+import travellersgear.common.network.MessageNBTSync;
 import travellersgear.common.util.ModCompatability;
 import baubles.api.BaubleType;
 import baubles.api.BaublesApi;
@@ -140,7 +139,8 @@ public class ContainerArmorStand extends Container
 		{
 			ModCompatability.setPlayerBaubles(player, invBaubles);
 			TravellersGearAPI.setExtendedInventory(player, this.invTG.stackList);
-			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
+			TravellersGear.packetHandler.sendToAll(new MessageNBTSync(player));
+//			PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
 		}
 	}
 	@Override

@@ -1,4 +1,4 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -56,8 +56,10 @@ public class PacketOpenGui extends AbstractPacket
 		if(!(ent instanceof EntityPlayer))
 			return;
 		EntityPlayer player = (EntityPlayer) ent;
-		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
-		PacketPipeline.INSTANCE.sendTo(new PacketOpenGui(player,guiid), (EntityPlayerMP) player);
+		//FIXME
+//		PacketPipeline.INSTANCE.sendToAll(new PacketNBTSync(player));
+		//FIXME
+//		PacketPipeline.INSTANCE.sendTo(new PacketOpenGui(player,guiid), (EntityPlayerMP) player);
 		player.openGui(TravellersGear.instance, guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
 	}
 }

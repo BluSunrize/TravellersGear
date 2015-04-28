@@ -1,4 +1,4 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -41,7 +41,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
 	private EnumMap<Side, FMLEmbeddedChannel> channels;
 	private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<Class<? extends AbstractPacket>>();
 	private boolean isPostInitialised = false;
-	public static PacketPipeline INSTANCE = new PacketPipeline();
+//	public static PacketPipeline INSTANCE = new PacketPipeline();
 	
 	public boolean registerPacket (Class<? extends AbstractPacket> clazz)
 	{

@@ -1,4 +1,4 @@
-package travellersgear.common.network;
+package travellersgear.common.network.old;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -58,7 +58,9 @@ public class PacketRequestNBTSync extends AbstractPacket
 			return;
 		Entity playerR = worldR.getEntityByID(this.requestPlayerId);
 
-		if ( player!=null&&player instanceof EntityPlayer && playerR!=null &&playerR instanceof EntityPlayerMP)
-			PacketPipeline.INSTANCE.sendTo(new PacketNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
+		//FIXME
+//		if ( player!=null&&player instanceof EntityPlayer && playerR!=null &&playerR instanceof EntityPlayerMP)
+			//FIXME
+//				PacketPipeline.INSTANCE.sendTo(new PacketNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
 	}
 }
