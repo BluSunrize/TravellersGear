@@ -67,6 +67,8 @@ public class MessageRequestNBTSync implements IMessage
 			if(world == null)
 				return null;
 			Entity player = world.getEntityByID(message.playerId);
+			if(player==null)
+				return null;
 
 			World worldR = DimensionManager.getWorld(message.requestWorldId);
 			if(worldR == null)
