@@ -3,8 +3,10 @@ package travellersgear.common.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import travellersgear.TravellersGear;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -67,19 +69,20 @@ public class MessageRequestNBTSync implements IMessage
 			if(world == null)
 				return null;
 			Entity player = world.getEntityByID(message.playerId);
-			if(player==null)
+			if(player==null || !(player instanceof EntityPlayer))
 				return null;
 
 			World worldR = DimensionManager.getWorld(message.requestWorldId);
 			if(worldR == null)
 				return null;
 			Entity playerR = worldR.getEntityByID(message.requestPlayerId);
-			if(playerR==null)
+			if(playerR==null || !(playerR instanceof EntityPlayerMP))
 				return null;
 //			if ( player!=null&&player instanceof EntityPlayer && playerR!=null &&playerR instanceof EntityPlayerMP)
 //				PacketPipeline.INSTANCE.sendTo(new PacketNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
-//				TravellersGear.packetHandler.sendTo(new MessageNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
-			return new MessageNBTSync((EntityPlayer)player);
+			TravellersGear.packetHandler.sendTo(new MessageNBTSync((EntityPlayer)player), (EntityPlayerMP) playerR);
+//			return new MessageNBTSync((EntityPlayer)player);
+			return null;
 		}
 	}
 }
