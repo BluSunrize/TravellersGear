@@ -2,12 +2,12 @@
 item.TravellersGear.simpleGear.cloak.name=Плащ
 item.TravellersGear.simpleGear.belt.name=Пояс
 item.TravellersGear.simpleGear.ringGold.name=Золотое кольцо
-item.TravellersGear.simpleGear.ringSilver.name=Серебрянное кольцо
+item.TravellersGear.simpleGear.ringSilver.name=Серебряное кольцо
 item.TravellersGear.simpleGear.pauldrons.name=Наплечник
-item.TravellersGear.simpleGear.vambraces.name=Тяжелые наручи
+item.TravellersGear.simpleGear.vambraces.name=Тяжёлые наручи
 item.TravellersGear.simpleGear.title.name=Именной свиток
 # -- Blocks -- 
-tile.TravellersGear.armorstand.name=Стэнд для брони
+tile.TravellersGear.armorstand.name=Стойка для брони
 
 #-- GUI --
 TG.guitext.equipment=Оборудование
@@ -17,52 +17,52 @@ TG.guitext.visDiscount=Снижение виса
 TG.guitext.preset=Установить заранее
 TG.guitext.texture=Текстура
 
-TG.guitext.rightclickToOpen=Правой кнопокой, чтобы открыть
-TG.guitext.linkInChat=Ctrl + Правый клик чтобы показать это в чате
+TG.guitext.rightclickToOpen=Нажмите ПКМ, чтобы открыть
+TG.guitext.linkInChat=Ctrl + ПКМ чтобы показать это в чате
 
-TG.guitext.showPlate=Показать плиту
-TG.guitext.showTable=Показать стол
-TG.guitext.showArmor0=Показать шлем
-TG.guitext.showArmor1=Показать нагрудник
-TG.guitext.showArmor2=Показать штаны
-TG.guitext.showArmor3=Показать ботинки
-TG.guitext.showBaubles0=Показать амулет на столе
-TG.guitext.showBaubles1=Показать кольцо 1 на столе
-TG.guitext.showBaubles2=Показать кольцо 2 на столе
-TG.guitext.showBaubles3=Показать пояс на столе
-TG.guitext.showTG0=Показать плащ на столе
-TG.guitext.showTG1=Показать наплечники на столе
-TG.guitext.showTG2=Показать тяжелые наручи на столе
-TG.guitext.showMari0=Показать кольцо на столе
-TG.guitext.showMari1=Показать браслет на столе
-TG.guitext.showMari2=Показать ожерелье на столе
+TG.guitext.showPlate=Отображать плиту
+TG.guitext.showTable=Отображать стол
+TG.guitext.showArmor0=Отображать шлем
+TG.guitext.showArmor1=Отображать нагрудник
+TG.guitext.showArmor2=Отображать штаны
+TG.guitext.showArmor3=Отображать ботинки
+TG.guitext.showBaubles0=Отображать амулет на столе
+TG.guitext.showBaubles1=Отображать первое кольцо на столе
+TG.guitext.showBaubles2=Отображать второе кольцо на столе
+TG.guitext.showBaubles3=Отображать пояс на столе
+TG.guitext.showTG0=Отображать плащ на столе
+TG.guitext.showTG1=Отображать наплечники на столе
+TG.guitext.showTG2=Отображать тяжёлые наручи на столе
+TG.guitext.showMari0=Отображать кольцо на столе
+TG.guitext.showMari1=Отображать браслет на столе
+TG.guitext.showMari2=Отображать ожерелье на столе
 
-TG.guitext.renderBaubles0=Показать амулет на стэнде
-TG.guitext.renderBaubles1=Показать кольцо 1 на стэнде
-TG.guitext.renderBaubles2=Показать цольцо 2 на стэнде
-TG.guitext.renderBaubles3=Показать пояс на стэнде
-TG.guitext.renderTG0=Показать плащ на стэнде
-TG.guitext.renderTG1=Показать наплечники на стэнде
-TG.guitext.renderTG2=Показать тяжелые наручи на стэнде
+TG.guitext.renderBaubles0=Отображать амулет на стойке
+TG.guitext.renderBaubles1=Отображать первое кольцо на стойке
+TG.guitext.renderBaubles2=Отображать второе кольцо на стойке
+TG.guitext.renderBaubles3=Отображать пояс на стойке
+TG.guitext.renderTG0=Отображать плащ на стойке
+TG.guitext.renderTG1=Отображать наплечники на стойке
+TG.guitext.renderTG2=Отображать тяжёлые наручи на стойке
 TG.guitext.style=Стиль >
 
 TG.guitext.add=Добавить
 TG.guitext.rem=Убрать
 TG.guitext.translation=Перевод
-TG.guitext.rotation=Вращщение
+TG.guitext.rotation=Вращение
 TG.guitext.scale=Шкала
 TG.guitext.hideWhenEquipped=Скрыть при надевании
 TG.guitext.rotateWithHead=Повернуть с головой
-					
+
 TG.chattext.showItem=%1$s показывает предмет: %2$s
 
-TG.desc.gearSlot.tg.0=Одевается в слот §aПлаща§7 
-TG.desc.gearSlot.tg.1=Одевается в слот §aНаплечников§7 
-TG.desc.gearSlot.tg.2=Одевается в слот §aТяжелые наручей §7 
-TG.desc.gearSlot.tg.3=Одевается в слот §aНазвания§7
-TG.desc.gearSlot.bauble.RING=Одевается в слот §aКольца§7 
-TG.desc.gearSlot.bauble.BELT=Одевается в слот §aПояса§7 
-TG.desc.gearSlot.bauble.AMULET=Одевается в слот §aАмулета§7
+TG.desc.gearSlot.tg.0=Надевается в слот §aплаща§7 
+TG.desc.gearSlot.tg.1=Надевается в слот §aнаплечников§7 
+TG.desc.gearSlot.tg.2=Надевается в слот §aтяжёлых наручей§7 
+TG.desc.gearSlot.tg.3=Надевается в слот §aназвания§7
+TG.desc.gearSlot.bauble.RING=Надевается в слот §aкольца§7 
+TG.desc.gearSlot.bauble.BELT=Надевается в слот §aпояса§7 
+TG.desc.gearSlot.bauble.AMULET=Надевается в слот §aамулета§7
 
 itemGroup.travellersgear=Traveller's Gear
 
@@ -70,7 +70,7 @@ TG.keybind.openInv=Инвентарь дорожных пренадлежнос�
 TG.keybind.activeaAbilities=Активные способности дорожных принадлежностей
 
 #-- Title --
-TG.personaltitle.treepuncher=Проффесиональный дровосек
+TG.personaltitle.treepuncher=Специалист по избиванию деревьев
 TG.personaltitle.titan=Золотоискатель из титана
 TG.personaltitle.librarian=Библиотекарь
 TG.personaltitle.bursar=Казначей
