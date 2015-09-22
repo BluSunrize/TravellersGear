@@ -48,10 +48,16 @@ public class GuiTravellersInv extends GuiContainer
 		this.ySize = 200;
 		this.player = player;
 		if(playerSlotStart<=0)
-			playerSlotStart= 4+4+(TravellersGear.BAUBLES?4:0)+(TravellersGear.MARI?3:0)+(TravellersGear.TCON?2:0);
+			playerSlotStart= 5+4+4+(TravellersGear.BAUBLES?4:0)+(TravellersGear.MARI?3:0)+(TravellersGear.TCON?6:0);
 		if(slotOverlays==null)
 		{
 			slotOverlays = new ArrayList<int[]>();
+			//CRAFTING
+			slotOverlays.add(new int[]{78, 8, 53,  202});//CRAFTINGOUTPUT
+			slotOverlays.add(new int[]{78, 8, 21,  202});//CRAFTING1
+			slotOverlays.add(new int[]{78, 8, 37,  202});//CRAFTING2
+			slotOverlays.add(new int[]{78, 8, 21,  218});//CRAFTING3
+			slotOverlays.add(new int[]{78, 8, 37,  218});//CRAFTING4
 			//ARMOR
 			slotOverlays.add(new int[]{ 6,26, 221, 19});//HELM
 			slotOverlays.add(new int[]{ 6,44, 221, 37});//CHEST
@@ -79,6 +85,11 @@ public class GuiTravellersInv extends GuiContainer
 			{
 				slotOverlays.add(new int[]{78,98, 221,145});//GLOVE
 				slotOverlays.add(new int[]{78, 8, 239,145});//KNAPSACK
+				slotOverlays.add(new int[]{78, 8, 1,  239});//Tinkers Heart Red
+				slotOverlays.add(new int[]{78, 8, 1,  221});//Tinkers Heart Yellow
+				slotOverlays.add(new int[]{78, 8, 1,  203});//Tinkers Heart Green
+//				slotOverlays.add(new int[]{78, 8, 239, 178});//Tinkers Belt (doesn't work)
+				slotOverlays.add(new int[]{78, 8, 221, 178});//Tinkers Mask
 			}
 		}
 	}

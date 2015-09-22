@@ -4,9 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import travellersgear.TravellersGear;
 import travellersgear.api.TravellersGearAPI;
 import travellersgear.client.ClientProxy;
@@ -21,7 +25,12 @@ import baubles.api.IBauble;
 
 public class ContainerTravellersInv extends Container
 {
-	//	public InventoryBaubles invBaubles;
+    /**
+     * The crafting matrix inventory.
+     */
+    public InventoryCrafting craftMatrix = new InventoryCrafting(this, 2, 2);
+    public IInventory craftResult = new InventoryCraftResult();
+//	public InventoryBaubles invBaubles;
 	public IInventory invBaubles;
 	public InventoryTG invTG;
 	public IInventory invMari;
@@ -30,11 +39,12 @@ public class ContainerTravellersInv extends Container
 	public int nonInventorySlots;
 	public int playerInventorySlots;
 	public int playerHotbarSlots;
+	int crafting= -1;
 	int[] vanillaArmor={-1,-1,-1,-1};
 	int[] baubles={-1,-1,-1,-1};
 	int[] travGear={-1,-1,-1,-1};
 	int[] mari={-1,-1,-1};
-	int[] tcon={-1,-1, -1,-1,-1};
+	int[] tcon={-1,-1, -1,-1,-1,-1};
 
 	public ContainerTravellersInv(InventoryPlayer invPlayer)
 	{
@@ -46,12 +56,24 @@ public class ContainerTravellersInv extends Container
 		ModCompatability.setBaubleContainer(invBaubles, this);
 		if(!player.worldObj.isRemote)
 			ModCompatability.setBaubleInvStacklist(invBaubles, BaublesApi.getBaubles(player));
-
+		
+        this.addSlot(new SlotCrafting(invPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
+		int i;
+		int j;
+        for (i = 0; i < 2; ++i)
+        {
+            for (j = 0; j < 2; ++j)
+            {
+                this.addSlot(new Slot(this.craftMatrix, j + i * 2, 106 + j * 18, 26 + i * 18));
+            }
+        }
+        nonInventorySlots=0+(crafting>=0?5:0);
+        
 		vanillaArmor[0] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-0,  6, 26, player, SlotRestricted.SlotType.VANILLA_HELM));
 		vanillaArmor[1] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-1,  6, 44, player, SlotRestricted.SlotType.VANILLA_CHEST));
 		vanillaArmor[2] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-2,  6, 62, player, SlotRestricted.SlotType.VANILLA_LEGS));
 		vanillaArmor[3] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-3,  6, 80, player, SlotRestricted.SlotType.VANILLA_BOOTS));
-		nonInventorySlots=0+(vanillaArmor[0]>=0?1:0)+(vanillaArmor[1]>=0?1:0)+(vanillaArmor[2]>=0?1:0)+(vanillaArmor[3]>=0?1:0);
+		nonInventorySlots+=(vanillaArmor[0]>=0?1:0)+(vanillaArmor[1]>=0?1:0)+(vanillaArmor[2]>=0?1:0)+(vanillaArmor[3]>=0?1:0);
 
 		travGear[0]=addSlot(new SlotRestricted(this.invTG, 0, 42,  8, player, SlotRestricted.SlotType.TRAVEL_CLOAK));
 		travGear[1]=addSlot(new SlotRestricted(this.invTG, 1, 78, 26, player, SlotRestricted.SlotType.TRAVEL_SHOULDER));
@@ -85,11 +107,11 @@ public class ContainerTravellersInv extends Container
 			tcon[2]=addSlot(new SlotRestricted(this.invTConArmor, 6, 191, 31, player, SlotRestricted.SlotType.TINKERS_HEART_R));
 			tcon[3]=addSlot(new SlotRestricted(this.invTConArmor, 5, 191, 49, player, SlotRestricted.SlotType.TINKERS_HEART_Y));
 			tcon[4]=addSlot(new SlotRestricted(this.invTConArmor, 4, 191, 67, player, SlotRestricted.SlotType.TINKERS_HEART_G));
-			nonInventorySlots+=(tcon[0]>=0?1:0)+(tcon[1]>=0?1:0)+(tcon[2]>=0?1:0)+(tcon[3]>=0?1:0)+(tcon[4]>=0?1:0);
+//			tcon[5]=addSlot(new SlotRestricted(this.invTConArmor, 3, 6, 31, player, SlotRestricted.SlotType.TINKERS_BELT));// (doesn't work)
+			tcon[5]=addSlot(new SlotRestricted(this.invTConArmor, 0, 6, 31, player, SlotRestricted.SlotType.TINKERS_MASK));
+			nonInventorySlots+=(tcon[0]>=0?1:0)+(tcon[1]>=0?1:0)+(tcon[2]>=0?1:0)+(tcon[3]>=0?1:0)+(tcon[4]>=0?1:0)+(tcon[5]>=0?1:0);
 		}
 		//PLAYER INVENTORY
-		int i;
-		int j;
 		playerInventorySlots=0;
 		playerHotbarSlots=0;
 		for (i = 0; i < 3; ++i)
@@ -99,12 +121,34 @@ public class ContainerTravellersInv extends Container
 		for (i = 0; i < 9; ++i)
 			if(this.addSlot(new Slot(invPlayer, i, 6 + i*18 +(i>4?10:0), 173))>=0)
 				playerHotbarSlots++;
+		
+		this.onCraftMatrixChanged(this.craftMatrix);
 	}
+
+    /**
+     * Callback for when the crafting matrix is changed.
+     */
+    @Override
+    public void onCraftMatrixChanged(IInventory par1IInventory)
+    {
+        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.player.worldObj));
+    }
 
 	public void onContainerClosed(EntityPlayer player)
 	{
 		super.onContainerClosed(player);
-		if (!player.worldObj.isRemote)
+        for (int i = 0; i < 4; ++i)
+        {
+            ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
+
+            if (itemstack != null)
+            {
+                player.dropPlayerItemWithRandomChoice(itemstack, false);
+            }
+        }
+
+        this.craftResult.setInventorySlotContents(0, (ItemStack)null);
+ 		if (!player.worldObj.isRemote)
 		{
 			ModCompatability.setPlayerBaubles(player, invBaubles);
 			TravellersGearAPI.setExtendedInventory(player, this.invTG.stackList);
@@ -204,6 +248,16 @@ public class ContainerTravellersInv extends Container
 			{
 				System.out.println("heart G");
 				if (!mergeItemStack(itemstack1, tcon[4], tcon[4]+1, false))
+					return null;
+			}
+/*			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 3))
+			{
+				if (!mergeItemStack(itemstack1, tcon[5], tcon[5]+1, false))
+					return null;
+			}
+*/			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 0))
+			{
+				if (!mergeItemStack(itemstack1, tcon[6], tcon[6]+1, false))
 					return null;
 			}
 			else if((par2 >= nonInventorySlots) && (par2 < nonInventorySlots+playerInventorySlots))
