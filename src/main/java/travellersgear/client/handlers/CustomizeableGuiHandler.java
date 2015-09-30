@@ -89,13 +89,13 @@ public class CustomizeableGuiHandler
 		addElementWithConfig(moveableInvElements, invConfig, slots+1, 80,10, "Name", true, 128,12);
 		addElementWithConfig(moveableInvElements, invConfig, slots+2, 76, 8, "Tile", true, 130,22);
 		addElementWithConfig(moveableInvElements, invConfig, slots+3, 70,20, "Experience", true, 133,29);
-		addElementWithConfig(moveableInvElements, invConfig, slots+4, 64,10, "Health", true, 136,49);
-		addElementWithConfig(moveableInvElements, invConfig, slots+5, 64,10, "Armor", true, 136,59);
-		addElementWithConfig(moveableInvElements, invConfig, slots+6, 64,10, "Speed", true, 136,69);
-		addElementWithConfig(moveableInvElements, invConfig, slots+7, 64,10, "Attack Strength", true, 136,79);
+		addElementWithConfig(moveableInvElements, invConfig, slots+4, 64,10, "Health", true, 133,49);
+		addElementWithConfig(moveableInvElements, invConfig, slots+5, 64,10, "Armor", true, 133,59);
+		addElementWithConfig(moveableInvElements, invConfig, slots+6, 64,10, "Speed", true, 133,69);
+		addElementWithConfig(moveableInvElements, invConfig, slots+7, 64,10, "Attack Strength", true, 133,79);
 		addElementWithConfig(moveableInvElements, invConfig, slots+8, 18,162,"Potion Effects", true, 0, 22);
 		if(TravellersGear.THAUM)
-			addElementWithConfig(moveableInvElements, invConfig, slots+9, 64,30, "Vis Discounts", true, 136,89);
+			addElementWithConfig(moveableInvElements, invConfig, slots+9, 64,30, "Vis Discounts", true, 133,89);
 		invTexture = new ResourceLocation(invConfig.get("InvConfig", "TEXTURE", "travellersgear:textures/gui/inventory_book.png").getString());
 		invConfig.save();
 		createPresets();
@@ -192,13 +192,13 @@ public class CustomizeableGuiHandler
 		addElement(presetList, invConfig, slots+1, 80,10, "Name", true, 128,12);
 		addElement(presetList, invConfig, slots+2, 76, 8, "Tile", true, 130,22);
 		addElement(presetList, invConfig, slots+3, 70,20, "Experience", true, 133,29);
-		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, 136,49);
-		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, 136,59);
-		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, 136,69);
-		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, 136,79);
+		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, 133,49);
+		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, 133,59);
+		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, 133,69);
+		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, 133,79);
 		addElement(presetList, invConfig, slots+8, 18,162,"Potion Effects", true, 0, 22);
 		if(TravellersGear.THAUM)
-			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 136,89);
+			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 133,89);
 		presets.put("Book", new InvPreset(invTextures[0],presetList));
 
 
