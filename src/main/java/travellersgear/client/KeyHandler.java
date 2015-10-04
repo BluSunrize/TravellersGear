@@ -1,5 +1,6 @@
 package travellersgear.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -35,7 +36,7 @@ public class KeyHandler
 	{
 		if(Keyboard.isCreated() && event.side!=Side.SERVER && event.phase==TickEvent.Phase.START && FMLClientHandler.instance().getClient().inGameHasFocus)
 		{
-			EntityPlayer player = event.player;
+			EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 			if(player==null)
 				return;
 

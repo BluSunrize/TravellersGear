@@ -129,6 +129,8 @@ public class TravellersGearAPI
 			if(scroll.hasDisplayName())
 				return scroll.getDisplayName();
 		}
+		else if(player!=null && player.getCommandSenderName().equalsIgnoreCase("blusunrize"))
+			return "Developer";
 		return null;
 	}
 

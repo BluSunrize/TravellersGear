@@ -136,10 +136,11 @@ public class TravellersGear
 		packetHandler.registerMessage(MessageNBTSync.HandlerServer.class, MessageNBTSync.class, 2, Side.SERVER);
 		packetHandler.registerMessage(MessageNBTSync.HandlerClient.class, MessageNBTSync.class, 3, Side.CLIENT);
 		packetHandler.registerMessage(MessageOpenGui.HandlerServer.class, MessageOpenGui.class, 4, Side.SERVER);
-		packetHandler.registerMessage(MessagePlayerInventorySync.HandlerClient.class, MessagePlayerInventorySync.class, 5, Side.CLIENT);
-		packetHandler.registerMessage(MessageRequestNBTSync.HandlerServer.class, MessageRequestNBTSync.class, 6, Side.SERVER);
-		packetHandler.registerMessage(MessageSlotSync.HandlerServer.class, MessageSlotSync.class, 7, Side.SERVER);
-		packetHandler.registerMessage(MessageTileUpdate.HandlerServer.class, MessageTileUpdate.class, 8, Side.SERVER);
+		packetHandler.registerMessage(MessageOpenGui.HandlerClient.class, MessageOpenGui.class, 5, Side.CLIENT);
+		packetHandler.registerMessage(MessagePlayerInventorySync.HandlerClient.class, MessagePlayerInventorySync.class, 6, Side.CLIENT);
+		packetHandler.registerMessage(MessageRequestNBTSync.HandlerServer.class, MessageRequestNBTSync.class, 7, Side.SERVER);
+		packetHandler.registerMessage(MessageSlotSync.HandlerServer.class, MessageSlotSync.class, 8, Side.SERVER);
+		packetHandler.registerMessage(MessageTileUpdate.HandlerServer.class, MessageTileUpdate.class, 9, Side.SERVER);
 	}
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event)

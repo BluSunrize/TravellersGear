@@ -92,7 +92,6 @@ public class GuiDropdownMenu extends GuiButton
 						if(mY>=yPosition+12+i*9&&mY<=yPosition+12+(i+1)*9)
 						{
 							this.selectedOption = i;
-							System.out.println(this.selectedOption);
 							this.isDropped=false;
 							return true;
 						}

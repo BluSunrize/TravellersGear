@@ -33,11 +33,11 @@ public class CustomizeableGuiHandler
 		moveableInvElements.clear();
 		
 		//Crafting
-		addElementWithConfig(moveableInvElements, invConfig, 0, 18,18, "Crafting output", false, 194,84);
-		addElementWithConfig(moveableInvElements, invConfig, 1, 18,18, "Crafting1", false, 176,48);
-		addElementWithConfig(moveableInvElements, invConfig, 2, 18,18, "Crafting2", false, 194,48);
-		addElementWithConfig(moveableInvElements, invConfig, 3, 18,18, "Crafting3", false, 176,66);
-		addElementWithConfig(moveableInvElements, invConfig, 4, 18,18, "Crafting4", false, 194,66);
+		addElementWithConfig(moveableInvElements, invConfig, 0, 18,18, "Crafting output", false, 175,84);
+		addElementWithConfig(moveableInvElements, invConfig, 1, 18,18, "Crafting1", false, 139,74);
+		addElementWithConfig(moveableInvElements, invConfig, 2, 18,18, "Crafting2", false, 157,74);
+		addElementWithConfig(moveableInvElements, invConfig, 3, 18,18, "Crafting3", false, 139,92);
+		addElementWithConfig(moveableInvElements, invConfig, 4, 18,18, "Crafting4", false, 157,92);
 		//ARMOR
 		addElementWithConfig(moveableInvElements, invConfig, 5, 18,18, "Helmet", false, 25,30);
 		addElementWithConfig(moveableInvElements, invConfig, 6, 18,18, "Chestplate", false, 25,48);
@@ -68,9 +68,9 @@ public class CustomizeableGuiHandler
 		{
 			addElementWithConfig(moveableInvElements, invConfig, slots+0, 18,18, "Tinkers Glove", false, 97,102);
 			addElementWithConfig(moveableInvElements, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 97,12);
-			addElementWithConfig(moveableInvElements, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 194,110);
-			addElementWithConfig(moveableInvElements, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 194,128);
-			addElementWithConfig(moveableInvElements, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 194,146);
+			addElementWithConfig(moveableInvElements, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 139,30);
+			addElementWithConfig(moveableInvElements, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 157,30);
+			addElementWithConfig(moveableInvElements, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 175,30);
 //			addElementWithConfig(moveableInvElements, invConfig, slots+5, 18,18, "Tinkers Belt", false, 25,12);// (doesn't work)
 			addElementWithConfig(moveableInvElements, invConfig, slots+5, 18,18, "Tinkers Mask", false, 25,12);
 			slots+=6;
@@ -88,14 +88,14 @@ public class CustomizeableGuiHandler
 		addElementWithConfig(moveableInvElements, invConfig, slots+0, 54,72, "Player", true, 43,30);
 		addElementWithConfig(moveableInvElements, invConfig, slots+1, 80,10, "Name", true, 128,12);
 		addElementWithConfig(moveableInvElements, invConfig, slots+2, 76, 8, "Tile", true, 130,22);
-		addElementWithConfig(moveableInvElements, invConfig, slots+3, 70,20, "Experience", true, 133,29);
-		addElementWithConfig(moveableInvElements, invConfig, slots+4, 64,10, "Health", true, 136,49);
-		addElementWithConfig(moveableInvElements, invConfig, slots+5, 64,10, "Armor", true, 136,59);
-		addElementWithConfig(moveableInvElements, invConfig, slots+6, 64,10, "Speed", true, 136,69);
-		addElementWithConfig(moveableInvElements, invConfig, slots+7, 64,10, "Attack Strength", true, 136,79);
+		addElementWithConfig(moveableInvElements, invConfig, slots+3, 70,20, "Experience", true, 218,136);
+		addElementWithConfig(moveableInvElements, invConfig, slots+4, 64,10, "Health", true, 128,50);
+		addElementWithConfig(moveableInvElements, invConfig, slots+5, 64,10, "Armor", true, 128,62);
+		addElementWithConfig(moveableInvElements, invConfig, slots+6, 64,10, "Speed", true, 166,50);
+		addElementWithConfig(moveableInvElements, invConfig, slots+7, 64,10, "Attack Strength", true, 166,62);
 		addElementWithConfig(moveableInvElements, invConfig, slots+8, 18,162,"Potion Effects", true, 0, 22);
 		if(TravellersGear.THAUM)
-			addElementWithConfig(moveableInvElements, invConfig, slots+9, 64,30, "Vis Discounts", true, 136,89);
+			addElementWithConfig(moveableInvElements, invConfig, slots+9, 64,30, "Vis Discounts", true, 218,80);
 		invTexture = new ResourceLocation(invConfig.get("InvConfig", "TEXTURE", "travellersgear:textures/gui/inventory_book.png").getString());
 		invConfig.save();
 		createPresets();
@@ -136,11 +136,11 @@ public class CustomizeableGuiHandler
 	{
 		List<GuiButtonMoveableElement> presetList = new ArrayList<GuiButtonMoveableElement>();
 		//Crafting
-		addElement(presetList, invConfig, 0, 18,18, "Crafting output", false, 194,84).hideElement=true;;
-		addElement(presetList, invConfig, 1, 18,18, "Crafting1", false, 176,48).hideElement=true;;
-		addElement(presetList, invConfig, 2, 18,18, "Crafting2", false, 194,48).hideElement=true;;
-		addElement(presetList, invConfig, 3, 18,18, "Crafting3", false, 176,66).hideElement=true;;
-		addElement(presetList, invConfig, 4, 18,18, "Crafting4", false, 194,66).hideElement=true;;
+		addElement(presetList, invConfig, 0, 18,18, "Crafting output", false, 175,84);
+		addElement(presetList, invConfig, 1, 18,18, "Crafting1", false, 139,74);
+		addElement(presetList, invConfig, 2, 18,18, "Crafting2", false, 157,74);
+		addElement(presetList, invConfig, 3, 18,18, "Crafting3", false, 139,92);
+		addElement(presetList, invConfig, 4, 18,18, "Crafting4", false, 157,92);
 		//ARMOR
 		addElement(presetList, invConfig, 5, 18,18, "Helmet", false, 25,30);
 		addElement(presetList, invConfig, 6, 18,18, "Chestplate", false, 25,48);
@@ -171,9 +171,9 @@ public class CustomizeableGuiHandler
 		{
 			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 97,102);
 			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 97,12);
-			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 194,110).hideElement=true;
-			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 194,128).hideElement=true;
-			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 194,146).hideElement=true;
+			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 139,30);
+			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 157,30);
+			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 175,30);
 //			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Belt", false, 25,12).hideElement=true;// (doesn't work)
 			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Mask", false, 25,12).hideElement=true;
 			slots+=6;
@@ -191,24 +191,24 @@ public class CustomizeableGuiHandler
 		addElement(presetList, invConfig, slots+0, 54,72, "Player", true, 43,30);
 		addElement(presetList, invConfig, slots+1, 80,10, "Name", true, 128,12);
 		addElement(presetList, invConfig, slots+2, 76, 8, "Tile", true, 130,22);
-		addElement(presetList, invConfig, slots+3, 70,20, "Experience", true, 133,29);
+		addElement(presetList, invConfig, slots+3, 70,20, "Experience", true, 218,136).hideElement=true;
 		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, 136,49);
 		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, 136,59);
 		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, 136,69);
 		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, 136,79);
 		addElement(presetList, invConfig, slots+8, 18,162,"Potion Effects", true, 0, 22);
 		if(TravellersGear.THAUM)
-			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 136,89);
+			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 218,80).hideElement=true;
 		presets.put("Book", new InvPreset(invTextures[0],presetList));
 
 
 		presetList = new ArrayList<GuiButtonMoveableElement>();
 		//Crafting
-		addElement(presetList, invConfig, 0, 18,18, "Crafting output", false, 212-18,30).hideElement=true;
-		addElement(presetList, invConfig, 1, 18,18, "Crafting1", false, 212-18-18,48).hideElement=true;
-		addElement(presetList, invConfig, 2, 18,18, "Crafting2", false, 212-18,48).hideElement=true;
-		addElement(presetList, invConfig, 3, 18,18, "Crafting3", false, 212-18-18,54).hideElement=true;
-		addElement(presetList, invConfig, 4, 18,18, "Crafting4", false, 212-18,54).hideElement=true;
+		addElement(presetList, invConfig, 0, 18,18, "Crafting output", false, 166,102);
+		addElement(presetList, invConfig, 1, 18,18, "Crafting1", false, 156,62);
+		addElement(presetList, invConfig, 2, 18,18, "Crafting2", false, 176,62);
+		addElement(presetList, invConfig, 3, 18,18, "Crafting3", false, 156,82);
+		addElement(presetList, invConfig, 4, 18,18, "Crafting4", false, 176,82);
 		//ARMOR
 		addElement(presetList, invConfig, 5, 18,18, "Helmet", false, 64,22);
 		addElement(presetList, invConfig, 6, 18,18, "Chestplate", false, 64,42);
@@ -218,32 +218,32 @@ public class CustomizeableGuiHandler
 		addElement(presetList, invConfig, 9, 18,18, "Cloak", false, 136,42);
 		addElement(presetList, invConfig, 10, 18,18, "Pauldrons", false, 136,22);
 		addElement(presetList, invConfig, 11, 18,18, "Vambraces", false, 136,62);
-		addElement(presetList, invConfig, 12, 18,18, "Title", false, 44,22);
+		addElement(presetList, invConfig, 12, 18,18, "Title", false, 44,82);
 		slots = 13;
 		if(TravellersGear.BAUBLES)
 		{
-			addElement(presetList, invConfig, slots+0, 18,18, "Amulet", false, 156,22);
-			addElement(presetList, invConfig, slots+1, 18,18, "Ring 1", false, 156,42);
-			addElement(presetList, invConfig, slots+2, 18,18, "Ring 2", false, 156,62);
-			addElement(presetList, invConfig, slots+3, 18,18, "Belt", false, 156,82);
+			addElement(presetList, invConfig, slots+0, 18,18, "Amulet", false, 44,42);
+			addElement(presetList, invConfig, slots+1, 18,18, "Ring 1", false, 64,102);
+			addElement(presetList, invConfig, slots+2, 18,18, "Ring 2", false, 136,102);
+			addElement(presetList, invConfig, slots+3, 18,18, "Belt", false, 44,62);
 			slots+=4;
 		}
 		if(TravellersGear.MARI)
 		{
-			addElement(presetList, invConfig, slots+0, 18,18, "Mariculture Ring", false, 44,82);
-			addElement(presetList, invConfig, slots+1, 18,18, "Mariculture Bracelet", false, 44,62);
-			addElement(presetList, invConfig, slots+2, 18,18, "Mariculture Necklace", false, 44,42);
+			addElement(presetList, invConfig, slots+0, 18,18, "Mariculture Ring", false, 24,82);
+			addElement(presetList, invConfig, slots+1, 18,18, "Mariculture Bracelet", false, 24,62);
+			addElement(presetList, invConfig, slots+2, 18,18, "Mariculture Necklace", false, 24,42);
 			slots+=3;
 		}
 		if(TravellersGear.TCON)
 		{
 			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 136,82);
-			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 176,22).hideElement=true;
-			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 176,42).hideElement=true;
-			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 176,62).hideElement=true;
-			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 176,82).hideElement=true;
+			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 44,22);
+			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 156,22);
+			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 176,22);
+			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 166,42);
 //			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Belt", false, 64,22).hideElement=true;// (doesn't work)
-			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Mask", false, 25,12).hideElement=true;
+			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Mask", false, 24,22).hideElement=true;
 			slots+=6;
 		}
 
@@ -259,24 +259,24 @@ public class CustomizeableGuiHandler
 		addElement(presetList, invConfig, slots+0, 54,72, "Player", true, 82,28);
 		addElement(presetList, invConfig, slots+1, 80,10, "Name", true, 69,10);
 		addElement(presetList, invConfig, slots+2, 76, 8, "Tile", true, 71,20);
-		addElement(presetList, invConfig, slots+3, 70,20, "Experience", true, 74,100);
-		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, 82,110).hideElement=true;
-		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, 109,110).hideElement=true;
-		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, 82,120).hideElement=true;
-		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, 109,120).hideElement=true;
+		addElement(presetList, invConfig, slots+3, 70,20, "Experience", true, 74,116);
+		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, -63,95).hideElement=true;
+		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, -63,105).hideElement=true;
+		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, -63,115).hideElement=true;
+		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, -63,125).hideElement=true;
 		addElement(presetList, invConfig, slots+8, 18,162,"Potion Effects", true, 196, 23);
 		if(TravellersGear.THAUM)
-			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 130,101).hideElement=true;
+			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, -63,135).hideElement=true;
 		presets.put("Digital", new InvPreset(invTextures[1],presetList));
 
 
 		presetList = new ArrayList<GuiButtonMoveableElement>();
 		//Crafting
-		addElement(presetList, invConfig, 0, 18,18, "Crafting output", false, 212-18,30).hideElement=true;
-		addElement(presetList, invConfig, 1, 18,18, "Crafting1", false, 212-18-18,48).hideElement=true;
-		addElement(presetList, invConfig, 2, 18,18, "Crafting2", false, 212-18,48).hideElement=true;
-		addElement(presetList, invConfig, 3, 18,18, "Crafting3", false, 212-18-18,54).hideElement=true;
-		addElement(presetList, invConfig, 4, 18,18, "Crafting4", false, 212-18,54).hideElement=true;
+		addElement(presetList, invConfig, 0, 18,18, "Crafting output", false, 109,157);
+		addElement(presetList, invConfig, 1, 18,18, "Crafting1", false, 100,121);
+		addElement(presetList, invConfig, 2, 18,18, "Crafting2", false, 118,121);
+		addElement(presetList, invConfig, 3, 18,18, "Crafting3", false, 100,139);
+		addElement(presetList, invConfig, 4, 18,18, "Crafting4", false, 118,139);
 		//ARMOR
 		addElement(presetList, invConfig, 5, 18,18, "Helmet", false, 8,49);
 		addElement(presetList, invConfig, 6, 18,18, "Chestplate", false, 8,67);
@@ -307,11 +307,11 @@ public class CustomizeableGuiHandler
 		{
 			addElement(presetList, invConfig, slots+0, 18,18, "Tinkers Glove", false, 80,121);
 			addElement(presetList, invConfig, slots+1, 18,18, "Tinkers Knapsack", false, 80,31);
-			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 23,180).hideElement=true;
-			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 44,180).hideElement=true;
-			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 65,180).hideElement=true;
+			addElement(presetList, invConfig, slots+2, 18,18, "Tinkers Heart Red", false, 26,179).hideElement=true;
+			addElement(presetList, invConfig, slots+3, 18,18, "Tinkers Heart Yellow", false, 44,179).hideElement=true;
+			addElement(presetList, invConfig, slots+4, 18,18, "Tinkers Heart Green", false, 62,179).hideElement=true;
 //			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Belt", false, 8,31).hideElement=true;// (doesn't work)
-			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Mask", false, 25,12).hideElement=true;
+			addElement(presetList, invConfig, slots+5, 18,18, "Tinkers Mask", false, 8,31).hideElement=true;
 			slots+=6;
 		}
 
@@ -328,13 +328,13 @@ public class CustomizeableGuiHandler
 		addElement(presetList, invConfig, slots+1, 80,10, "Name", true, 13,13);
 		addElement(presetList, invConfig, slots+2, 76, 8, "Tile", true, 13,23);
 		addElement(presetList, invConfig, slots+3, 70,20, "Experience", true, 18,139);
-		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, 21,159);
-		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, 21,169);
-		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, 21,179).hideElement=true;
-		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, 21,189).hideElement=true;
+		addElement(presetList, invConfig, slots+4, 64,10, "Health", true, 14,159);
+		addElement(presetList, invConfig, slots+5, 64,10, "Armor", true, 14,169);
+		addElement(presetList, invConfig, slots+6, 64,10, "Speed", true, 58,159);
+		addElement(presetList, invConfig, slots+7, 64,10, "Attack Strength", true, 58,169);
 		addElement(presetList, invConfig, slots+8, 18,162,"Potion Effects", true, 109, 13);
 		if(TravellersGear.THAUM)
-			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 86,175).hideElement=true;
+			addElement(presetList, invConfig, slots+9, 64,30, "Vis Discounts", true, 142,175).hideElement=true;
 		presets.put("Epic Quest", new InvPreset(invTextures[2],presetList));
 	}
 

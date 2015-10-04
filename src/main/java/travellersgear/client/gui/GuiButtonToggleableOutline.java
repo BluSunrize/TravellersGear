@@ -26,7 +26,6 @@ public class GuiButtonToggleableOutline extends GuiButton
 	@Override
 	public void drawButton(Minecraft mc, int mX, int mY)
 	{
-		//		System.out.println("oh!");
 		if (this.visible)
 		{
 			FontRenderer fontrenderer = mc.fontRenderer;

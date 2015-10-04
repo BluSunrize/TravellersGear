@@ -234,19 +234,16 @@ public class ContainerTravellersInv extends Container
 			}
 			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 6))
 			{
-				System.out.println("heart R");
 				if (!mergeItemStack(itemstack1, tcon[2], tcon[2]+1, false))
 					return null;
 			}
 			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 5))
 			{
-				System.out.println("heart Y");
 				if (!mergeItemStack(itemstack1, tcon[3], tcon[3]+1, false))
 					return null;
 			}
 			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 4))
 			{
-				System.out.println("heart G");
 				if (!mergeItemStack(itemstack1, tcon[4], tcon[4]+1, false))
 					return null;
 			}

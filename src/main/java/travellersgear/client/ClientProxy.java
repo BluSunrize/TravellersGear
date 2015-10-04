@@ -77,6 +77,7 @@ public class ClientProxy extends CommonProxy
 	public static HashMap<String, ToolDisplayInfo[]> toolDisplayMap = new HashMap<String, ToolDisplayInfo[]>();
 	public static int[] equipmentButtonPos;
 	public static float activeAbilityGuiSpeed;
+	public static float titleOffset;
 	@Override
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -84,6 +85,7 @@ public class ClientProxy extends CommonProxy
 		cfg.load();
 		equipmentButtonPos = cfg.get("Options", "Button Position", new int[]{27,9}, "The position of the Equipment Button in the Inventory").getIntList();
 		activeAbilityGuiSpeed = cfg.getFloat("Radial Speed", "Options", .15f, .05f, 1f, "The speed at which the radial for active abilities opens. Default is 15% per tick, minimum is 5%, maximum is 100%");
+		titleOffset = (float)cfg.get("Options", "Title Offset", 0d, "Configures the vertical offset of the title above the players head. 0 is default, set to 1 to render above the players name, the other offsets will use that scale.").getDouble();
 		cfg.save();
 
 		CustomizeableGuiHandler.instance.preInit(event);
@@ -378,20 +380,24 @@ public class ClientProxy extends CommonProxy
 		String title=StatCollector.translateToLocal(TravellersGearAPI.getTitleForPlayer(event.entityPlayer));
 		if(!RenderManager.instance.livingPlayer.equals(event.entityPlayer) && title!=null && !title.isEmpty() && !event.entityPlayer.isSneaking() && !Minecraft.getMinecraft().gameSettings.hideGUI)
 		{	
-			double p_147906_3_=event.entityPlayer.lastTickPosX-RenderManager.renderPosX;
-			double p_147906_5_=event.entityPlayer.lastTickPosY-RenderManager.renderPosY;
-			double p_147906_7_=event.entityPlayer.lastTickPosZ-RenderManager.renderPosZ;
+			double d0 = event.entityPlayer.lastTickPosX + (event.entityPlayer.posX - event.entityPlayer.lastTickPosX) * (double)event.partialRenderTick;
+			double d1 = event.entityPlayer.lastTickPosY + (event.entityPlayer.posY - event.entityPlayer.lastTickPosY) * (double)event.partialRenderTick;
+			double d2 = event.entityPlayer.lastTickPosZ + (event.entityPlayer.posZ - event.entityPlayer.lastTickPosZ) * (double)event.partialRenderTick;
+			d0 -= RenderManager.renderPosX;
+			d1 -= RenderManager.renderPosY;
+			d2 -= RenderManager.renderPosZ;
 
-			int p_147906_9_=64;
+			int maxDist=64;
 			double d3 = event.entityPlayer.getDistanceSqToEntity(RenderManager.instance.livingPlayer);
 
-			if (d3 <= (double)(p_147906_9_ * p_147906_9_))
+			if (d3 <= (double)(maxDist * maxDist))
 			{
 				FontRenderer fontrenderer = RenderManager.instance.getFontRenderer();
 				float f = 0.75F;
 				float f1 = 0.016666668F * f;
+				float fOffset = .375f*titleOffset;
 				GL11.glPushMatrix();
-				GL11.glTranslatef((float)p_147906_3_ + 0.0F, (float)p_147906_5_ + event.entityPlayer.height + 0.275F, (float)p_147906_7_);
+				GL11.glTranslatef((float)d0 + 0.0F, (float)d1 + event.entityPlayer.height + 0.2625F +fOffset, (float)d2);
 				GL11.glNormal3f(0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(-RenderManager.instance.playerViewY, 0.0F, 1.0F, 0.0F);
 				GL11.glRotatef(RenderManager.instance.playerViewX, 1.0F, 0.0F, 0.0F);

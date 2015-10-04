@@ -93,6 +93,7 @@ public class MessageActiveAbility implements IMessage
 		case 16: // BAUBLES
 			IInventory baubInv = BaublesApi.getBaubles(player);
 			activateItem(baubInv.getStackInSlot(slot-4-9), player, false);
+			ModCompatability.setPlayerBaubles(player, baubInv);
 			break;
 		case 17:
 		case 18:
