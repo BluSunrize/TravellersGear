@@ -213,7 +213,7 @@ public class ContainerTravellersInv extends Container
 			else if (((itemstack.getItem() instanceof ItemArmor)) && (!((Slot)this.inventorySlots.get(((ItemArmor)itemstack.getItem()).armorType)).getHasStack()))
 			{
 				int j = ((ItemArmor)itemstack.getItem()).armorType;
-				if (!mergeItemStack(itemstack1, j, j + 1, false))
+				if (!mergeItemStack(itemstack1, j + 5, j + 6, false))
 					return null;
 			}
 			else if(TravellersGear.MARI && ModCompatability.isMariJewelry(itemstack))
