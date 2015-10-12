@@ -57,7 +57,7 @@ public class ContainerTravellersInv extends Container
 		if(!player.worldObj.isRemote)
 			ModCompatability.setBaubleInvStacklist(invBaubles, BaublesApi.getBaubles(player));
 		
-        this.addSlot(new SlotCrafting(invPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
+        crafting = addSlot(new SlotCrafting(invPlayer.player, this.craftMatrix, this.craftResult, 0, 144, 36));
 		int i;
 		int j;
         for (i = 0; i < 2; ++i)
@@ -67,7 +67,7 @@ public class ContainerTravellersInv extends Container
                 this.addSlot(new Slot(this.craftMatrix, j + i * 2, 106 + j * 18, 26 + i * 18));
             }
         }
-        nonInventorySlots=0+(crafting>=0?5:0);
+        nonInventorySlots = 0+(crafting>=0?5:0);
         
 		vanillaArmor[0] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-0,  6, 26, player, SlotRestricted.SlotType.VANILLA_HELM));
 		vanillaArmor[1] = addSlot(new SlotRestricted(invPlayer, invPlayer.getSizeInventory()-1-1,  6, 44, player, SlotRestricted.SlotType.VANILLA_CHEST));
@@ -213,7 +213,7 @@ public class ContainerTravellersInv extends Container
 			else if (((itemstack.getItem() instanceof ItemArmor)) && (!((Slot)this.inventorySlots.get(((ItemArmor)itemstack.getItem()).armorType)).getHasStack()))
 			{
 				int j = ((ItemArmor)itemstack.getItem()).armorType;
-				if (!mergeItemStack(itemstack1, j, j + 1, false))
+				if (!mergeItemStack(itemstack1, j + 5, j + 6, false))
 					return null;
 			}
 			else if(TravellersGear.MARI && ModCompatability.isMariJewelry(itemstack))
@@ -254,7 +254,7 @@ public class ContainerTravellersInv extends Container
 			}
 */			else if(TravellersGear.TCON && ModCompatability.canEquipTConAccessory(itemstack1, 0))
 			{
-				if (!mergeItemStack(itemstack1, tcon[6], tcon[6]+1, false))
+				if (!mergeItemStack(itemstack1, tcon[5], tcon[5]+1, false))
 					return null;
 			}
 			else if((par2 >= nonInventorySlots) && (par2 < nonInventorySlots+playerInventorySlots))
