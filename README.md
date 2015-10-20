@@ -10,3 +10,15 @@ This mod adds 4 new slots, for cloak, pauldron, vambraces and a title scroll whi
 The API is designed to allow other modders to acces the extended inventory and add their own custom items. This can also be done in a more "hacky" way via IMC messages. Take a good look at the main TravellersGear class to see how it's done.
 
 http://www.curse.com/mc-mods/minecraft/224440-travellers-gear
+
+
+LICENSE
+==============
+
+The Ask-me-before-you-do License:
+
+Basically, I'm happy to share my knowledge, so feel free to use my github for inspiration or others.
+
+You are also allowed to write mods using the mod's API, in fact I'd be delighted if people make use it to create their own projects.
+
+However, you may not claim this code as your own nor publicly distribute custom builds of the mod.
