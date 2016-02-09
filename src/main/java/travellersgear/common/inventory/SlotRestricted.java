@@ -19,6 +19,8 @@ public class SlotRestricted extends Slot
 		super(inv, id, x, y);
 		this.player = player;
 		this.type = type;
+		if (this.type.equals( SlotType.TINKERS_HEART_R ) || this.type.equals( SlotType.TINKERS_HEART_G) || this.type.equals( SlotType.TINKERS_HEART_Y))
+			this.slotLimit = 10;
 	}
 
 	@Override
