@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.stats.AchievementList;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -67,6 +68,7 @@ public class MessageOpenGui implements IMessage
 //			PacketPipeline.INSTANCE.sendTo(new PacketOpenGui(player,message.guiid), (EntityPlayerMP) player);
 			boolean hasServerGui = TravellersGear.proxy.getServerGuiElement(message.guiid, player, world, (int)player.posX, (int)player.posY, (int)player.posZ)!=null;
 			player.openGui(TravellersGear.instance, message.guiid, player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
+			player.addStat(AchievementList.openInventory, 1);
 			return hasServerGui?null: new MessageOpenGui(player,message.guiid);
 		}
 	}
